@@ -1,0 +1,53 @@
+# ------------------------------------------------------------------------------ #
+# Java defaults (https://github.com/github/gitignore/blob/master/Java.gitignore) #
+# ------------------------------------------------------------------------------ #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# ------------------------------------------------------------------------------------------- #
+# Eclipse-specific (https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore) #
+# ------------------------------------------------------------------------------------------- #
+*.pydevproject
+.metadata
+bin/**
+mda/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+# You may want to remove the sharp symbols here if you are using Maven 
+.project
+.classpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+target/
+
+# ------------------------------------------------------------------------------------------- #
+# Project-specific																			  #
+# ------------------------------------------------------------------------------------------- #
+
+##Eigene SVMappingV2.xsl !!  daher mit eingecheckt.
+##ejb/src/main/resources/SVMappingV2.xsl
+
+# uebergangsweises deployment per script
+deploy2eu*.sh
