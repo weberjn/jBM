@@ -36,13 +36,8 @@ public class Commondescription implements Serializable {
 	@Column(name="tag")
 	private String tag;
 
-<<<<<<< HEAD
-	//bi-directional many-to-one association to User
+	//bi-directional one-to-one association to User
 	@OneToOne
-=======
-	//bi-directional many-to-one association to ScUser
-	@ManyToOne
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
 	@JoinColumn(name="uid")
 	private User user;
 

@@ -13,10 +13,7 @@
 		<class>de.jwi.jbm.entities.Tagsstat</class>
 		<class>de.jwi.jbm.entities.User</class>
 		<class>de.jwi.jbm.entities.UsersSslclientcert</class>
-<<<<<<< HEAD
 		<class>de.jwi.jbm.entities.Vote</class>
-=======
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
 		<class>de.jwi.jbm.entities.Watched</class>
 	</persistence-unit>
 </persistence>

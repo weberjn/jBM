@@ -44,11 +44,7 @@ public class User implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to Bookmark
-<<<<<<< HEAD
 	@OneToMany(mappedBy="user",cascade = CascadeType.PERSIST)
-=======
-	@OneToMany(mappedBy="User",cascade = CascadeType.PERSIST)
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
 	private List<Bookmark> bookmarks;
 
 	//bi-directional many-to-one association to Searchhistory
