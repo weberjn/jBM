@@ -15,6 +15,10 @@ public class T {
 	public static void main(String[] args) {
 
 		Properties properties = new Properties();
+<<<<<<< HEAD
+=======
+		properties.setProperty("hibernate.connection.url", "jdbc:mysql://localhost/lanchecker-test");
+>>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
 
 		// Configure the internal EclipseLink connection pool
 		properties.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
