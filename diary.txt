@@ -1,0 +1,12 @@
+2017-02-10
+
+
+http://stackoverflow.com/questions/6328778/how-to-create-an-empty-multi-module-maven-project
+
+C:\ccstg\java\workspace\jBM>mvn archetype:generate -DarchetypeGroupId=org.codehaus.mojo.archetypes -DarchetypeArtifactId=pom-root -DarchetypeVersion=RELEASE -DgroupId=de.jwi
+
+
+mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=RELEASE -DgroupId=de.jwi
+
+
+
