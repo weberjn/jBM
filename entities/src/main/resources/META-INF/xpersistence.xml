@@ -2,12 +2,7 @@
 <persistence version="2.1"
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-
-	<persistence-unit name="jbm"
-		transaction-type="RESOURCE_LOCAL">
-		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<non-jta-data-source>java:comp/env/jdbc/scuttle</non-jta-data-source>
-		
+	<persistence-unit name="jbm-entities">
 		<class>de.jwi.jbm.entities.Bookmark</class>
 		<class>de.jwi.jbm.entities.Bookmarks2tag</class>
 		<class>de.jwi.jbm.entities.Commondescription</class>
@@ -20,10 +15,5 @@
 		<class>de.jwi.jbm.entities.UsersSslclientcert</class>
 		<class>de.jwi.jbm.entities.Vote</class>
 		<class>de.jwi.jbm.entities.Watched</class>
-		<properties>
-			<property name="eclipselink.logging.level" value="FINE" />
-			<property name="eclipselink.logging.level.sql" value="FINE" />
-		</properties>
 	</persistence-unit>
-
 </persistence>

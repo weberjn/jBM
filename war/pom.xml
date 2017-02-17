@@ -19,8 +19,19 @@
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>de.jwi.jbm</groupId>
+			<artifactId>jbm-entities</artifactId>
+		</dependency>
+
 	</dependencies>
 
+
+	<build>
+		<finalName>jbm</finalName>
+	</build>
 
 </project>

@@ -203,18 +203,18 @@ public class User implements Serializable {
 		return this.commondescriptions;
 	}
 
-	public void setScCommondescriptions(List<Commondescription> commondescriptions) {
+	public void setCommondescriptions(List<Commondescription> commondescriptions) {
 		this.commondescriptions = commondescriptions;
 	}
 
-	public Commondescription addScCommondescription(Commondescription commondescription) {
+	public Commondescription addCommondescription(Commondescription commondescription) {
 		getCommondescriptions().add(commondescription);
 		commondescription.setUser(this);
 
 		return commondescription;
 	}
 
-	public Commondescription removeScCommondescription(Commondescription commondescription) {
+	public Commondescription removeCommondescription(Commondescription commondescription) {
 		getCommondescriptions().remove(commondescription);
 		commondescription.setUser(null);
 
