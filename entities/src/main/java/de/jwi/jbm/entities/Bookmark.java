@@ -29,7 +29,7 @@ public class Bookmark implements Serializable {
 	@SequenceGenerator(name = "bIds_gen", sequenceName = "bIds", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bIds_gen")
 	@Column(name = "bId")
-	private Integer bid;
+	private Integer id;
 
 	@Column(name = "bAddress")
 	private String address;
@@ -75,12 +75,12 @@ public class Bookmark implements Serializable {
 	public Bookmark() {
 	}
 
-	public Integer getBid() {
-		return this.bid;
+	public Integer getId() {
+		return this.id;
 	}
 
-	public void setBid(Integer bid) {
-		this.bid = bid;
+	public void setId(Integer bid) {
+		this.id = bid;
 	}
 
 	public String getAddress() {

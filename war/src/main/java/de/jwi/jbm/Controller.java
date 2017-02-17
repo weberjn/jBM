@@ -2,7 +2,11 @@ package de.jwi.jbm;
 
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,9 +24,8 @@ import de.jwi.jbm.entities.Bookmark;
 
 public class Controller extends HttpServlet {
 
-//	@PersistenceContext(name="jbm")
-//	private EntityManager em;
-
+	private static final Logger log = Logger.getLogger(Controller.class.getName());
+	
 	ServletContext servletContext = null;
 	private EntityManagerFactory entityManagerFactory;
 	
@@ -33,12 +36,10 @@ public class Controller extends HttpServlet {
 		servletContext = getServletContext();
 		
 		entityManagerFactory = Persistence.createEntityManagerFactory("jbm");
-			
-		System.out.println(entityManagerFactory);	
 		
+		log.info(entityManagerFactory.toString());
 	}
 
-	
 	
 	@Override
 	public void destroy() {
@@ -47,11 +48,8 @@ public class Controller extends HttpServlet {
 		entityManagerFactory = null;
 	}
 
-
-
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
+	void x()
+	{
 		
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		
@@ -63,39 +61,105 @@ public class Controller extends HttpServlet {
 
 		System.out.println(resultList);
 
-		response.getWriter().print(resultList);
-		
 		entityManager.close();
+	}
+
+	
+	
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
+	}
+
+
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+		String contextPath = request.getContextPath();
 		
-		
-		String servletPath = request.getServletPath();
+		String servlet = request.getServletPath().substring(1);
 				
-		System.out.println(servletPath);
+		System.out.println(servlet);
 		
-		String cmd = servletPath.substring(1);
+		String pathInfo = request.getPathInfo();
+		
+		String cmd = pathInfo.substring(1);
 		
 		String forward = "index.jsp";
 
-		if ("bookmarks".equals(cmd))
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+		
+		if ("edit".equals(cmd) && "profile".equals(servlet))
 		{
-			forward = listBookmarks();
+			forward = editProfile(request, entityManager);
 		}
-		if ("addbookmark".equals(cmd))
+
+		
+		if ("list".equals(cmd))
 		{
-			forward = addBookmark();
+			forward = listBookmarks(request, entityManager);
 		}
+		if ("add".equals(cmd))
+		{
+			forward = showAddBookmark(request, entityManager);
+		}
+		if ("added".equals(cmd))
+		{
+			forward = addBookmark(request, entityManager);
+		}
+
+		entityManager.close();
+		
+		request.setAttribute("context", contextPath);
 		
 		RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(forward);
 
 		requestDispatcher.forward(request, response);
 	}
 
-	private String addBookmark()
+	private String showAddBookmark(HttpServletRequest request, EntityManager entityManager)
 	{
-		return "";
+		return "/addbookmark.jsp";
 	}
+
 	
-	private String listBookmarks()
+	private String addBookmark(HttpServletRequest request, EntityManager entityManager) throws MalformedURLException
+	{
+		Map<String, String[]> parameterMap = request.getParameterMap();
+		
+		String address = request.getParameter("address");
+		String title = request.getParameter("title");
+		String description = request.getParameter("description");
+		String tags = request.getParameter("tags");
+		
+		BookmarkManager bm = new BookmarkManager(entityManager);
+		
+		bm.addBookmark("j@jwi.de", new URL(address), title, description, tags);
+		
+		return listBookmarks(request, entityManager);
+	}
+
+	private String editProfile(HttpServletRequest request, EntityManager entityManager) throws MalformedURLException
+	{
+		String user = request.getUserPrincipal().getName();
+		
+		Map<String, String[]> parameterMap = request.getParameterMap();
+		
+		String address = request.getParameter("address");
+		String title = request.getParameter("title");
+		String description = request.getParameter("description");
+		String tags = request.getParameter("tags");
+		
+		BookmarkManager bm = new BookmarkManager(entityManager);
+		
+		bm.addBookmark("j@jwi.de", new URL(address), title, description, tags);
+		
+		return listBookmarks(request, entityManager);
+	}
+
+	
+	private String listBookmarks(HttpServletRequest request, EntityManager entityManager)
 	{
 		return "/bookmark.jsp";
 	}

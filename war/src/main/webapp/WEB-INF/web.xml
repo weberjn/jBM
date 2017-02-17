@@ -21,26 +21,32 @@
 		<url-pattern>/dbc</url-pattern>
 	</servlet-mapping>
 
-
-
 	<servlet-mapping>
 		<servlet-name>Controller</servlet-name>
-		<url-pattern>/bookmarks/*</url-pattern>
+		<url-pattern>/bookmark/*</url-pattern>
 	</servlet-mapping>
 
-	<servlet-mapping>
-		<servlet-name>Controller</servlet-name>
-		<url-pattern>/addbookmark/*</url-pattern>
-	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>Controller</servlet-name>
-		<url-pattern>/tags/*</url-pattern>
+		<url-pattern>/profile/*</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>
-		<welcome-file>bookmarks</welcome-file>
+		<welcome-file>bookmark/list</welcome-file>
 	</welcome-file-list>
+
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>jBM</web-resource-name>
+			<url-pattern>/bookmark/*</url-pattern>
+			<url-pattern>/profile/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>jBM</role-name>
+		</auth-constraint>
+	</security-constraint>
 
 
 	<!-- Default login configuration uses form-based authentication -->
@@ -56,7 +62,7 @@
 	</login-config>
 
 	<security-role>
-		<role-name>jbmuser</role-name>
+		<role-name>jBM</role-name>
 	</security-role>
 
 

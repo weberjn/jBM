@@ -2,6 +2,14 @@
 
 https://blogs.sap.com/2012/12/11/put-jpa-in-your-web-app-tomcat-eclipselink/
 
+
+Jars for Tomcat 8.5:
+
+postgresql-9.4.1212.jar
+javax.persistence-2.1.1.jar
+eclipselink-2.6.4.jar
+
+
 2017-02-10
 
 
