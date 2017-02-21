@@ -1,7 +1,6 @@
 -- Semantic Scuttle - Tables creation SQL script
 -- ! Dont forget to change table names according to $tableprefix defined in config.php !
 
-<<<<<<< HEAD
 
 DROP TABLE sc_bookmarks2tags; 
 DROP TABLE sc_commondescription;
@@ -58,8 +57,6 @@ CREATE TABLE sc_users (
 
 CREATE UNIQUE INDEX privateKey on sc_users (privateKey);
 
-=======
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
 --
 -- Table structure for table "sc_bookmarks"
 --
@@ -72,11 +69,7 @@ CREATE SEQUENCE bIds
 
 CREATE TABLE sc_bookmarks (
   bId integer DEFAULT nextval('bIds'::text) PRIMARY KEY,
-<<<<<<< HEAD
   uId integer REFERENCES sc_users (uId),
-=======
-  uId integer NOT NULL,
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
   bIp varchar(40) DEFAULT NULL,
   bStatus smallint NOT NULL,
   bDatetime timestamp with time zone DEFAULT now() NOT NULL,
@@ -95,10 +88,6 @@ CREATE INDEX sc_bookmarks_usd ON sc_bookmarks (uId, bStatus, bDatetime);
 CREATE INDEX sc_bookmarks_hui ON sc_bookmarks (bHash, uId, bId);
 CREATE INDEX sc_bookmarks_du ON sc_bookmarks (bDatetime, uId);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
 --
 -- Table structure for table "sc_bookmarks2tags"
 --
@@ -111,22 +100,13 @@ CREATE SEQUENCE b2tIds
 
 CREATE TABLE sc_bookmarks2tags (
   id integer DEFAULT nextval('b2tIds'::text) PRIMARY KEY,
-<<<<<<< HEAD
   bId integer REFERENCES sc_bookmarks(bId), 
-=======
-  bId integer NOT NULL,
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
   tag varchar(100) DEFAULT '' NOT NULL
 );
 
 CREATE UNIQUE INDEX sc_bookmarks2tags_tag_bId on sc_bookmarks2tags (tag, bId);
 CREATE INDEX sc_bookmarks2tags_bId on sc_bookmarks2tags (bId);
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
 --
 -- Table structure for table "sc_commondescription"
 --
@@ -139,11 +119,7 @@ CREATE SEQUENCE cdIds
 
 CREATE TABLE sc_commondescription (
   cdId integer DEFAULT nextval('cdIds'::text) PRIMARY KEY,
-<<<<<<< HEAD
   uId integer REFERENCES sc_users (uId),
-=======
-  uId integer NOT NULL,
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
   tag varchar(100) DEFAULT '' NOT NULL,
   bHash varchar(32) DEFAULT '' NOT NULL,
   cdTitle varchar(255) DEFAULT '' NOT NULL,
@@ -170,11 +146,7 @@ CREATE TABLE sc_searchhistory (
   shRange varchar(32) NOT NULL DEFAULT '',
   shDatetime timestamp with time zone DEFAULT now() NOT NULL,
   shNbResults integer NOT NULL,
-<<<<<<< HEAD
   uId integer REFERENCES sc_users (uId)
-=======
-  uId integer NOT NULL
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
 );
 
 --
@@ -190,11 +162,7 @@ CREATE SEQUENCE tIds
 CREATE TABLE sc_tags (
   tId integer DEFAULT nextval('tIds'::text) PRIMARY KEY,
   tag varchar(100) NOT NULL DEFAULT '',
-<<<<<<< HEAD
   uId integer REFERENCES sc_users (uId),
-=======
-  uId integer NOT NULL,
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
   tDescription text
 );
 
@@ -215,11 +183,7 @@ CREATE TABLE sc_tags2tags (
   tag1 varchar(100) NOT NULL DEFAULT '',
   tag2 varchar(100) NOT NULL DEFAULT '',
   relationType varchar(32) NOT NULL DEFAULT '',
-<<<<<<< HEAD
   uId integer REFERENCES sc_users (uId)
-=======
-  uId integer NOT NULL
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
 );
 
 CREATE UNIQUE INDEX sc_tags2tags_tag1_tag2_uId on sc_tags2tags (tag1, tag2, relationType, uId);
@@ -258,11 +222,7 @@ CREATE TABLE sc_tagsstats (
   tstId integer DEFAULT nextval('tstIds'::text) PRIMARY KEY,
   tag1 varchar(100) NOT NULL DEFAULT '',
   relationType varchar(32) NOT NULL DEFAULT '',
-<<<<<<< HEAD
   uId integer REFERENCES sc_users (uId),
-=======
-  uId integer NOT NULL,
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
   nb integer NOT NULL,
   depth integer NOT NULL,
   nbupdate integer NOT NULL
@@ -270,35 +230,8 @@ CREATE TABLE sc_tagsstats (
 
 CREATE UNIQUE INDEX sc_tagsstats_tag1_type_uId on sc_tagsstats (tag1, relationType, uId);
 
---
-<<<<<<< HEAD
-=======
--- Table structure for table "sc_users"
---
-
-CREATE SEQUENCE uIds
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-CREATE TABLE sc_users (
-  uId integer DEFAULT nextval('uIds'::text) PRIMARY KEY,
-  username varchar(25) NOT NULL DEFAULT '',
-  password varchar(40) NOT NULL DEFAULT '',
-  uDatetime timestamp with time zone DEFAULT now() NOT NULL,
-  uModified timestamp with time zone DEFAULT now() NOT NULL,
-  name varchar(50) DEFAULT NULL,
-  email varchar(50) NOT NULL DEFAULT '',
-  homepage varchar(255) DEFAULT NULL,
-  uContent text,
-  privateKey varchar(33) DEFAULT NULL
-);
-
-CREATE UNIQUE INDEX privateKey on sc_users (privateKey);
 
 --
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
 -- Table structure for table "sc_users_sslclientcerts"
 --
 
@@ -310,11 +243,7 @@ CREATE SEQUENCE ids
 
 CREATE TABLE sc_users_sslclientcerts (
   id integer DEFAULT nextval('ids'::text) PRIMARY KEY,
-<<<<<<< HEAD
   uId integer REFERENCES sc_users (uId),
-=======
-  uId integer NOT NULL,
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
   sslSerial varchar(32) DEFAULT '' NOT NULL,
   sslClientIssuerDn varchar(1024) DEFAULT '' NOT NULL,
   sslName varchar(64) DEFAULT '' NOT NULL,
@@ -333,7 +262,6 @@ CREATE TABLE sc_version (
 -- Table structure for table "sc_votes"
 --
 
-<<<<<<< HEAD
 CREATE SEQUENCE vIds
     INCREMENT BY 1
     NO MAXVALUE
@@ -346,11 +274,6 @@ CREATE TABLE sc_votes (
   id integer DEFAULT nextval('vIds'::text) PRIMARY KEY,
   bId integer REFERENCES sc_bookmarks (bId),
   uId integer REFERENCES sc_users (uId),
-=======
-CREATE TABLE sc_votes (
-  bId integer NOT NULL,
-  uId integer NOT NULL,
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
   vote integer NOT NULL
 );
 
@@ -370,11 +293,7 @@ CREATE SEQUENCE wIds
 
 CREATE TABLE sc_watched (
   wId integer DEFAULT nextval('wIds'::text) PRIMARY KEY,
-<<<<<<< HEAD
   uId integer REFERENCES sc_users (uId),
-=======
-  uId integer NOT NULL,
->>>>>>> 230ff8a8332eb2d7de56e57453e302a0d844b572
   watched integer NOT NULL
 );
 

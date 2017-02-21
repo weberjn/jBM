@@ -61,7 +61,6 @@
 
 	<modules>
 		<module>entities</module>
-		<module>model</module>
 		<module>war</module>
 	</modules>
 
