@@ -2,7 +2,6 @@
 <html>
 <head>
 <title>jBM</title>
-</head>
 
   <link rel="icon" type="image/png" href="icon.png" />
   <link rel="stylesheet" type="text/css" href="scuttle.css" />

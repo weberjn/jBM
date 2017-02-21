@@ -7,6 +7,7 @@
 	<li><a href="${context}/profile">Profile</a></li>
         <li><a href="${context}/bookmark/add">Add a Bookmark</a></li>
         <li><a href="about">About</a></li>
+        <li class="access">${username}<a href="${context}/profile/logout">(Log Out)</a></li>
     </ul>
     
     

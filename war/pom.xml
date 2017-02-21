@@ -23,6 +23,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>de.jwi.jbm</groupId>
 			<artifactId>jbm-entities</artifactId>
 		</dependency>

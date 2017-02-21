@@ -6,6 +6,13 @@
 
 	<display-name>jBM - Java Bookmark Manager</display-name>
 
+	<!--  jsp-config>
+		<jsp-property-group>
+			<url-pattern>/*</url-pattern>
+			<page-encoding>UTF-8</page-encoding>
+		</jsp-property-group>
+	</jsp-config-->
+
 	<servlet>
 		<servlet-name>Controller</servlet-name>
 		<servlet-class>de.jwi.jbm.Controller</servlet-class>

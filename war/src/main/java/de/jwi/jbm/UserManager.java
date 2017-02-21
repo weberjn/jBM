@@ -1,5 +1,7 @@
 package de.jwi.jbm;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -16,12 +18,12 @@ public class UserManager {
 		this.em = entityManager;
 	}
 	
-	public User findUser(String name)
+	public User findUser(String username)
 	{
 		User user = null;
 		
-		Query query = em.createQuery("Select u FROM User u WHERE u.name = :name");
-		query.setParameter("name", name);
+		Query query = em.createQuery("Select u FROM User u WHERE u.username = :username");
+		query.setParameter("username", username);
 		
 		List resultList = query.getResultList(); 
 		
@@ -34,4 +36,29 @@ public class UserManager {
 		return null;
 	}
 	
+	public User createUser(String username)
+	{
+		User user = new User();
+		user.setUsername(username);
+
+		Timestamp ts = new Timestamp(new Date().getTime());
+		user.setDatetime(ts);
+		user.setModified(ts);
+		
+		em.persist(user);
+		
+		return user;
+	}	
+
+	public void saveUser(User user)
+	{
+		em.persist(user);
+	}
+	
+	public void updateTimeStamp(User user)
+	{
+		Timestamp ts = new Timestamp(new Date().getTime());
+		user.setModified(ts);
+	}
+
 }

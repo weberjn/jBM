@@ -3,7 +3,6 @@ package de.jwi.jbm.entities;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,22 +30,22 @@ public class Bookmark implements Serializable {
 	@Column(name = "bId")
 	private Integer id;
 
-	@Column(name = "bAddress")
+	@Column(name = "bAddress", nullable=false)
 	private String address;
 
-	@Column(name = "bDatetime")
+	@Column(name = "bDatetime", nullable=false)
 	private Timestamp datetime;
 
 	@Column(name = "bDescription")
 	private String description;
 
-	@Column(name = "bHash")
+	@Column(name = "bHash", nullable=false)
 	private String hash;
 
 	@Column(name = "bIp")
 	private String ip;
 
-	@Column(name = "bModified")
+	@Column(name = "bModified", nullable=false)
 	private Timestamp modified;
 
 	@Column(name = "bPrivateNote")
@@ -58,13 +57,13 @@ public class Bookmark implements Serializable {
 	@Column(name = "bStatus")
 	private Integer status;
 
-	@Column(name = "bTitle")
+	@Column(name = "bTitle", nullable=false)
 	private String title;
 
-	@Column(name = "bVotes")
+	@Column(name = "bVotes", nullable=false)
 	private Integer votes;
 
-	@Column(name = "bVoting")
+	@Column(name = "bVoting", nullable=false)
 	private Integer voting;
 
 	// bi-directional many-to-one association to User

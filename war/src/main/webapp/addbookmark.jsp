@@ -1,19 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+
 <%@include file="top.jsp"%>
 
 <h2>Add a Bookmark</h2>
 
-<form action="${context}/bookmark/added" method="post">
+<form action="${context}/bookmark/list" method="post">
 	<table>
 		<tr>
 			<th align="left">Address</th>
 			<td><input type="text" id="address" name="address" size="75"
-				maxlength="65535" value="bAddress" onblur="useAddress(this)" /></td>
+				maxlength="65535" value="${bm.address}" onblur="useAddress(this)" /></td>
 			<td>* Required</td>
 		</tr>
 		<tr>
 			<th align="left">Title</th>
 			<td><input type="text" id="titleField" name="title" size="75"
-				maxlength="255" value="bTitle"
+				maxlength="255" value="${bm.title}"
 				onkeypress="this.style.backgroundImage = 'none';" /></td>
 			<td>* Required</td>
 		</tr>
@@ -24,7 +28,7 @@
 			</a>
 			</th>
 			<td><textarea name="description" id="description" rows="5"
-					cols="63">bDescription</textarea></td>
+					cols="63">${bm.description}</textarea></td>
 			<td>* You can use anchors to delimite attributes. for example:
 				[publisher]blah[/publisher] 
 			</td>
@@ -33,7 +37,7 @@
 		<tr>
 			<th align="left">Tags</th>
 			<td class="scuttletheme"><input type="text" id="tags"
-				name="tags" size="75" value="tags" /></td>
+				name="tags" size="75" value="${bm.tags}" /></td>
 			<td>* Comma-separated</td>
 		</tr>
 		<tr>
@@ -50,7 +54,7 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td><input type="submit" name="submitted" value="btnsubmit" />
+			<td><input type="submit" name="addBookmark" value="Add Bookmark" />
 				<input type="button" name="cancel" value="Cancel"
 				onclick="window.close();':'javascript: history.go(-1)'" /> <input
 				type="submit" name="delete" value="Delete Bookmark" /></td>
