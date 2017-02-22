@@ -68,7 +68,7 @@ public class BookmarkManager {
 
 	public List<Bookmark> getBookmarks(User user, PagePosition pagePosition) {
 
-		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user");
+		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user order by b.modified desc");
 		query.setParameter("user", user);
 		query.setFirstResult((pagePosition.getCurrent()-1) * pagePosition.getPagesize()); 
 		query.setMaxResults(pagePosition.getPagesize());

@@ -3,6 +3,7 @@ package de.jwi.jbm;
 public class PagePosition {
 
 	private Integer first, current, last, pagesize;
+	private int bookmarksCount;
 
 	
 	public PagePosition(int bookmarksCount, int current, int pagesize)
@@ -11,6 +12,8 @@ public class PagePosition {
 		// 1 1  
 		// 2 1
 		// 3 2
+		
+		this.bookmarksCount = bookmarksCount;
 		
 		int pc = bookmarksCount / pagesize + 1;
 		
@@ -32,6 +35,10 @@ public class PagePosition {
 	}
 
 	public Integer getFirst() {
+		if (bookmarksCount == 0 || 0 == current.compareTo(first))
+		{
+			return null;
+		}
 		return first;
 	}
 
@@ -40,11 +47,19 @@ public class PagePosition {
 	}
 
 	public Integer getLast() {
+		if (bookmarksCount == 0 || 0 == current.compareTo(last))
+		{
+			return null;
+		}
 		return last;
 	}
 
 	public Integer getPrevious()
 	{
+		if (bookmarksCount == 0)
+		{
+			return null;
+		}
 		if (current > first)
 		{
 			return current - 1;
@@ -54,6 +69,11 @@ public class PagePosition {
 	
 	public Integer getNext()
 	{
+		if (bookmarksCount == 0)
+		{
+			return null;
+		}
+
 		if (current < last)
 		{
 			return current + 1;

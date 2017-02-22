@@ -32,13 +32,13 @@ public class Controller extends HttpServlet {
 	
 	private static final String PROPERTIES = "/WEB-INF/jBM.properties";
 	private static final String CUSTOMPROPERTIES = "/jBM-custom.properties";
-
+	private static final String VERSIONPROPERTIES = "/version.properties";
 	
 	ServletContext servletContext = null;
 	private EntityManagerFactory entityManagerFactory;
 	
 	private Properties properties;
-
+	
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -63,6 +63,17 @@ public class Controller extends HttpServlet {
 				is.close();
 				properties.putAll(properties2);
 			}
+			
+			url = Controller.class.getResource(VERSIONPROPERTIES);
+			if (url != null)
+			{
+				Properties properties2 = new Properties();
+				is = url.openStream();
+				properties2.load(is);
+				is.close();
+				properties.putAll(properties2);
+			}			
+			
 		} catch (Exception e)
 		{
 			throw new ServletException(e);
@@ -141,6 +152,10 @@ public class Controller extends HttpServlet {
 
 			request.setAttribute("username", username);
 		}
+		
+		request.setAttribute("version", properties.getProperty("version"));
+		request.setAttribute("builddate", properties.getProperty("builddate"));
+		
 
 		RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(forward);
 

@@ -88,3 +88,5 @@
 	</table>
 
 </form>
+
+<%@include file="bottom.jsp"%>

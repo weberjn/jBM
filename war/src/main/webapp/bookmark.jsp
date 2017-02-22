@@ -34,11 +34,7 @@
 </form>
 
 
-<p id="sort">
-	${bookmarksCount} bookmark(s) - Sort by: <a href="?sort=date_asc">Date
-		↓</a> <span>/</span> <a href="?sort=title_asc">Title</a> <span>/</span>
-
-</p>
+<p id="sort">${bookmarksCount} bookmark(s)</p>
 
 
 
@@ -80,36 +76,45 @@
 		the page</a>
 </p>
 <p class="paging">
-	<span class="disable">First</span><span>${context}/bookmark/list/${pagePosition.first}</span><span class="disable">Previous</span><span>
-		${context}/bookmark/list/${pagePosition.previous} </span><span class="disable">Next</span><span> ${context}/bookmark/list/${pagePosition.next} </span><span
-		class="disable">Last</span> <span> / </span>Page
-	${pagePosition.current} of ${pagePosition.last} <a
-		style="background: #FFFFFF"
-		href="//localhost/SemanticScuttle-0.98.5/www/rss.php?sort=date_desc"
-		title="SemanticScuttle: Recent bookmarks"><img
-		src="//localhost/SemanticScuttle-0.98.5/www/themes/default/images/rss.gif"
-		alt="SemanticScuttle: Recent bookmarks" width="16" height="16"></a>
-</p>
 
 
-<p class="paging">
-	<a href="//localhost/SemanticScuttle-0.98.5/www/bookmarks.php/intuser/">First</a><span>
-		/ </span><a
-		href="//localhost/SemanticScuttle-0.98.5/www/bookmarks.php/intuser/?page=1">Previous</a><span>
-		/ </span><a
-		href="//localhost/SemanticScuttle-0.98.5/www/bookmarks.php/intuser/?page=3">Next</a><span>
-		/ </span><a
-		href="//localhost/SemanticScuttle-0.98.5/www/bookmarks.php/intuser/?page=3">Last</a>
-	<span> / </span>Page 2 of 3 <a style="background: #FFFFFF"
-		href="//localhost/SemanticScuttle-0.98.5/www/rss.php/intuser?sort=date_desc"
-		title="SemanticScuttle: My Bookmarks"><img
-		src="//localhost/SemanticScuttle-0.98.5/www/themes/default/images/rss.gif"
-		width="16" height="16" alt="SemanticScuttle: My Bookmarks" /></a>
-</p>
-<div id="sidebar" class="adminBackground">
+	<c:choose> 
+		<c:when test="${!empty pagePosition.first}">
+			<a href="${context}/bookmark/list/${pagePosition.first}">First</a> 
+		</c:when> 
+		<c:otherwise> 
+			<span class="disable">First</span><span> / </span>
+		</c:otherwise> 
+	</c:choose> 
 
 
+	<c:choose> 
+		<c:when test="${!empty pagePosition.previous}">
+			<a href="${context}/bookmark/list/${pagePosition.previous}">Previous</a> 
+		</c:when> 
+		<c:otherwise> 
+			<span class="disable">Previous</span><span> / </span>
+		</c:otherwise> 
+	</c:choose> 
 
 
-	</body>
-	</html>
+	<c:choose> 
+		<c:when test="${!empty pagePosition.next}">
+			<a href="${context}/bookmark/list/${pagePosition.next}">Next</a> 
+		</c:when> 
+		<c:otherwise> 
+			<span class="disable">Next</span><span> / </span>
+		</c:otherwise> 
+	</c:choose> 
+
+	<c:choose> 
+		<c:when test="${!empty pagePosition.last}">
+			<a href="${context}/bookmark/list/${pagePosition.last}">Last</a> 
+		</c:when> 
+		<c:otherwise> 
+			<span class="disable">Last</span><span> / </span>
+		</c:otherwise> 
+	</c:choose> 
+
+<%@include file="bottom.jsp"%>
+
