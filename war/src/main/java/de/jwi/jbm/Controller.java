@@ -144,6 +144,9 @@ public class Controller extends HttpServlet {
 				if ("add".equals(cmd)) {
 					forward = addBookmark(request, user, bm);
 				}
+				if (cmd.startsWith("edit")){
+					forward = editBookmark(request, user, bm, cmd);
+				}
 			}
 			transaction.commit();
 			entityManager.close();
@@ -164,38 +167,27 @@ public class Controller extends HttpServlet {
 
 	private String addBookmark(HttpServletRequest request, User user, BookmarkManager bm) throws MalformedURLException {
 		
-
-		
 		return "/addbookmark.jsp";
 	}
 
-	private String editProfile(HttpServletRequest request, UserManager um, User user) throws MalformedURLException {
-
-		Boolean saved = new Boolean(false);
-
-		if (request.getParameter("submitted") != null) {
-			String email = request.getParameter("pMail");
-			String name = request.getParameter("pName");
-			String homepage = request.getParameter("pPage");
-			String content = request.getParameter("pDesc");
-
-			user.setEmail(email);
-			user.setName(name);
-			user.setHomepage(homepage);
-			user.setContent(content);
-
-			um.updateTimeStamp(user);
-
-			saved = new Boolean(true);
+	private String editBookmark(HttpServletRequest request, User user, BookmarkManager bm, String cmd) throws MalformedURLException {
+		
+		Matcher matcher = Pattern.compile( "edit/(\\d+)" ).matcher(cmd);
+		
+		int id = 0;
+		
+		if (matcher.find())
+		{
+			String s = matcher.group(1);
+			id = Integer.parseInt(s);
 		}
-
-		request.setAttribute("user", user);
-
-		request.setAttribute("saved", saved);
-
-		return "/profile.jsp";
+		
+		Bookmark bookmark = bm.findBookmark(user, id);
+		
+		request.setAttribute("bm", bookmark);
+		
+		return "/addbookmark.jsp";
 	}
-
 
 	
 	private String listBookmarks(HttpServletRequest request, User user, BookmarkManager bm, String cmd)
@@ -232,5 +224,33 @@ public class Controller extends HttpServlet {
 		
 		return "/bookmark.jsp";
 	}
+
+	private String editProfile(HttpServletRequest request, UserManager um, User user) throws MalformedURLException {
+
+		Boolean saved = new Boolean(false);
+
+		if (request.getParameter("submitted") != null) {
+			String email = request.getParameter("pMail");
+			String name = request.getParameter("pName");
+			String homepage = request.getParameter("pPage");
+			String content = request.getParameter("pDesc");
+
+			user.setEmail(email);
+			user.setName(name);
+			user.setHomepage(homepage);
+			user.setContent(content);
+
+			um.updateTimeStamp(user);
+
+			saved = new Boolean(true);
+		}
+
+		request.setAttribute("user", user);
+
+		request.setAttribute("saved", saved);
+
+		return "/profile.jsp";
+	}
+
 
 }

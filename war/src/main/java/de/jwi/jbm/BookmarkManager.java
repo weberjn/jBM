@@ -21,6 +21,22 @@ public class BookmarkManager {
 		super();
 		this.em = entityManager;
 	}
+	
+	public Bookmark findBookmark(User user, int id)
+	{
+		Bookmark bookmark = null;
+		
+		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user and b.id = :id");
+		query.setParameter("user", user);
+		query.setParameter("id", id);
+		List resultList = query.getResultList();
+
+		if (!resultList.isEmpty()) {
+			bookmark = (Bookmark)resultList.get(0);
+		}
+		
+		return bookmark;
+	}
 
 	public void addBookmark(User user, URL url, String title, String description, String tags) {
 

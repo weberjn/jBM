@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 
 <%@include file="top.jsp"%>
 
@@ -37,7 +39,7 @@
 		<tr>
 			<th align="left">Tags</th>
 			<td class="scuttletheme"><input type="text" id="tags"
-				name="tags" size="75" value="${bm.tags}" /></td>
+				name="tags" size="75" value="bm.tags" /></td>
 			<td>* Comma-separated</td>
 		</tr>
 		<tr>
@@ -52,12 +54,26 @@
 			</select></td>
 			<td></td>
 		</tr>
+		
+				<c:choose>
+					<c:when test="${empty bm}">
+						<c:set var="btSubText" scope="request" value="Add Bookmark"/>
+					</c:when> 
+					<c:otherwise> 
+						<c:set var="btSubText" scope="request" value="Save Changes"/>
+					</c:otherwise> 
+				</c:choose>
+		
 		<tr>
 			<td></td>
-			<td><input type="submit" name="addBookmark" value="Add Bookmark" />
+			<td><input type="submit" name="addBookmark" 
+						value="${btSubText}"	/>
 				<input type="button" name="cancel" value="Cancel"
-				onclick="window.close();':'javascript: history.go(-1)'" /> <input
-				type="submit" name="delete" value="Delete Bookmark" /></td>
+				onclick="window.close();':'javascript: history.go(-1)'" /> 
+				<c:if test="${!empty bm}"> 				
+					<input	type="submit" name="delete" value="Delete Bookmark" />
+				</c:if> 
+				</td>
 			<td></td>
 		</tr>
 	</table>
