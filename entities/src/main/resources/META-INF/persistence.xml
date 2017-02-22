@@ -3,7 +3,7 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 
-	<persistence-unit name="jbm" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="jBM" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<!-- non-jta-data-source>java:comp/env/jdbc/scuttle</non-jta-data-source -->
 
@@ -22,15 +22,6 @@
 
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
-		<properties>
-			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://luna:8432/scuttle" />
-			<property name="javax.persistence.jdbc.user" value="intuser" />
-			<property name="javax.persistence.jdbc.password" value="int2001" />
-
-			<property name="eclipselink.logging.level" value="FINE" />
-			<property name="eclipselink.logging.level.sql" value="FINE" />
-		</properties>
 	</persistence-unit>
 
 </persistence>

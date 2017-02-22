@@ -1,9 +1,11 @@
 package de.jwi.jbm;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,16 +30,47 @@ public class Controller extends HttpServlet {
 
 	int PAGESIZE = 2;
 	
+	private static final String PROPERTIES = "/WEB-INF/jBM.properties";
+	private static final String CUSTOMPROPERTIES = "/jBM-custom.properties";
+
+	
 	ServletContext servletContext = null;
 	private EntityManagerFactory entityManagerFactory;
+	
+	private Properties properties;
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
+		
+		properties = new Properties();
+		
+		try
+		{
+			URL url = getServletContext().getResource(PROPERTIES);
+			InputStream is = url.openStream();
+			properties.load(is);
+			is.close();
+			
+			url = Controller.class.getResource(CUSTOMPROPERTIES);
+			if (url != null)
+			{
+				log.info("loading custom Properties from " + url);
+				
+				Properties properties2 = new Properties();
+				is = url.openStream();
+				properties2.load(is);
+				is.close();
+				properties.putAll(properties2);
+			}
+		} catch (Exception e)
+		{
+			throw new ServletException(e);
+		}
 
 		servletContext = getServletContext();
 
-		entityManagerFactory = Persistence.createEntityManagerFactory("jbm");
+		entityManagerFactory = Persistence.createEntityManagerFactory("jBM", properties);
 
 		log.info(entityManagerFactory.toString());
 	}
