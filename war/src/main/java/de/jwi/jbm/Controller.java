@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -26,6 +26,8 @@ public class Controller extends HttpServlet {
 
 	private static final Logger log = Logger.getLogger(Controller.class.getName());
 
+	int PAGESIZE = 2;
+	
 	ServletContext servletContext = null;
 	private EntityManagerFactory entityManagerFactory;
 
@@ -45,21 +47,6 @@ public class Controller extends HttpServlet {
 		super.destroy();
 		entityManagerFactory.close();
 		entityManagerFactory = null;
-	}
-
-	void x() {
-
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-		String q = "SELECT b FROM Bookmark b";
-
-		Query query = entityManager.createQuery(q);
-
-		List<Bookmark> resultList = query.getResultList();
-
-		System.out.println(resultList);
-
-		entityManager.close();
 	}
 
 	@Override
@@ -97,17 +84,23 @@ public class Controller extends HttpServlet {
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
 
+			UserManager um = new UserManager(entityManager);
+			BookmarkManager bm = new BookmarkManager(entityManager);
+
+			User user = um.createIfNotExists(username);
+
 			if ("profile".equals(servlet)) {
-				forward = editProfile(request, entityManager);
+				forward = editProfile(request, um, user);
 			}
 
-			if ("list".equals(cmd)) {
-				forward = listBookmarks(request, entityManager);
+			if ("bookmark".equals(servlet) && (cmd != null)) {
+				if (cmd.startsWith("list")) {
+					forward = listBookmarks(request, user, bm, cmd);
+				}
+				if ("add".equals(cmd)) {
+					forward = addBookmark(request, user, bm);
+				}
 			}
-			if ("add".equals(cmd)) {
-				forward = showAddBookmark(request, entityManager);
-			}
-
 			transaction.commit();
 			entityManager.close();
 
@@ -121,38 +114,16 @@ public class Controller extends HttpServlet {
 		requestDispatcher.forward(request, response);
 	}
 
-	private String showAddBookmark(HttpServletRequest request, EntityManager entityManager) {
+	private String addBookmark(HttpServletRequest request, User user, BookmarkManager bm) throws MalformedURLException {
+		
+
+		
 		return "/addbookmark.jsp";
 	}
 
-	private String addBookmark(HttpServletRequest request, EntityManager entityManager) throws MalformedURLException {
-		Map<String, String[]> parameterMap = request.getParameterMap();
-
-		String address = request.getParameter("address");
-		String title = request.getParameter("title");
-		String description = request.getParameter("description");
-		String tags = request.getParameter("tags");
-
-		BookmarkManager bm = new BookmarkManager(entityManager);
-
-		bm.addBookmark("j@jwi.de", new URL(address), title, description, tags);
-
-		return listBookmarks(request, entityManager);
-	}
-
-	private String editProfile(HttpServletRequest request, EntityManager entityManager) throws MalformedURLException {
-
-		String username = request.getUserPrincipal().getName();
+	private String editProfile(HttpServletRequest request, UserManager um, User user) throws MalformedURLException {
 
 		Boolean saved = new Boolean(false);
-
-		UserManager um = new UserManager(entityManager);
-
-		User user = um.findUser(username);
-
-		if (user == null) {
-			user = um.createUser(username);
-		}
 
 		if (request.getParameter("submitted") != null) {
 			String email = request.getParameter("pMail");
@@ -166,7 +137,7 @@ public class Controller extends HttpServlet {
 			user.setContent(content);
 
 			um.updateTimeStamp(user);
-			
+
 			saved = new Boolean(true);
 		}
 
@@ -177,20 +148,40 @@ public class Controller extends HttpServlet {
 		return "/profile.jsp";
 	}
 
-	private String listBookmarks(HttpServletRequest request, EntityManager entityManager) throws MalformedURLException {
-		String addsubmit = request.getParameter("addBookmark");
 
-		if (addsubmit != null) {
+	
+	private String listBookmarks(HttpServletRequest request, User user, BookmarkManager bm, String cmd)
+			throws MalformedURLException {
+
+		if (request.getParameter("addBookmark") != null) {
 			String address = request.getParameter("address");
 			String title = request.getParameter("title");
 			String description = request.getParameter("description");
 			String tags = request.getParameter("tags");
 
-			BookmarkManager bm = new BookmarkManager(entityManager);
-
-			bm.addBookmark("j@jwi.de", new URL(address), title, description, tags);
+			bm.addBookmark(user, new URL(address), title, description, tags);
 		}
 
+		int page = 1;
+		
+		Matcher matcher = Pattern.compile( "list/(\\d+)" ).matcher(cmd);
+		if (matcher.find())
+		{
+			String s = matcher.group(1);
+			page = Integer.parseInt(s);
+		}
+		
+		Long bookmarksCount = bm.getBookmarksCount(user);
+		request.setAttribute("bookmarksCount", bookmarksCount);
+
+		PagePosition pagePosition = new PagePosition(bookmarksCount.intValue(), page, PAGESIZE);
+		
+		List<Bookmark> bookmarks = bm.getBookmarks(user, pagePosition);
+
+		request.setAttribute("pagePosition", pagePosition);
+		
+		request.setAttribute("bookmarks", bookmarks);
+		
 		return "/bookmark.jsp";
 	}
 

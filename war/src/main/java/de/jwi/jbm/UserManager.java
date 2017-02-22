@@ -50,6 +50,16 @@ public class UserManager {
 		return user;
 	}	
 
+	public User createIfNotExists(String username)
+	{
+		User user = findUser(username);
+		if (user == null)
+		{
+			user = createUser(username);
+		}
+		return user;
+	}
+	
 	public void saveUser(User user)
 	{
 		em.persist(user);

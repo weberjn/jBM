@@ -68,7 +68,7 @@ public class Bookmark implements Serializable {
 
 	// bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name = "uid")
+	@JoinColumn(name = "uId")
 	private User user;
 
 	public Bookmark() {
