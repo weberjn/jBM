@@ -5,29 +5,35 @@ public class PagePosition {
 	private Integer first, current, last, pagesize;
 	private int bookmarksCount;
 
-	
-	public PagePosition(int bookmarksCount, int current, int pagesize)
+	// all Positions 1..
+	public PagePosition(int bookmarksCount, int newpos, int pagesize)
 	{
 		// 0
 		// 1 1  
 		// 2 1
 		// 3 2
+		// 4 2
 		
 		this.bookmarksCount = bookmarksCount;
 		
-		int pc = bookmarksCount / pagesize + 1;
+		int pageCount = (bookmarksCount + pagesize - 1) / pagesize;
 		
-		this.current = current; 
+		first = 1;
+		last = pageCount;
+		current = newpos; 
 		
-		if (this.current > pc)
+		if (current > last)
 		{
-			this.current = pc;
+			current = last;
+		}
+		
+		if (current < first)
+		{
+			current = first;
 		}
 		
 		this.pagesize = pagesize;
 		
-		first = 1;
-		last = pc;
 	}
 	
 	public Integer getPagesize() {

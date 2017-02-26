@@ -192,7 +192,7 @@ public class Controller extends HttpServlet
 	{
 		String submit = request.getParameter("addBookmark");
 		
-		if (submit != null)
+		if (submit != null && request.getAttribute("bm") == null)
 		{
 			if ("get it".equals(submit))
 			{
