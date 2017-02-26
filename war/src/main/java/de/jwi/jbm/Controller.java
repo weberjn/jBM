@@ -219,7 +219,7 @@ public class Controller extends HttpServlet
 		request.setAttribute("bmop", "add");
 		request.setAttribute("cmd", "add");
 
-		return "/addbookmark.jsp";
+		return "/WEB-INF/addbookmark.jsp";
 	}
 
 	private String editBookmark(HttpServletRequest request, User user, BookmarkManager bm, String cmd)
@@ -271,7 +271,7 @@ public class Controller extends HttpServlet
 		
 		request.setAttribute("cmd", cmd);
 
-		return "/addbookmark.jsp";
+		return "/WEB-INF/addbookmark.jsp";
 	}
 
 	private void fillBookmark(HttpServletRequest request, Bookmark bm)
@@ -311,7 +311,7 @@ public class Controller extends HttpServlet
 
 		request.setAttribute("bookmarks", bookmarks);
 
-		return "/bookmark.jsp";
+		return "/WEB-INF/listbookmarks.jsp";
 	}
 
 	private String editProfile(HttpServletRequest request, UserManager um, User user) throws MalformedURLException
@@ -340,7 +340,7 @@ public class Controller extends HttpServlet
 
 		request.setAttribute("saved", saved);
 
-		return "/profile.jsp";
+		return "/WEB-INF/profile.jsp";
 	}
 
 }
