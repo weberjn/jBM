@@ -101,7 +101,7 @@ CREATE SEQUENCE b2tIds
 CREATE TABLE sc_bookmarks2tags (
   id integer DEFAULT nextval('b2tIds'::text) PRIMARY KEY,
   bId integer REFERENCES sc_bookmarks(bId), 
-  tag varchar(100) DEFAULT '' NOT NULL
+  tId integer REFERENCES sc_tags(tId) 
 );
 
 CREATE UNIQUE INDEX sc_bookmarks2tags_tag_bId on sc_bookmarks2tags (tag, bId);

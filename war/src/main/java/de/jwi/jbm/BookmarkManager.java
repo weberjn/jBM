@@ -18,6 +18,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import de.jwi.jbm.entities.Bookmark;
+import de.jwi.jbm.entities.Tag;
 import de.jwi.jbm.entities.User;
 
 public class BookmarkManager {
@@ -34,6 +35,28 @@ public class BookmarkManager {
 		Timestamp ts = new Timestamp(new Date().getTime());
 		bookmark.setDatetime(ts);
 		bookmark.setModified(ts);
+	}
+	
+	public void addTag(Bookmark bookmark, String tags, User user)
+	{
+		Tag tag = null;
+		
+		Query query = em.createQuery("SELECT t FROM Tag t WHERE t.user = :user and t.tag = :tag");
+		query.setParameter("user", user);
+		query.setParameter("tag", tags);
+		List resultList = query.getResultList();
+
+		if (!resultList.isEmpty()) {
+			tag = (Tag)resultList.get(0);
+		}
+		else
+		{
+			tag = new Tag();
+			tag.setTag(tags);
+			tag.setUser(user);
+			em.persist(tag);
+		}
+		bookmark.getTags().add(tag);
 	}
 	
 	public Bookmark findBookmark(User user, int id)
@@ -96,6 +119,23 @@ public class BookmarkManager {
 		Long n = query.getSingleResult();
 		return n;
 	}
+	
+	public Long getBookmarksCount(User user, Tag tag) {
+		TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Bookmark b inner join b.tags tags WHERE :tag in b.tags and b.user=:user", Long.class);
+		query.setParameter("user", user);
+		query.setParameter("tag", tag);
+		Long n = query.getSingleResult();
+		return n;
+	}
+	
+	
+	public Tag findTag(Integer id)
+	{
+		TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t WHERE t.id=:id", Tag.class);
+		query.setParameter("id", id);
+		Tag tag = query.getSingleResult();
+		return tag;
+	}
 
 	public List<Bookmark> getBookmarks(User user, PagePosition pagePosition) {
 
@@ -123,12 +163,11 @@ public class BookmarkManager {
 		}
 	}
 
-	public void fetchBookmarkFromURL(Bookmark bookmark, String address) throws IOException
+	public void fetchBookmarkFromURL(Bookmark bookmark, StringBuffer keywords, String address) throws IOException
 	{
 		Document doc = Jsoup.connect(address).get();
 		String title = doc.title();
 		String description = null;
-		String keywords = null;
 
 		Elements metaTags = doc.getElementsByTag("meta");
 
@@ -145,7 +184,7 @@ public class BookmarkManager {
 
 			if ("keywords".equals(name))
 			{
-				keywords = content;
+				keywords.append(content);
 			}
 
 		}

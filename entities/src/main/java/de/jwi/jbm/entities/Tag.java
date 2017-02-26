@@ -19,14 +19,13 @@ public class Tag implements Serializable {
 	@SequenceGenerator(name="tIds_gen", sequenceName="tIds", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="tIds_gen")
 	@Column(name="tId")
-	private Integer tid;
+	private Integer id;
 
 	private String tag;
 
 	@Column(name="tDescription")
 	private String description;
 
-	
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="uid")
@@ -35,12 +34,12 @@ public class Tag implements Serializable {
 	public Tag() {
 	}
 
-	public Integer getTid() {
-		return this.tid;
+	public Integer getId() {
+		return this.id;
 	}
 
-	public void setTid(Integer tid) {
-		this.tid = tid;
+	public void setId(Integer tid) {
+		this.id = tid;
 	}
 
 	public String getTag() {

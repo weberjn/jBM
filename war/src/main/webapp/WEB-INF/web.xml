@@ -33,6 +33,11 @@
 		<url-pattern>/bookmark/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/bookmarks/*</url-pattern>
+	</servlet-mapping>
+
 
 	<servlet-mapping>
 		<servlet-name>Controller</servlet-name>
@@ -40,7 +45,7 @@
 	</servlet-mapping>
 
 	<welcome-file-list>
-		<welcome-file>bookmark/list</welcome-file>
+		<welcome-file>bookmarks/list</welcome-file>
 	</welcome-file-list>
 
 
@@ -48,6 +53,7 @@
 		<web-resource-collection>
 			<web-resource-name>jBM</web-resource-name>
 			<url-pattern>/bookmark/*</url-pattern>
+			<url-pattern>/bookmarks/*</url-pattern>
 			<url-pattern>/profile/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>

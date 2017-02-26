@@ -27,6 +27,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import de.jwi.jbm.entities.Bookmark;
+import de.jwi.jbm.entities.Tag;
 import de.jwi.jbm.entities.User;
 
 public class Controller extends HttpServlet
@@ -150,12 +151,19 @@ public class Controller extends HttpServlet
 				forward = editProfile(request, um, user);
 			}
 
-			if ("bookmark".equals(servlet) && (cmd != null))
+			if ("bookmarks".equals(servlet) && (cmd != null))
 			{
+				if (cmd.startsWith("list/tag"))
+				{
+					forward = listBookmarksWithTag(request, user, bm, cmd);
+				}
 				if (cmd.startsWith("list"))
 				{
 					forward = listBookmarks(request, user, bm, cmd);
 				}
+			}
+			if ("bookmark".equals(servlet) && (cmd != null))
+			{
 				if ("add".equals(cmd))
 				{
 					forward = addBookmark(request, user, bm);
@@ -201,19 +209,22 @@ public class Controller extends HttpServlet
 				Bookmark bookmark = new Bookmark();
 				bookmark.setAddress(address);
 				
-				bm.fetchBookmarkFromURL(bookmark, address);
+				StringBuffer keywords = new StringBuffer();
+				
+				bm.fetchBookmarkFromURL(bookmark, keywords, address);
 				
 				request.setAttribute("bm", bookmark);
+				request.setAttribute("keywords", keywords.toString());
 
 				return "/bookmark/add";
 			}
 			
 			Bookmark b = new Bookmark(); 
-			fillBookmark(request, b);
+			fillBookmark(request, user, bm, b);
 			
 			bm.addBookmark(user, b);
 			
-			return "rd:/bookmark/list";
+			return "rd:/bookmarks/list";
 		}
 		
 		request.setAttribute("bmop", "add");
@@ -251,16 +262,19 @@ public class Controller extends HttpServlet
 			{
 				String address = request.getParameter("address");
 
-				bm.fetchBookmarkFromURL(bookmark, address);
+				StringBuffer keywords = new StringBuffer();
+				
+				bm.fetchBookmarkFromURL(bookmark, keywords, address);
 				
 				request.setAttribute("bm", bookmark);
+				request.setAttribute("keywords", keywords.toString());
 			}
 			else
 			{
-				fillBookmark(request, bookmark);
+				fillBookmark(request, user, bm, bookmark);
 				bm.touchBookmark(bookmark);
 			
-				return "rd:/bookmark/list";
+				return "rd:/bookmarks/list";
 			}
 		}
 
@@ -274,16 +288,22 @@ public class Controller extends HttpServlet
 		return "/WEB-INF/addbookmark.jsp";
 	}
 
-	private void fillBookmark(HttpServletRequest request, Bookmark bm)
+	private void fillBookmark(HttpServletRequest request, User user, BookmarkManager bm, Bookmark bookmark)
 	{
 		String address = request.getParameter("address");
 		String title = request.getParameter("title");
 		String description = request.getParameter("description");
 		String tags = request.getParameter("tags");
 
-		bm.setAddress(address);
-		bm.setTitle(title);
-		bm.setDescription(description);
+		bookmark.setAddress(address);
+		bookmark.setTitle(title);
+		bookmark.setDescription(description);
+		
+		String[] t = tags.split("\\s*,\\s*");
+		for (String s : t)
+		{
+			bm.addTag(bookmark, s, user);
+		}
 	}
 	
 	
@@ -314,6 +334,44 @@ public class Controller extends HttpServlet
 		return "/WEB-INF/listbookmarks.jsp";
 	}
 
+	
+	private String listBookmarksWithTag(HttpServletRequest request, User user, BookmarkManager bm, String cmd)
+			throws IOException
+	{
+
+		int page = 1;
+		int tagID = -1;
+
+		Matcher matcher = Pattern.compile("list/tag/(\\d+)(/(\\d+))?").matcher(cmd);
+		if (matcher.find())
+		{
+			String s = matcher.group(1);
+			tagID = Integer.parseInt(s);
+			s = matcher.group(2);
+			if (s != null)
+			{
+				page = Integer.parseInt(s);
+			}
+		}
+
+		Tag tag = bm.findTag(tagID);
+		
+		Long bookmarksCount = bm.getBookmarksCount(user, tag);
+		request.setAttribute("bookmarksCount", bookmarksCount);
+
+		PagePosition pagePosition = new PagePosition(bookmarksCount.intValue(), page, PAGESIZE);
+
+		List<Bookmark> bookmarks = bm.getBookmarks(user, pagePosition);
+
+		request.setAttribute("pagePosition", pagePosition);
+
+		request.setAttribute("bookmarks", bookmarks);
+
+		return "/WEB-INF/listbookmarks.jsp";
+	}
+	
+	
+	
 	private String editProfile(HttpServletRequest request, UserManager um, User user) throws MalformedURLException
 	{
 

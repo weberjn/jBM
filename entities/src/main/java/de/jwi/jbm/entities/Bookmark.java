@@ -2,6 +2,7 @@ package de.jwi.jbm.entities;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
@@ -21,7 +24,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "sc_bookmarks")
 @NamedQuery(name = "Bookmark.findAll", query = "SELECT s FROM Bookmark s")
-public class Bookmark implements Serializable {
+public class Bookmark implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -30,22 +34,22 @@ public class Bookmark implements Serializable {
 	@Column(name = "bId")
 	private Integer id;
 
-	@Column(name = "bAddress", nullable=false)
+	@Column(name = "bAddress", nullable = false)
 	private String address;
 
-	@Column(name = "bDatetime", nullable=false)
+	@Column(name = "bDatetime", nullable = false)
 	private Timestamp datetime;
 
 	@Column(name = "bDescription")
 	private String description;
 
-	@Column(name = "bHash", nullable=false)
+	@Column(name = "bHash", nullable = false)
 	private String hash;
 
 	@Column(name = "bIp")
 	private String ip;
 
-	@Column(name = "bModified", nullable=false)
+	@Column(name = "bModified", nullable = false)
 	private Timestamp modified;
 
 	@Column(name = "bPrivateNote")
@@ -57,13 +61,13 @@ public class Bookmark implements Serializable {
 	@Column(name = "bStatus")
 	private Integer status;
 
-	@Column(name = "bTitle", nullable=false)
+	@Column(name = "bTitle", nullable = false)
 	private String title;
 
-	@Column(name = "bVotes", nullable=false)
+	@Column(name = "bVotes", nullable = false)
 	private Integer votes;
 
-	@Column(name = "bVoting", nullable=false)
+	@Column(name = "bVoting", nullable = false)
 	private Integer voting;
 
 	// bi-directional many-to-one association to User
@@ -71,119 +75,173 @@ public class Bookmark implements Serializable {
 	@JoinColumn(name = "uId")
 	private User user;
 
-	public Bookmark() {
+	@ManyToMany
+	@JoinTable(name = "sc_bookmarks2tags", joinColumns = @JoinColumn(name = "bId", referencedColumnName = "bId"), 
+	inverseJoinColumns = @JoinColumn(name = "tId", referencedColumnName = "tId"))
+	private List<Tag> tags;
+
+	public Bookmark()
+	{
 	}
 
-	public Integer getId() {
+	public Integer getId()
+	{
 		return this.id;
 	}
 
-	public void setId(Integer bid) {
+	public void setId(Integer bid)
+	{
 		this.id = bid;
 	}
 
-	public String getAddress() {
+	public String getAddress()
+	{
 		return this.address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(String address)
+	{
 		this.address = address;
 	}
 
-	public Timestamp getDatetime() {
+	public Timestamp getDatetime()
+	{
 		return this.datetime;
 	}
 
-	public void setDatetime(Timestamp datetime) {
+	public void setDatetime(Timestamp datetime)
+	{
 		this.datetime = datetime;
 	}
 
-	public String getDescription() {
+	public String getDescription()
+	{
 		return this.description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 
-	public String getHash() {
+	public String getHash()
+	{
 		return this.hash;
 	}
 
-	public void setHash(String hash) {
+	public void setHash(String hash)
+	{
 		this.hash = hash;
 	}
 
-	public String getIp() {
+	public String getIp()
+	{
 		return this.ip;
 	}
 
-	public void setIp(String ip) {
+	public void setIp(String ip)
+	{
 		this.ip = ip;
 	}
 
-	public Timestamp getModified() {
+	public Timestamp getModified()
+	{
 		return this.modified;
 	}
 
-	public void setModified(Timestamp modified) {
+	public void setModified(Timestamp modified)
+	{
 		this.modified = modified;
 	}
 
-	public String getPrivatenote() {
+	public String getPrivatenote()
+	{
 		return this.privatenote;
 	}
 
-	public void setPrivatenote(String privatenote) {
+	public void setPrivatenote(String privatenote)
+	{
 		this.privatenote = privatenote;
 	}
 
-	public String getShort() {
+	public String getShort()
+	{
 		return this.sShort;
 	}
 
-	public void setShort(String sShort) {
+	public void setShort(String sShort)
+	{
 		this.sShort = sShort;
 	}
 
-	public Integer getStatus() {
+	public Integer getStatus()
+	{
 		return this.status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(Integer status)
+	{
 		this.status = status;
 	}
 
-	public String getTitle() {
+	public String getTitle()
+	{
 		return this.title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(String title)
+	{
 		this.title = title;
 	}
 
-	public Integer getVotes() {
+	public Integer getVotes()
+	{
 		return this.votes;
 	}
 
-	public void setVotes(Integer votes) {
+	public void setVotes(Integer votes)
+	{
 		this.votes = votes;
 	}
 
-	public Integer getVoting() {
+	public Integer getVoting()
+	{
 		return this.voting;
 	}
 
-	public void setVoting(Integer voting) {
+	public void setVoting(Integer voting)
+	{
 		this.voting = voting;
 	}
 
-	public User getUser() {
+	public User getUser()
+	{
 		return this.user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(User user)
+	{
 		this.user = user;
 	}
 
+	public List<Tag> getTags() {
+		return this.tags;
+	}
+
+	public void setBookmarks(List<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public Tag addTag(Tag tag) {
+		getTags().add(tag);
+
+		return tag;
+	}
+
+	public Tag removeTag(Tag tag) {
+		getTags().remove(tag);
+
+		return tag;
+	}
+	
 }

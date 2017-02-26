@@ -50,7 +50,7 @@
 		<tr>
 			<th align="left">Tags</th>
 			<td class="scuttletheme"><input type="text" id="tags"
-				name="tags" size="75" value="bm.tags" /></td>
+				name="tags" size="75" value="${keywords}" /></td>
 			<td>* Comma-separated</td>
 		</tr>
 		<tr>

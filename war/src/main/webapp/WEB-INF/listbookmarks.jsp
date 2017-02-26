@@ -55,11 +55,11 @@
 					<a href="${bookmark.address}">${bookmark.address}</a>
 				</div>
 				<div class="meta">
-					Tags: <a
-						href="//localhost/SemanticScuttle-0.98.5/www/bookmarks.php/intuser/online"
-						rel="tag">online</a>, <a
-						href="//localhost/SemanticScuttle-0.98.5/www/bookmarks.php/intuser/zeitung"
-						rel="tag">zeitung</a> 
+					Tags: 
+					    <c:forEach items="${bookmark.tags}" var="tag">
+						    <a href="${context}/bookmarks/list/tag/${tag.id}">${tag.tag}</a>
+						</c:forEach>
+						
 						by ${bookmark.user.username} - <a
 						href="${context}/bookmark/edit/${bookmark.id}">Edit</a> <a
 						href="#"
@@ -81,7 +81,7 @@
 
 	<c:choose> 
 		<c:when test="${!empty pagePosition.first}">
-			<a href="${context}/bookmark/list/${pagePosition.first}">First</a> 
+			<a href="${context}/bookmarks/list/${pagePosition.first}">First</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">First</span><span> / </span>
@@ -91,7 +91,7 @@
 
 	<c:choose> 
 		<c:when test="${!empty pagePosition.previous}">
-			<a href="${context}/bookmark/list/${pagePosition.previous}">Previous</a> 
+			<a href="${context}/bookmarks/list/${pagePosition.previous}">Previous</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">Previous</span><span> / </span>
@@ -101,7 +101,7 @@
 
 	<c:choose> 
 		<c:when test="${!empty pagePosition.next}">
-			<a href="${context}/bookmark/list/${pagePosition.next}">Next</a> 
+			<a href="${context}/bookmarks/list/${pagePosition.next}">Next</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">Next</span><span> / </span>
@@ -110,7 +110,7 @@
 
 	<c:choose> 
 		<c:when test="${!empty pagePosition.last}">
-			<a href="${context}/bookmark/list/${pagePosition.last}">Last</a> 
+			<a href="${context}/bookmarks/list/${pagePosition.last}">Last</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">Last</span><span> / </span>

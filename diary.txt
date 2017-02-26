@@ -1,3 +1,7 @@
+
+ALTER TABLE sc_bookmarks2tags ADD COLUMN tId integer REFERENCES sc_tags(tId);
+ALTER TABLE sc_bookmarks2tags DROP COLUMN tag;
+
 2017-02-22
 
 http://www.baeldung.com/jpa-pagination

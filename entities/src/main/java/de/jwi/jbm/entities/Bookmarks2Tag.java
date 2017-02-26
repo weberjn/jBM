@@ -10,8 +10,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="sc_bookmarks2tags")
-@NamedQuery(name="Bookmarks2tag.findAll", query="SELECT s FROM Bookmarks2tag s")
-public class Bookmarks2tag implements Serializable {
+@NamedQuery(name="Bookmarks2tag.findAll", query="SELECT s FROM Bookmarks2Tag s")
+public class Bookmarks2Tag implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -20,11 +20,11 @@ public class Bookmarks2tag implements Serializable {
 	@Column(name="id")
 	private Integer id;
 
-	private Integer bid;
+	private Integer bId;
 
-	private String tag;
+	private Integer tId;
 
-	public Bookmarks2tag() {
+	public Bookmarks2Tag() {
 	}
 
 	public Integer getId() {
@@ -35,20 +35,22 @@ public class Bookmarks2tag implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getBid() {
-		return this.bid;
+	public Integer getbId() {
+		return this.bId;
 	}
 
-	public void setBid(Integer bid) {
-		this.bid = bid;
+	public void setbId(Integer bid) {
+		this.bId = bid;
 	}
 
-	public String getTag() {
-		return this.tag;
+	public Integer gettId()
+	{
+		return tId;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void settId(Integer tId)
+	{
+		this.tId = tId;
 	}
 
 }

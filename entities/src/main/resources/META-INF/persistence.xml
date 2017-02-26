@@ -8,7 +8,7 @@
 		<!-- non-jta-data-source>java:comp/env/jdbc/scuttle</non-jta-data-source -->
 
 		<class>de.jwi.jbm.entities.Bookmark</class>
-		<class>de.jwi.jbm.entities.Bookmarks2tag</class>
+		<class>de.jwi.jbm.entities.Bookmarks2Tag</class>
 		<class>de.jwi.jbm.entities.Commondescription</class>
 		<class>de.jwi.jbm.entities.Searchhistory</class>
 		<class>de.jwi.jbm.entities.Tag</class>
