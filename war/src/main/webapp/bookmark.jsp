@@ -59,7 +59,8 @@
 						href="//localhost/SemanticScuttle-0.98.5/www/bookmarks.php/intuser/online"
 						rel="tag">online</a>, <a
 						href="//localhost/SemanticScuttle-0.98.5/www/bookmarks.php/intuser/zeitung"
-						rel="tag">zeitung</a> by you - <a
+						rel="tag">zeitung</a> 
+						by ${bookmark.user.username} - <a
 						href="${context}/bookmark/edit/${bookmark.id}">Edit</a> <a
 						href="#"
 						onclick="deleteBookmark(this, ${bookmark.id}); return false;">Delete</a>

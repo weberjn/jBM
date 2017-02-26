@@ -6,15 +6,30 @@
 
 <%@include file="top.jsp"%>
 
-<h2>Add a Bookmark</h2>
+				<c:choose>
+					<c:when test="${bmop=='add'}">
+						<c:set var="btSubText" scope="request" value="Add Bookmark"/>
+						<c:set var="h2" scope="request" value="Add a Bookmark"/>
+					</c:when> 
+					<c:otherwise> 
+						<c:set var="btSubText" scope="request" value="Save Changes"/>
+						<c:set var="h2" scope="request" value="Edit Bookmark"/>
+					</c:otherwise> 
+				</c:choose>
 
-<form action="${context}/bookmark/list" method="post">
+<h2>${h2}</h2>
+
+
+
+<form action="${context}/bookmark/${cmd}" method="post">
 	<table>
 		<tr>
 			<th align="left">Address</th>
 			<td><input type="text" id="address" name="address" size="75"
-				maxlength="65535" value="${bm.address}" onblur="useAddress(this)" /></td>
-			<td>* Required</td>
+				maxlength="65535" value="${bm.address}" onblur="useAddress(this)" />
+				<input type="hidden" name="bmop" value="${bmop}">
+				</td>
+			<td><input type="submit" name="addBookmark" value="get it"/></td>
 		</tr>
 		<tr>
 			<th align="left">Title</th>
@@ -24,11 +39,7 @@
 			<td>* Required</td>
 		</tr>
 		<tr>
-			<th align="left">Description <a
-				onclick="var nz = document.getElementById('privateNoteZone'); nz.style.display='';this.style.display='none';">
-					Add Note
-			</a>
-			</th>
+			<th align="left">Description</th>
 			<td><textarea name="description" id="description" rows="5"
 					cols="63">${bm.description}</textarea></td>
 			<td>* You can use anchors to delimite attributes. for example:
@@ -55,22 +66,13 @@
 			<td></td>
 		</tr>
 		
-				<c:choose>
-					<c:when test="${empty bm}">
-						<c:set var="btSubText" scope="request" value="Add Bookmark"/>
-					</c:when> 
-					<c:otherwise> 
-						<c:set var="btSubText" scope="request" value="Save Changes"/>
-					</c:otherwise> 
-				</c:choose>
+
 		
 		<tr>
 			<td></td>
 			<td><input type="submit" name="addBookmark" 
 						value="${btSubText}"	/>
-				<input type="button" name="cancel" value="Cancel"
-				onclick="window.close();':'javascript: history.go(-1)'" /> 
-				<c:if test="${!empty bm}"> 				
+ 				<c:if test="${bmop=='edit'}"> 				
 					<input	type="submit" name="delete" value="Delete Bookmark" />
 				</c:if> 
 				</td>
@@ -79,75 +81,6 @@
 	</table>
 </form>
 
-<link
-	href="<?php echo ROOT ?>js/jquery-ui-1.8.11/themes/base/jquery.ui.all.css"
-	rel="stylesheet" type="text/css" />
-
-<script type="text/javascript"
-	src="<?php echo ROOT ?>js/jquery-ui-1.8.11/jquery.ui.core.js"></script>
-<script type="text/javascript"
-	src="<?php echo ROOT ?>js/jquery-ui-1.8.11/jquery.ui.widget.js"></script>
-<script type="text/javascript"
-	src="<?php echo ROOT ?>js/jquery-ui-1.8.11/jquery.ui.position.js"></script>
-<script type="text/javascript"
-	src="<?php echo ROOT ?>js/jquery-ui-1.8.11/jquery.ui.autocomplete.js"></script>
-<script type="text/javascript">
-//<![CDATA[
-jQuery(document).ready(function() {
-    function split(val)
-    {
-        return val.split(/[,=><]\s*/);
-    }
-
-    function extractLast(term)
-    {
-        return split(term).pop();
-    }
-    //var availableTags = ["c++", "java", "php", "coldfusion", "javascript", "asp", "ruby"];
-
-    jQuery("input#tags").autocomplete({
-        autoFocus: true,
-        minLength: 1,
-
-        source: function(request, response) {
-            // delegate back to autocomplete, but extract the last term
-            var term = extractLast(request.term);
-            if (term.length < this.options.minLength) {
-                return;
-            }
-            response(
-                /*
-                $.ui.autocomplete.filter(
-                    availableTags, extractLast(request.term)
-                )
-                */
-                $.getJSON(
-                    "<?php echo $ajaxUrl; ?>",
-                    { beginsWith: term },
-                    response
-                )
-            );
-        },
-
-        focus: function() {
-            // prevent value inserted on focus
-            return false;
-        },
-        select: function(event, ui) {
-            var terms = split(this.value);
-            // remove the current input
-            terms.pop();
-            // add the selected item
-            terms.push(ui.item.value);
-            // add placeholder to get the comma-and-space at the end
-            terms.push("");
-            this.value = terms.join(", ");
-            return false;
-        }
-    });
-});
-//]]>
-</script>
 
 <h3>Import</h3>
 <ul>

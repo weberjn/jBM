@@ -1,6 +1,8 @@
 package de.jwi.jbm;
 
+import java.io.IOException;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -9,6 +11,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import de.jwi.jbm.entities.Bookmark;
 import de.jwi.jbm.entities.User;
@@ -20,6 +27,13 @@ public class BookmarkManager {
 	public BookmarkManager(EntityManager entityManager) {
 		super();
 		this.em = entityManager;
+	}
+	
+	public void touchBookmark(Bookmark bookmark)
+	{
+		Timestamp ts = new Timestamp(new Date().getTime());
+		bookmark.setDatetime(ts);
+		bookmark.setModified(ts);
 	}
 	
 	public Bookmark findBookmark(User user, int id)
@@ -38,8 +52,12 @@ public class BookmarkManager {
 		return bookmark;
 	}
 
-	public void addBookmark(User user, URL url, String title, String description, String tags) {
+	public void addBookmark(User user, Bookmark bookmark) throws MalformedURLException {
 
+		String address = bookmark.getAddress();
+		
+		URL url = new URL(address);
+		
 		String md5 = MD5(url.toString());
 
 		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user and b.hash = :hash");
@@ -49,10 +67,7 @@ public class BookmarkManager {
 
 		if (resultList.isEmpty()) {
 
-			Bookmark bookmark = new Bookmark();
 			bookmark.setAddress(url.toString());
-			bookmark.setTitle(title);
-			bookmark.setDescription(description);
 			bookmark.setStatus(0);
 
 			Timestamp ts = new Timestamp(new Date().getTime());
@@ -108,4 +123,34 @@ public class BookmarkManager {
 		}
 	}
 
+	public void fetchBookmarkFromURL(Bookmark bookmark, String address) throws IOException
+	{
+		Document doc = Jsoup.connect(address).get();
+		String title = doc.title();
+		String description = null;
+		String keywords = null;
+
+		Elements metaTags = doc.getElementsByTag("meta");
+
+		for (Element metaTag : metaTags)
+		{
+			String name = metaTag.attr("name");
+
+			String content = metaTag.attr("content");
+
+			if ("description".equals(name))
+			{
+				description = content;
+			}
+
+			if ("keywords".equals(name))
+			{
+				keywords = content;
+			}
+
+		}
+
+		bookmark.setTitle(title);
+		bookmark.setDescription(description);
+	}
 }
