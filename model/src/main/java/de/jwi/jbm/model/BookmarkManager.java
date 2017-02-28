@@ -108,7 +108,7 @@ public class BookmarkManager {
 	}
 
 	public Long getBookmarksCount() {
-		TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Bookmark", Long.class);
+		TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Bookmark b", Long.class);
 		Long n = query.getSingleResult();
 		return n;
 	}

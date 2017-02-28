@@ -2,33 +2,33 @@
 -- ! Dont forget to change table names according to $tableprefix defined in config.php !
 
 
-DROP TABLE sc_bookmarks2tags; 
-DROP TABLE sc_commondescription;
-DROP TABLE sc_searchhistory; 
-DROP TABLE sc_tags; 
-DROP TABLE sc_tags2tags;
-DROP TABLE sc_tagscache;
-DROP TABLE sc_tagsstats;
-DROP TABLE sc_users_sslclientcerts;
-DROP TABLE sc_version;
-DROP TABLE sc_votes;
-DROP TABLE sc_watched;
-DROP TABLE sc_bookmarks;
-DROP TABLE sc_users;
+DROP TABLE IF EXISTS sc_bookmarks2tags; 
+DROP TABLE IF EXISTS sc_commondescription;
+DROP TABLE IF EXISTS sc_searchhistory; 
+DROP TABLE IF EXISTS sc_tags; 
+DROP TABLE IF EXISTS sc_tags2tags;
+DROP TABLE IF EXISTS sc_tagscache;
+DROP TABLE IF EXISTS sc_tagsstats;
+DROP TABLE IF EXISTS sc_users_sslclientcerts;
+DROP TABLE IF EXISTS sc_version;
+DROP TABLE IF EXISTS sc_votes;
+DROP TABLE IF EXISTS sc_watched;
+DROP TABLE IF EXISTS sc_bookmarks;
+DROP TABLE IF EXISTS sc_users;
 
 
-DROP SEQUENCE bIds;
-DROP SEQUENCE b2tIds;
-DROP SEQUENCE cdIds;
-DROP SEQUENCE shIds;
-DROP SEQUENCE tIds;
-DROP SEQUENCE ttIds;
-DROP SEQUENCE tcIds;
-DROP SEQUENCE tstIds;
-DROP SEQUENCE uIds;
-DROP SEQUENCE ids;
-DROP SEQUENCE vIds;
-DROP SEQUENCE wIds;
+DROP SEQUENCE IF EXISTS  bIds;
+DROP SEQUENCE IF EXISTS  b2tIds;
+DROP SEQUENCE IF EXISTS  cdIds;
+DROP SEQUENCE IF EXISTS  shIds;
+DROP SEQUENCE IF EXISTS  tIds;
+DROP SEQUENCE IF EXISTS  ttIds;
+DROP SEQUENCE IF EXISTS  tcIds;
+DROP SEQUENCE IF EXISTS  tstIds;
+DROP SEQUENCE IF EXISTS  uIds;
+DROP SEQUENCE IF EXISTS  ids;
+DROP SEQUENCE IF EXISTS  vIds;
+DROP SEQUENCE IF EXISTS  wIds;
 
 
 
@@ -46,8 +46,8 @@ CREATE TABLE sc_users (
   uId integer DEFAULT nextval('uIds'::text) PRIMARY KEY,
   username varchar(25) NOT NULL DEFAULT '',
   password varchar(40) DEFAULT '',
-  uDatetime timestamp with time zone DEFAULT now(),
-  uModified timestamp with time zone DEFAULT now(),
+  uDatetime timestamp with timezone DEFAULT now(),
+  uModified timestamp with timezone DEFAULT now(),
   name varchar(50) DEFAULT NULL,
   email varchar(50) DEFAULT NULL,
   homepage varchar(255) DEFAULT NULL,
@@ -56,6 +56,23 @@ CREATE TABLE sc_users (
 );
 
 CREATE UNIQUE INDEX privateKey on sc_users (privateKey);
+
+--
+-- Table structure for table "sc_tags"
+--
+
+CREATE SEQUENCE tIds
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+CREATE TABLE sc_tags (
+  tId integer DEFAULT nextval('tIds'::text) PRIMARY KEY,
+  tag varchar(100) NOT NULL DEFAULT '',
+  uId integer REFERENCES sc_users (uId),
+  tDescription text
+);
 
 --
 -- Table structure for table "sc_bookmarks"
@@ -72,8 +89,8 @@ CREATE TABLE sc_bookmarks (
   uId integer REFERENCES sc_users (uId),
   bIp varchar(40) DEFAULT NULL,
   bStatus smallint NOT NULL,
-  bDatetime timestamp with time zone DEFAULT now(),
-  bModified timestamp with time zone DEFAULT now(),
+  bDatetime timestamp with timezone DEFAULT now(),
+  bModified timestamp with timezone DEFAULT now(),
   bTitle varchar(255) DEFAULT '' NOT NULL,
   bAddress varchar(1500) DEFAULT '' NOT NULL,
   bDescription text,
@@ -104,7 +121,7 @@ CREATE TABLE sc_bookmarks2tags (
   tId integer REFERENCES sc_tags(tId) 
 );
 
-CREATE UNIQUE INDEX sc_bookmarks2tags_tag_bId on sc_bookmarks2tags (tag, bId);
+CREATE UNIQUE INDEX sc_bookmarks2tags_tag_bId on sc_bookmarks2tags (tId, bId);
 CREATE INDEX sc_bookmarks2tags_bId on sc_bookmarks2tags (bId);
 
 --
@@ -124,7 +141,7 @@ CREATE TABLE sc_commondescription (
   bHash varchar(32) DEFAULT '' NOT NULL,
   cdTitle varchar(255) DEFAULT '' NOT NULL,
   cdDescription text,
-  cdDatetime timestamp with time zone DEFAULT now() NOT NULL
+  cdDatetime timestamp with timezone DEFAULT now() NOT NULL
 );
 
 CREATE UNIQUE INDEX sc_commondescription_tag_timestamp on sc_commondescription (tag, cdDatetime);
@@ -144,27 +161,11 @@ CREATE TABLE sc_searchhistory (
   shId integer DEFAULT nextval('shIds'::text) PRIMARY KEY,
   shTerms varchar(255) NOT NULL DEFAULT '',
   shRange varchar(32) NOT NULL DEFAULT '',
-  shDatetime timestamp with time zone DEFAULT now() NOT NULL,
+  shDatetime timestamp with timezone DEFAULT now() NOT NULL,
   shNbResults integer NOT NULL,
   uId integer REFERENCES sc_users (uId)
 );
 
---
--- Table structure for table "sc_tags"
---
-
-CREATE SEQUENCE tIds
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-CREATE TABLE sc_tags (
-  tId integer DEFAULT nextval('tIds'::text) PRIMARY KEY,
-  tag varchar(100) NOT NULL DEFAULT '',
-  uId integer REFERENCES sc_users (uId),
-  tDescription text
-);
 
 CREATE UNIQUE INDEX sc_tags_tag_uId on sc_tags (tag, uId);
 
