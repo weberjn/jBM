@@ -21,14 +21,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import de.jwi.jbm.entities.Bookmark;
 import de.jwi.jbm.entities.Tag;
 import de.jwi.jbm.entities.User;
+import de.jwi.jbm.model.BookmarkManager;
+import de.jwi.jbm.model.PagePosition;
+import de.jwi.jbm.model.UserManager;
 
 public class Controller extends HttpServlet
 {
@@ -103,14 +101,20 @@ public class Controller extends HttpServlet
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException
 	{
 		doPost(request, response);
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException
 	{
+		int localPort = request.getLocalPort();
+		String localAddr = request.getLocalAddr();
+		StringBuffer requestURL = request.getRequestURL();
+		String requestURI = request.getRequestURI();
 
 		String contextPath = request.getContextPath();
 
@@ -183,7 +187,7 @@ public class Controller extends HttpServlet
 
 		request.setAttribute("version", properties.getProperty("version"));
 		request.setAttribute("builddate", properties.getProperty("builddate"));
-		
+
 		if (forward.startsWith("rd:"))
 		{
 			forward = contextPath + forward.substring(3);
@@ -196,10 +200,11 @@ public class Controller extends HttpServlet
 		requestDispatcher.forward(request, response);
 	}
 
-	private String addBookmark(HttpServletRequest request, User user, BookmarkManager bm) throws IOException
+	private String addBookmark(HttpServletRequest request, User user, BookmarkManager bm)
+			throws IOException
 	{
 		String submit = request.getParameter("addBookmark");
-		
+
 		if (submit != null && request.getAttribute("bm") == null)
 		{
 			if ("get it".equals(submit))
@@ -208,33 +213,33 @@ public class Controller extends HttpServlet
 
 				Bookmark bookmark = new Bookmark();
 				bookmark.setAddress(address);
-				
+
 				StringBuffer keywords = new StringBuffer();
-				
+
 				bm.fetchBookmarkFromURL(bookmark, keywords, address);
-				
+
 				request.setAttribute("bm", bookmark);
 				request.setAttribute("keywords", keywords.toString());
 
 				return "/bookmark/add";
 			}
-			
-			Bookmark b = new Bookmark(); 
+
+			Bookmark b = new Bookmark();
 			fillBookmark(request, user, bm, b);
-			
+
 			bm.addBookmark(user, b);
-			
+
 			return "rd:/bookmarks/list";
 		}
-		
+
 		request.setAttribute("bmop", "add");
 		request.setAttribute("cmd", "add");
 
 		return "/WEB-INF/addbookmark.jsp";
 	}
 
-	private String editBookmark(HttpServletRequest request, User user, BookmarkManager bm, String cmd)
-			throws IOException
+	private String editBookmark(HttpServletRequest request, User user, BookmarkManager bm,
+			String cmd) throws IOException
 	{
 
 		String submit = request.getParameter("addBookmark");
@@ -255,7 +260,7 @@ public class Controller extends HttpServlet
 		{
 			return "rd:/bookmark/list";
 		}
-		
+
 		if (submit != null)
 		{
 			if ("get it".equals(submit))
@@ -263,32 +268,31 @@ public class Controller extends HttpServlet
 				String address = request.getParameter("address");
 
 				StringBuffer keywords = new StringBuffer();
-				
+
 				bm.fetchBookmarkFromURL(bookmark, keywords, address);
-				
+
 				request.setAttribute("bm", bookmark);
 				request.setAttribute("keywords", keywords.toString());
-			}
-			else
+			} else
 			{
 				fillBookmark(request, user, bm, bookmark);
 				bm.touchBookmark(bookmark);
-			
+
 				return "rd:/bookmarks/list";
 			}
 		}
 
-
 		request.setAttribute("bm", bookmark);
 
 		request.setAttribute("bmop", "edit");
-		
+
 		request.setAttribute("cmd", cmd);
 
 		return "/WEB-INF/addbookmark.jsp";
 	}
 
-	private void fillBookmark(HttpServletRequest request, User user, BookmarkManager bm, Bookmark bookmark)
+	private void fillBookmark(HttpServletRequest request, User user, BookmarkManager bm,
+			Bookmark bookmark)
 	{
 		String address = request.getParameter("address");
 		String title = request.getParameter("title");
@@ -298,17 +302,16 @@ public class Controller extends HttpServlet
 		bookmark.setAddress(address);
 		bookmark.setTitle(title);
 		bookmark.setDescription(description);
-		
+
 		String[] t = tags.split("\\s*,\\s*");
 		for (String s : t)
 		{
 			bm.addTag(bookmark, s, user);
 		}
 	}
-	
-	
-	private String listBookmarks(HttpServletRequest request, User user, BookmarkManager bm, String cmd)
-			throws IOException
+
+	private String listBookmarks(HttpServletRequest request, User user, BookmarkManager bm,
+			String cmd) throws IOException
 	{
 
 		int page = 1;
@@ -334,9 +337,8 @@ public class Controller extends HttpServlet
 		return "/WEB-INF/listbookmarks.jsp";
 	}
 
-	
-	private String listBookmarksWithTag(HttpServletRequest request, User user, BookmarkManager bm, String cmd)
-			throws IOException
+	private String listBookmarksWithTag(HttpServletRequest request, User user, BookmarkManager bm,
+			String cmd) throws IOException
 	{
 
 		int page = 1;
@@ -355,7 +357,7 @@ public class Controller extends HttpServlet
 		}
 
 		Tag tag = bm.findTag(tagID);
-		
+
 		Long bookmarksCount = bm.getBookmarksCount(user, tag);
 		request.setAttribute("bookmarksCount", bookmarksCount);
 
@@ -369,10 +371,9 @@ public class Controller extends HttpServlet
 
 		return "/WEB-INF/listbookmarks.jsp";
 	}
-	
-	
-	
-	private String editProfile(HttpServletRequest request, UserManager um, User user) throws MalformedURLException
+
+	private String editProfile(HttpServletRequest request, UserManager um, User user)
+			throws MalformedURLException
 	{
 
 		Boolean saved = new Boolean(false);

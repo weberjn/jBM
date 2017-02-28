@@ -16,6 +16,18 @@
 	<name>jBM Webapp</name>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>de.jwi.jbm</groupId>
+			<artifactId>jbm-entities</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.jwi.jbm</groupId>
+			<artifactId>jbm-model</artifactId>
+		</dependency>
+
+
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
@@ -27,10 +39,6 @@
 			<artifactId>jstl</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>de.jwi.jbm</groupId>
-			<artifactId>jbm-entities</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.jsoup</groupId>

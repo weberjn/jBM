@@ -1,4 +1,4 @@
-package de.jwi.jbm;
+package de.jwi.jbm.model;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import de.jwi.jbm.entities.User;
+
 
 public class UserManager {
 

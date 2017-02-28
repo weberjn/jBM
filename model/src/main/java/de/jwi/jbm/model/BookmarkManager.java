@@ -1,4 +1,4 @@
-package de.jwi.jbm;
+package de.jwi.jbm.model;
 
 import java.io.IOException;
 import java.math.BigInteger;
