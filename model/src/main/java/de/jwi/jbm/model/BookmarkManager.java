@@ -37,7 +37,7 @@ public class BookmarkManager {
 		bookmark.setModified(ts);
 	}
 	
-	public void addTag(Bookmark bookmark, String tags, User user)
+	public Tag addTag(User user, Bookmark bookmark, String tags)
 	{
 		Tag tag = null;
 		
@@ -57,6 +57,8 @@ public class BookmarkManager {
 			em.persist(tag);
 		}
 		bookmark.getTags().add(tag);
+		
+		return tag;
 	}
 	
 	public Bookmark findBookmark(User user, int id)

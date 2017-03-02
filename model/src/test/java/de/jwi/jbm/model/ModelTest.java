@@ -46,7 +46,7 @@ public class ModelTest
 	static BookmarkManager bm = new BookmarkManager(em);
 	private static Integer bookmarkid;
 
-	@Rule
+//	@Rule
     public SQLBrowserOnFailed rule = new SQLBrowserOnFailed();
 	
 	@BeforeClass
@@ -159,13 +159,8 @@ public class ModelTest
 		
 		assertNotNull(bookmark);
 		
-		Tag t1 = new Tag();
-		t1.setTag("SQL");
-		Tag t2 = new Tag();
-		t2.setTag("database");
-		
-		bookmark.addTag(t1);
-		bookmark.addTag(t2);
+		bm.addTag(user, bookmark, "SQL");
+		bm.addTag(user, bookmark, "database");
 		
 		List<Tag> tags = bookmark.getTags();
 		assertTrue(2 == tags.size());

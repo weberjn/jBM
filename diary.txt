@@ -1,6 +1,9 @@
 
 2017-02-28
 
+http://memorynotfound.com/unit-test-jpa-junit-in-memory-h2-database/
+http://stackoverflow.com/questions/3693626/how-to-run-test-methods-in-specific-order-in-junit4
+http://www.h2database.com/javadoc/org/h2/tools/RunScript.html
 http://stackoverflow.com/questions/7309359/view-content-of-h2-or-hsqldb-in-memory-database
 
 2017-02-26
