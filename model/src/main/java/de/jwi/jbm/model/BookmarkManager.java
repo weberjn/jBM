@@ -30,29 +30,22 @@ public class BookmarkManager {
 		this.em = entityManager;
 	}
 	
-	public void touchBookmark(Bookmark bookmark)
+	public Timestamp touchBookmark(Bookmark bookmark)
 	{
 		Timestamp ts = new Timestamp(new Date().getTime());
 		bookmark.setDatetime(ts);
 		bookmark.setModified(ts);
+		return ts;
 	}
 	
-	public Tag addTag(User user, Bookmark bookmark, String tags)
+	public Tag addTag(User user, Bookmark bookmark, String tagName)
 	{
-		Tag tag = null;
+		Tag tag = findTag(user, tagName);
 		
-		Query query = em.createQuery("SELECT t FROM Tag t WHERE t.user = :user and t.tag = :tag");
-		query.setParameter("user", user);
-		query.setParameter("tag", tags);
-		List resultList = query.getResultList();
-
-		if (!resultList.isEmpty()) {
-			tag = (Tag)resultList.get(0);
-		}
-		else
+		if (tag == null)
 		{
 			tag = new Tag();
-			tag.setTag(tags);
+			tag.setTag(tagName);
 			tag.setUser(user);
 			em.persist(tag);
 		}
@@ -60,23 +53,35 @@ public class BookmarkManager {
 		
 		return tag;
 	}
-	
-	public Bookmark findBookmark(User user, int id)
+
+	public Tag findTag(User user, String tagName)
 	{
-		Bookmark bookmark = null;
+		Tag tag = null;
 		
-		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user and b.id = :id");
+		Query query = em.createQuery("SELECT t FROM Tag t WHERE t.user = :user and t.tag = :tag");
 		query.setParameter("user", user);
-		query.setParameter("id", id);
+		query.setParameter("tag", tagName);
 		List resultList = query.getResultList();
 
 		if (!resultList.isEmpty()) {
-			bookmark = (Bookmark)resultList.get(0);
+			tag = (Tag)resultList.get(0);
 		}
 		
-		return bookmark;
+		return tag;
+	}
+	
+	
+	public Tag findTag(Integer id)
+	{
+		TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t WHERE t.id=:id", Tag.class);
+		query.setParameter("id", id);
+		Tag tag = query.getSingleResult();
+		return tag;
 	}
 
+
+	
+	
 	public void addBookmark(User user, Bookmark bookmark) throws MalformedURLException {
 
 		String address = bookmark.getAddress();
@@ -122,23 +127,32 @@ public class BookmarkManager {
 		return n;
 	}
 	
-	public Long getBookmarksCount(User user, Tag tag) {
-		TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Bookmark b inner join b.tags tags WHERE :tag in b.tags and b.user=:user", Long.class);
+	public int getBookmarksCount(User user, Tag tag) {
+		TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Bookmark b, IN (b.tags) t WHERE t = :tag and b.user=:user", Long.class);
 		query.setParameter("user", user);
 		query.setParameter("tag", tag);
 		Long n = query.getSingleResult();
-		return n;
-	}
-	
-	
-	public Tag findTag(Integer id)
-	{
-		TypedQuery<Tag> query = em.createQuery("SELECT t FROM Tag t WHERE t.id=:id", Tag.class);
-		query.setParameter("id", id);
-		Tag tag = query.getSingleResult();
-		return tag;
+		return n.intValue();
 	}
 
+	
+	public Bookmark findBookmark(User user, int bookmarkId)
+	{
+		Bookmark bookmark = null;
+		
+		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user and b.id = :id");
+		query.setParameter("user", user);
+		query.setParameter("id", bookmarkId);
+		List resultList = query.getResultList();
+
+		if (!resultList.isEmpty()) {
+			bookmark = (Bookmark)resultList.get(0);
+		}
+		
+		return bookmark;
+	}
+
+	
 	public List<Bookmark> getBookmarks(User user, PagePosition pagePosition) {
 
 		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user order by b.modified desc");
@@ -150,6 +164,21 @@ public class BookmarkManager {
 
 		return resultList;
 	}
+	
+	
+	public List<Bookmark> getBookmarks(User user,  Tag tag, PagePosition pagePosition) {
+
+		Query query = em.createQuery("SELECT b FROM Bookmark b , IN (b.tags) t WHERE t = :tag and b.user=:user order by b.modified desc");
+		query.setParameter("user", user);
+		query.setParameter("tag", tag);
+		query.setFirstResult((pagePosition.getCurrent()-1) * pagePosition.getPagesize()); 
+		query.setMaxResults(pagePosition.getPagesize());
+		
+		List resultList = query.getResultList();
+
+		return resultList;
+	}
+	
 
 	public String MD5(String s) {
 		try {

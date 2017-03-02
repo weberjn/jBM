@@ -128,8 +128,6 @@ public class ModelTest
 	@Test
 	public void b1BookmarkCreate() throws MalformedURLException
 	{
-
-
 		User user = um.createIfNotExists("weberjn");
 
 		Bookmark bookmark = new Bookmark();
@@ -155,6 +153,8 @@ public class ModelTest
 	public void c1TagsAdd() throws MalformedURLException
 	{
 		User user = um.findUser("weberjn");
+		assertNotNull(user);
+		
 		Bookmark bookmark = bm.findBookmark(user, bookmarkid);
 		
 		assertNotNull(bookmark);
@@ -165,6 +165,25 @@ public class ModelTest
 		List<Tag> tags = bookmark.getTags();
 		assertTrue(2 == tags.size());
 	}
+
+	@Test
+	public void d1BookmarksWithTag() throws MalformedURLException
+	{
+		User user = um.findUser("weberjn");
 	
-//	public Bookmark findBookmark(User user, int id)
+		Tag tag = bm.findTag(user, "SQL");
+		
+		int bookmarksCount = bm.getBookmarksCount(user, tag);
+		
+		assertTrue(1 == bookmarksCount);
+		
+		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, 2);
+		
+		List<Bookmark> bookmarks = bm.getBookmarks(user,  tag, pagePosition);
+		
+		assertTrue(1 == bookmarks.size());
+		
+//		throw new RuntimeException();
+	}
+
 }

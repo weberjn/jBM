@@ -306,7 +306,7 @@ public class Controller extends HttpServlet
 		String[] t = tags.split("\\s*,\\s*");
 		for (String s : t)
 		{
-			bm.addTag(bookmark, s, user);
+			bm.addTag(user, bookmark, s);
 		}
 	}
 
@@ -358,10 +358,10 @@ public class Controller extends HttpServlet
 
 		Tag tag = bm.findTag(tagID);
 
-		Long bookmarksCount = bm.getBookmarksCount(user, tag);
-		request.setAttribute("bookmarksCount", bookmarksCount);
+		int bookmarksCount = bm.getBookmarksCount(user, tag);
+		request.setAttribute("bookmarksCount", new Integer(bookmarksCount));
 
-		PagePosition pagePosition = new PagePosition(bookmarksCount.intValue(), page, PAGESIZE);
+		PagePosition pagePosition = new PagePosition(bookmarksCount, page, PAGESIZE);
 
 		List<Bookmark> bookmarks = bm.getBookmarks(user, pagePosition);
 
