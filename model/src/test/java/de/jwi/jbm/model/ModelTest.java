@@ -44,9 +44,9 @@ public class ModelTest
 	static EntityTransaction transaction;
 	static UserManager um = new UserManager(em);
 	static BookmarkManager bm = new BookmarkManager(em);
-	private static Integer bookmarkid;
+	private static Integer bookmarkId;
 
-//	@Rule
+	@Rule
     public SQLBrowserOnFailed rule = new SQLBrowserOnFailed();
 	
 	@BeforeClass
@@ -146,7 +146,7 @@ public class ModelTest
 		count = bm.getBookmarksCount(user2);
 		assertEquals(count, new Long(0));
 
-		bookmarkid = bookmark.getId();
+		bookmarkId = bookmark.getId();
 	}
 
 	@Test
@@ -155,7 +155,7 @@ public class ModelTest
 		User user = um.findUser("weberjn");
 		assertNotNull(user);
 		
-		Bookmark bookmark = bm.findBookmark(user, bookmarkid);
+		Bookmark bookmark = bm.findBookmark(user, bookmarkId);
 		
 		assertNotNull(bookmark);
 		
@@ -182,8 +182,24 @@ public class ModelTest
 		List<Bookmark> bookmarks = bm.getBookmarks(user,  tag, pagePosition);
 		
 		assertTrue(1 == bookmarks.size());
-		
-//		throw new RuntimeException();
 	}
 
+	@Test
+	public void d1removeBookmark() throws MalformedURLException
+	{
+		User user = um.findUser("weberjn");
+
+		Bookmark b = bm.findBookmark(user, bookmarkId);
+		assertTrue(b != null);
+		
+		boolean done = bm.removeBookmark(user, bookmarkId);
+		
+		assertTrue(done);
+		
+		b = bm.findBookmark(user, bookmarkId);
+		
+		assertTrue(b == null);
+//		throw new RuntimeException();		
+	}
+	
 }

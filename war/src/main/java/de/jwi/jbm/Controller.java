@@ -111,10 +111,7 @@ public class Controller extends HttpServlet
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException
 	{
-		int localPort = request.getLocalPort();
-		String localAddr = request.getLocalAddr();
 		StringBuffer requestURL = request.getRequestURL();
-		String requestURI = request.getRequestURI();
 
 		String contextPath = request.getContextPath();
 

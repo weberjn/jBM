@@ -152,6 +152,16 @@ public class BookmarkManager {
 		return bookmark;
 	}
 
+	public boolean removeBookmark(User user, int bookmarkId)
+	{
+		Bookmark bookmark = findBookmark(user, bookmarkId);
+		if (bookmark != null)
+		{
+			em.remove(bookmark);
+			return true;
+		}
+		return false;
+	}
 	
 	public List<Bookmark> getBookmarks(User user, PagePosition pagePosition) {
 

@@ -33,9 +33,6 @@ public class Tag implements Serializable {
 	@JoinColumn(name="uid")
 	private User user;
 
-	private List<Bookmark> bookmarks;
-	
-	
 	public Tag() {
 	}
 
@@ -70,27 +67,4 @@ public class Tag implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	@ManyToMany(mappedBy="tags")
-	public List<Bookmark> getBookmarks() {
-	    return bookmarks;
-	}
-
-	public void setBookmarks(List<Bookmark> bookmark) {
-		this.bookmarks = bookmark;
-	}
-
-	public Bookmark addBookmark(Bookmark bookmark) {
-		getBookmarks().add(bookmark);
-
-		return bookmark;
-	}
-
-	public Bookmark removeBookmark(Bookmark bookmark) {
-		getBookmarks().remove(bookmark);
-
-		return bookmark;
-	}
-
-	
 }
