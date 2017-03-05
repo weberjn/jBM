@@ -154,10 +154,6 @@ public class Controller extends HttpServlet
 
 			if ("bookmarks".equals(servlet) && (cmd != null))
 			{
-				if (cmd.startsWith("list/tag"))
-				{
-					forward = listBookmarksWithTag(request, user, bm, cmd);
-				}
 				if (cmd.startsWith("list"))
 				{
 					forward = listBookmarks(request, user, bm, cmd);
@@ -307,64 +303,64 @@ public class Controller extends HttpServlet
 		}
 	}
 
+	static final String PAGE_PATTERN = "list(/(\\d+)(/(\\d+))?)?";
+	
+	static final int GRP_PAGE = 2;
+	static final int GRP_TAG = 4;
+	
+	static final String LINK_FORMAT = "%d";
+	static final String LINK_FORMAT_TAG = "%d/%d";
+	
 	private String listBookmarks(HttpServletRequest request, User user, BookmarkManager bm,
 			String cmd) throws IOException
 	{
 
 		int page = 1;
-
-		Matcher matcher = Pattern.compile("list/(\\d+)").matcher(cmd);
-		if (matcher.find())
-		{
-			String s = matcher.group(1);
-			page = Integer.parseInt(s);
-		}
-
-		Long bookmarksCount = bm.getBookmarksCount(user);
-		request.setAttribute("bookmarksCount", bookmarksCount);
-
-		PagePosition pagePosition = new PagePosition(bookmarksCount.intValue(), page, PAGESIZE);
-
-		List<Bookmark> bookmarks = bm.getBookmarks(user, pagePosition);
-
-		request.setAttribute("pagePosition", pagePosition);
-
-		request.setAttribute("bookmarks", bookmarks);
-
-		return "/WEB-INF/listbookmarks.jsp";
-	}
-
-	private String listBookmarksWithTag(HttpServletRequest request, User user, BookmarkManager bm,
-			String cmd) throws IOException
-	{
-
-		int page = 1;
 		int tagID = -1;
+		Tag tag = null;
+		int bookmarksCount = 0;
+		List<Bookmark> bookmarks = null;
 
-		Matcher matcher = Pattern.compile("list/tag/(\\d+)(/(\\d+))?").matcher(cmd);
+		Matcher matcher = Pattern.compile(PAGE_PATTERN).matcher(cmd);
 		if (matcher.find())
 		{
-			String s = matcher.group(1);
-			tagID = Integer.parseInt(s);
-			s = matcher.group(2);
+			String s = matcher.group(GRP_PAGE);
 			if (s != null)
 			{
 				page = Integer.parseInt(s);
 			}
+			s = matcher.group(GRP_TAG);
+			if (s != null)
+			{
+				tagID = Integer.parseInt(s);
+			}
 		}
 
-		Tag tag = bm.findTag(tagID);
+		if (tagID != -1)
+		{
+			tag = bm.findTag(tagID);
+			bookmarksCount = bm.getBookmarksCount(user, tag);
+		}
+		else
+		{
+			bookmarksCount = bm.getBookmarksCount(user);
+		}
 
-		int bookmarksCount = bm.getBookmarksCount(user, tag);
-		request.setAttribute("bookmarksCount", new Integer(bookmarksCount));
-
-		PagePosition pagePosition = new PagePosition(bookmarksCount, page, PAGESIZE);
-
-		List<Bookmark> bookmarks = bm.getBookmarks(user, pagePosition);
-
+		PagePosition pagePosition = new PagePosition(bookmarksCount, page, PAGESIZE, tagID, LINK_FORMAT, LINK_FORMAT_TAG);
+		
+		if (tagID != -1)
+		{
+			bookmarks = bm.getBookmarks(user, tag, pagePosition);
+		}
+		else
+		{
+			bookmarks = bm.getBookmarks(user, pagePosition);
+		}
+		
 		request.setAttribute("pagePosition", pagePosition);
-
+		request.setAttribute("bookmarksCount", new Integer(bookmarksCount));
 		request.setAttribute("bookmarks", bookmarks);
+		request.setAttribute("tag", tag);
 
 		return "/WEB-INF/listbookmarks.jsp";
 	}

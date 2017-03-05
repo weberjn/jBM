@@ -114,17 +114,17 @@ public class BookmarkManager {
 		}
 	}
 
-	public Long getBookmarksCount() {
+	public int getBookmarksCount() {
 		TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Bookmark b", Long.class);
 		Long n = query.getSingleResult();
-		return n;
+		return n.intValue();
 	}
 	
-	public Long getBookmarksCount(User user) {
+	public int getBookmarksCount(User user) {
 		TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Bookmark b WHERE b.user=:user", Long.class);
 		query.setParameter("user", user);
 		Long n = query.getSingleResult();
-		return n;
+		return n.intValue();
 	}
 	
 	public int getBookmarksCount(User user, Tag tag) {

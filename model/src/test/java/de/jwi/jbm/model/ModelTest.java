@@ -136,15 +136,15 @@ public class ModelTest
 
 		bm.addBookmark(user, bookmark);
 
-		Long count = bm.getBookmarksCount();
-		assertEquals(count, new Long(1));
+		int count = bm.getBookmarksCount();
+		assertEquals(count, 1);
 
 		count = bm.getBookmarksCount(user);
-		assertEquals(count, new Long(1));
+		assertEquals(count, 1);
 
 		User user2 = um.createIfNotExists("h2");
 		count = bm.getBookmarksCount(user2);
-		assertEquals(count, new Long(0));
+		assertEquals(count, 0);
 
 		bookmarkId = bookmark.getId();
 	}
@@ -177,7 +177,7 @@ public class ModelTest
 		
 		assertTrue(1 == bookmarksCount);
 		
-		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, 2);
+		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, 2, tag.getId(), null, null);
 		
 		List<Bookmark> bookmarks = bm.getBookmarks(user,  tag, pagePosition);
 		

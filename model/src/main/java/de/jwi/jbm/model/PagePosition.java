@@ -2,11 +2,14 @@ package de.jwi.jbm.model;
 
 public class PagePosition {
 
-	private Integer first, current, last, pagesize;
+	private int first, current, last, pagesize;
 	private int bookmarksCount;
+	private int tagID = -1;
+	private String linkFormat;
+	private String linkFormatTag;
 
 	// all Positions 1..
-	public PagePosition(int bookmarksCount, int newpos, int pagesize)
+	public PagePosition(int bookmarksCount, int newpos, int pagesize, int tagID, String linkFormat, String linkFormatTag)
 	{
 		// 0
 		// 1 1  
@@ -15,6 +18,8 @@ public class PagePosition {
 		// 4 2
 		
 		this.bookmarksCount = bookmarksCount;
+		this.linkFormat = linkFormat;
+		this.linkFormatTag = linkFormatTag;
 		
 		int pageCount = (bookmarksCount + pagesize - 1) / pagesize;
 		
@@ -33,34 +38,53 @@ public class PagePosition {
 		}
 		
 		this.pagesize = pagesize;
-		
+		this.tagID = tagID;
 	}
 	
-	public Integer getPagesize() {
+	public int getPagesize() {
 		return pagesize;
 	}
 
-	public Integer getFirst() {
-		if (bookmarksCount == 0 || 0 == current.compareTo(first))
+	private String makeLink(int page)
+	{
+		String s;
+		
+		if (tagID == -1)
+		{
+			s = String.format(linkFormat, page);
+		}
+		else
+		{
+			s = String.format(linkFormatTag, page, tagID);
+		}
+		return s;
+	}
+	
+	public String getFirst() {
+		if (bookmarksCount == 0 || current == first)
 		{
 			return null;
 		}
-		return first;
+		
+		String s = makeLink(first);
+		return s;
 	}
 
 	public Integer getCurrent() {
 		return current;
 	}
 
-	public Integer getLast() {
-		if (bookmarksCount == 0 || 0 == current.compareTo(last))
+	public String getLast() {
+		if (bookmarksCount == 0 || current == last)
 		{
 			return null;
 		}
-		return last;
+		
+		String s = makeLink(last);
+		return s;
 	}
 
-	public Integer getPrevious()
+	public String getPrevious()
 	{
 		if (bookmarksCount == 0)
 		{
@@ -68,12 +92,13 @@ public class PagePosition {
 		}
 		if (current > first)
 		{
-			return current - 1;
+			String s = makeLink(current - 1);
+			return s;
 		}
 		return null;
 	}
 	
-	public Integer getNext()
+	public String getNext()
 	{
 		if (bookmarksCount == 0)
 		{
@@ -82,7 +107,8 @@ public class PagePosition {
 
 		if (current < last)
 		{
-			return current + 1;
+			String s = makeLink(current + 1);
+			return s;
 		}
 		return null;
 	}

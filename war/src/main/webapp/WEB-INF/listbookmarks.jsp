@@ -34,7 +34,9 @@
 </form>
 
 
-<p id="sort">${bookmarksCount} bookmark(s)</p>
+<p id="sort">${bookmarksCount} bookmark(s) 
+	<c:if test="${not empty tag}">for tag ${tag.tag}</c:if>
+</p>
 
 
 
@@ -57,7 +59,7 @@
 				<div class="meta">
 					Tags: 
 					    <c:forEach items="${bookmark.tags}" var="tag">
-						    <a href="${context}/bookmarks/list/tag/${tag.id}">${tag.tag}</a>
+						    <a href="${context}/bookmarks/list/1/${tag.id}">${tag.tag}</a>
 						</c:forEach>
 						
 						by ${bookmark.user.username} - <a
