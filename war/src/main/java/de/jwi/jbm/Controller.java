@@ -1,7 +1,5 @@
 package de.jwi.jbm;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -130,13 +128,14 @@ public class Controller extends HttpServlet
 			cmd = pathInfo.substring(1);
 		}
 
-		String forward = "index.jsp";
+		String forward = "/";
 
 		String username = request.getUserPrincipal().getName();
 
 		if ("profile".equals(servlet) && "logout".equals(cmd))
 		{
 			request.getSession().invalidate();
+			forward = "rd:/";
 		} else
 		{
 
