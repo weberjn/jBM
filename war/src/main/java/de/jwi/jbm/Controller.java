@@ -1,5 +1,7 @@
 package de.jwi.jbm;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -152,11 +154,21 @@ public class Controller extends HttpServlet
 				forward = editProfile(request, um, user);
 			}
 
+			if ("about".equals(servlet))
+			{
+				forward = about(request, user);
+			}
+
 			if ("bookmarks".equals(servlet) && (cmd != null))
 			{
 				if (cmd.startsWith("list"))
 				{
 					forward = listBookmarks(request, user, bm, cmd);
+				}
+
+				if (cmd.startsWith("search"))
+				{
+					forward = searchBookmarks(request, user, bm, cmd);
 				}
 			}
 			if ("bookmark".equals(servlet) && (cmd != null))
@@ -304,13 +316,13 @@ public class Controller extends HttpServlet
 	}
 
 	static final String PAGE_PATTERN = "list(/(\\d+)(/(\\d+))?)?";
-	
+
 	static final int GRP_PAGE = 2;
 	static final int GRP_TAG = 4;
-	
-	static final String LINK_FORMAT = "%d";
-	static final String LINK_FORMAT_TAG = "%d/%d";
-	
+
+	static final String LINK_FORMAT = "list/%d";
+	static final String LINK_FORMAT_TAG = "list/%d/%d";
+
 	private String listBookmarks(HttpServletRequest request, User user, BookmarkManager bm,
 			String cmd) throws IOException
 	{
@@ -340,29 +352,84 @@ public class Controller extends HttpServlet
 		{
 			tag = bm.findTag(tagID);
 			bookmarksCount = bm.getBookmarksCount(user, tag);
-		}
-		else
+		} else
 		{
 			bookmarksCount = bm.getBookmarksCount(user);
 		}
 
-		PagePosition pagePosition = new PagePosition(bookmarksCount, page, PAGESIZE, tagID, LINK_FORMAT, LINK_FORMAT_TAG);
-		
+		PagePosition pagePosition = new PagePosition(bookmarksCount, page, PAGESIZE, tagID,
+				LINK_FORMAT, LINK_FORMAT_TAG);
+
 		if (tagID != -1)
 		{
 			bookmarks = bm.getBookmarks(user, tag, pagePosition);
-		}
-		else
+		} else
 		{
 			bookmarks = bm.getBookmarks(user, pagePosition);
 		}
-		
+
 		request.setAttribute("pagePosition", pagePosition);
 		request.setAttribute("bookmarksCount", new Integer(bookmarksCount));
 		request.setAttribute("bookmarks", bookmarks);
 		request.setAttribute("tag", tag);
 
 		return "/WEB-INF/listbookmarks.jsp";
+	}
+
+	static final String SEARCH_PAGE_PATTERN = "search(/(\\p{Alnum}+)/(\\d+))?";
+	static final int GRP_SWORD = 2;
+	static final int GRP_SPAGE = 3;
+
+	private String searchBookmarks(HttpServletRequest request, User user, BookmarkManager bm,
+			String cmd) throws IOException
+	{
+		int bookmarksCount = 0;
+		List<Bookmark> bookmarks = null;
+		int page = 1;
+		String text ="";
+
+		Matcher matcher = Pattern.compile(PAGE_PATTERN).matcher(cmd);
+		if (matcher.find())
+		{
+			String s = matcher.group(GRP_SWORD);
+			if (s != null)
+			{
+				text = s;
+			}
+			s = matcher.group(GRP_SPAGE);
+			if (s != null)
+			{
+				page = Integer.parseInt(s);
+			}
+		}
+
+		String submit = request.getParameter("search");
+
+		if (submit != null)
+		{
+			String s = request.getParameter("terms");
+			text = s;
+		}
+		
+		if (!text.matches("\\p{Alnum}+"))
+		{
+			return "rd:/bookmarks/list";
+		}
+		
+		bookmarksCount = bm.getBookmarksCountForSearch(user, text);
+
+		String pagePattern = "search/" + text + "/%s";
+		
+		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, PAGESIZE, -1, pagePattern, null);
+
+		bookmarks = bm.searchBookmarks(user, text, pagePosition);
+
+		request.setAttribute("pagePosition", pagePosition);
+		request.setAttribute("bookmarksCount", new Integer(bookmarksCount));
+		request.setAttribute("bookmarks", bookmarks);
+
+		return "/WEB-INF/listbookmarks.jsp";
+
 	}
 
 	private String editProfile(HttpServletRequest request, UserManager um, User user)
@@ -393,6 +460,11 @@ public class Controller extends HttpServlet
 		request.setAttribute("saved", saved);
 
 		return "/WEB-INF/profile.jsp";
+	}
+
+	private String about(HttpServletRequest request, User user)
+	{
+		return "/WEB-INF/about.jsp";
 	}
 
 }

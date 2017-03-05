@@ -176,6 +176,30 @@ public class BookmarkManager {
 	}
 	
 	
+	public int getBookmarksCountForSearch(User user, String text) {
+		
+		TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Bookmark b WHERE b.user=:user AND (b.address LIKE :text OR b.title LIKE :text)", Long.class);
+		query.setParameter("user", user);
+		query.setParameter("text", "%"+text+"%");
+		Long n = query.getSingleResult();
+		return n.intValue();
+	}
+	
+	public List<Bookmark> searchBookmarks(User user,  String text, PagePosition pagePosition) {
+
+		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user AND (b.address LIKE :text OR b.title LIKE :text) order by b.modified desc");
+		query.setParameter("user", user);
+		query.setParameter("text", "%"+text+"%");
+		query.setFirstResult((pagePosition.getCurrent()-1) * pagePosition.getPagesize()); 
+		query.setMaxResults(pagePosition.getPagesize());
+		
+		List resultList = query.getResultList();
+
+		return resultList;
+	}
+	
+	
+	
 	public List<Bookmark> getBookmarks(User user,  Tag tag, PagePosition pagePosition) {
 
 		Query query = em.createQuery("SELECT b FROM Bookmark b , IN (b.tags) t WHERE t = :tag and b.user=:user order by b.modified desc");
@@ -190,6 +214,9 @@ public class BookmarkManager {
 	}
 	
 
+
+	
+	
 	public String MD5(String s) {
 		try {
 			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");

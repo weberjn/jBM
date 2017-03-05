@@ -183,9 +183,23 @@ public class ModelTest
 		
 		assertTrue(1 == bookmarks.size());
 	}
+	
+	@Test
+	public void d1SearchBookmarks() throws MalformedURLException
+	{
+		User user = um.findUser("weberjn");
+		
+		int bookmarksCount = bm.getBookmarksCountForSearch(user, "Database");
+		assertTrue(1 == bookmarksCount);	
+		
+		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, 2, -1, null, null);
+		
+		List<Bookmark> bookmarks = bm.searchBookmarks(user, "Database", pagePosition);
+		assertTrue(1 == bookmarks.size());
+	}
 
 	@Test
-	public void d1removeBookmark() throws MalformedURLException
+	public void h1removeBookmark() throws MalformedURLException
 	{
 		User user = um.findUser("weberjn");
 

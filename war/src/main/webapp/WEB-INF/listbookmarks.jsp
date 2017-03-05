@@ -10,24 +10,12 @@
 
 
 <form id="search"
-	action="//localhost/SemanticScuttle-0.98.5/www/search.php"
-	method="post">
+	action="${context}/bookmarks/search" method="post">
 	<table>
 		<tbody>
 			<tr>
-
-				<td><input name="terms" size="30" value="Search..."
-					onfocus="if (this.value == 'Search...') this.value = '';"
-					onblur="if (this.value == '') this.value = 'Search...';"
-					type="text"></td>
-				<td>in</td>
-				<td><select name="range">
-						<option value="intuser">my bookmarks</option>
-						<option value="watchlist">my watchlist</option>
-						<option value="all" selected="selected">all bookmarks</option>
-				</select></td>
-
-				<td><input value="Search" type="submit"></td>
+				<td><input name="terms" size="30" value=""	type="text"></td>
+				<td><input type="submit" name="search" value="Search"></td>
 			</tr>
 		</tbody>
 	</table>
@@ -83,7 +71,7 @@
 
 	<c:choose> 
 		<c:when test="${!empty pagePosition.first}">
-			<a href="${context}/bookmarks/list/${pagePosition.first}">First</a> 
+			<a href="${context}/bookmarks/${pagePosition.first}">First</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">First</span><span> / </span>
@@ -93,7 +81,7 @@
 
 	<c:choose> 
 		<c:when test="${!empty pagePosition.previous}">
-			<a href="${context}/bookmarks/list/${pagePosition.previous}">Previous</a> 
+			<a href="${context}/bookmarks/${pagePosition.previous}">Previous</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">Previous</span><span> / </span>
@@ -103,7 +91,7 @@
 
 	<c:choose> 
 		<c:when test="${!empty pagePosition.next}">
-			<a href="${context}/bookmarks/list/${pagePosition.next}">Next</a> 
+			<a href="${context}/bookmarks/${pagePosition.next}">Next</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">Next</span><span> / </span>
@@ -112,12 +100,15 @@
 
 	<c:choose> 
 		<c:when test="${!empty pagePosition.last}">
-			<a href="${context}/bookmarks/list/${pagePosition.last}">Last</a> 
+			<a href="${context}/bookmarks/${pagePosition.last}">Last</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">Last</span><span> / </span>
 		</c:otherwise> 
 	</c:choose> 
+	Page ${pagePosition.current} of ${pagePosition.pageCount}
+</p>
+
 
 <%@include file="bottom.jsp"%>
 

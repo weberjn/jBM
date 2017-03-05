@@ -7,6 +7,7 @@ public class PagePosition {
 	private int tagID = -1;
 	private String linkFormat;
 	private String linkFormatTag;
+	private int pageCount;
 
 	// all Positions 1..
 	public PagePosition(int bookmarksCount, int newpos, int pagesize, int tagID, String linkFormat, String linkFormatTag)
@@ -21,7 +22,7 @@ public class PagePosition {
 		this.linkFormat = linkFormat;
 		this.linkFormatTag = linkFormatTag;
 		
-		int pageCount = (bookmarksCount + pagesize - 1) / pagesize;
+		pageCount = (bookmarksCount + pagesize - 1) / pagesize;
 		
 		first = 1;
 		last = pageCount;
@@ -41,10 +42,30 @@ public class PagePosition {
 		this.tagID = tagID;
 	}
 	
+	public int getPageCount()
+	{
+		return pageCount;
+	}
+
 	public int getPagesize() {
 		return pagesize;
 	}
 
+	public int getCurrent() {
+		return current;
+	}
+	
+	// TODO
+	public String[] getPaginationPoints()
+	{
+		int n = 0;
+		if (pageCount < 2)
+		{
+			return null;
+		}
+		return null;
+	}
+	
 	private String makeLink(int page)
 	{
 		String s;
@@ -70,9 +91,7 @@ public class PagePosition {
 		return s;
 	}
 
-	public Integer getCurrent() {
-		return current;
-	}
+
 
 	public String getLast() {
 		if (bookmarksCount == 0 || current == last)

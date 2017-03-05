@@ -47,6 +47,23 @@ public class MatcherTest
 		s = matcher.group(Controller.GRP_TAG);
 		assertEquals("5",s);
 
+		pattern = Pattern.compile(Controller.SEARCH_PAGE_PATTERN);
+		cmd = "search";
+		matcher = pattern.matcher(cmd);
+		b = matcher.find();
+		assertTrue(b);
+		
+		cmd = "search/word/5";
+		matcher = pattern.matcher(cmd);
+		b = matcher.find();
+		assertTrue(b);
+		
+		s = matcher.group(Controller.GRP_SPAGE);
+		assertEquals("5",s);
+
+		s = matcher.group(Controller.GRP_SWORD);
+		assertEquals("word",s);
+		
 	}
 
 }
