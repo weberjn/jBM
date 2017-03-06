@@ -2,6 +2,7 @@ package de.jwi.jbm.entities;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -82,6 +83,7 @@ public class Bookmark implements Serializable
 
 	public Bookmark()
 	{
+		tags = new ArrayList<Tag>();
 	}
 
 	public Integer getId()

@@ -307,10 +307,13 @@ public class Controller extends HttpServlet
 		bookmark.setTitle(title);
 		bookmark.setDescription(description);
 
-		String[] t = tags.split("\\s*,\\s*");
-		for (String s : t)
+		if (tags != null)
 		{
-			bm.addTag(user, bookmark, s);
+			String[] t = tags.split("\\s*,\\s*");
+			for (String s : t)
+			{
+				bm.addTag(user, bookmark, s);
+			}
 		}
 	}
 
@@ -463,6 +466,10 @@ public class Controller extends HttpServlet
 
 	private String about(HttpServletRequest request, User user)
 	{
+		String serverName = request.getServerName();
+		int serverPort = request.getServerPort();
+		request.setAttribute("hostport", String.format("%s:%d", serverName, serverPort));
+
 		return "/WEB-INF/about.jsp";
 	}
 

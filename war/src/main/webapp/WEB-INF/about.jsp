@@ -14,7 +14,20 @@
 </ul>
 
 <h3>Bookmarklet</h3>
-<p id="bookmarklet"></p>
+<p id="bookmarklet">
+
+<ul>
+<li>
+<a class="bookmarklet" href="javascript:location.href='http://${hostport}${context}/bookmark/add?addBookmark=get it&address='+encodeURIComponent(location.href)">Send to jBM</a>
+</li>
+<li>
+<a class="bookmarklet" href="javascript:(function(){window.open('http://${hostport}${context}/bookmark/add?addBookmark=get it&address='+encodeURIComponent(location.href),'jBM','modal=1,status=0,scrollbars=1,toolbar=0,resizable=1,width='+(screen.width/2)+',height='+(screen.height/2));})();">Send to jBM in Popup</a>
+</li>
+</ul>
+
+</p>
+
+<h3>Tips</h3>
 
 <ul>
 <li>Add search plugin into your browser: <a href="#" onclick="window.external.AddSearchProvider('//localhost/SemanticScuttle-0.98.5/www/api/opensearch.php');">opensearch</a></li>
