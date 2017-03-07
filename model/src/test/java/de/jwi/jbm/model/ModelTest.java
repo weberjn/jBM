@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -227,5 +228,63 @@ public class ModelTest
 		
 		assertTrue(b == null);
 	}
+
+	@Test
+	public void k1updateTags()
+	{
+		int n = 0;
+		
+		User user = um.findUser("weberjn");
+
+		Bookmark bookmark = new Bookmark();
+		bookmark.setAddress("http://tomcat.apache.org/");
+		bookmark.setTitle("Apache Tomcat&reg; - Welcome!");
+		
+		n = bookmark.getTags().size();
+		assertTrue(n == 0);
+		
+		String[] tagNames3 = {"Java Servlet","JavaServer Pages", "Java Expression Language"}; 
+		
+		bm.updateTags(user, bookmark, tagNames3);
+		
+		n = bookmark.getTags().size();
+		assertTrue(n == 3);
+		
+		String[] tagNames4 = {"Java Servlet","JavaServer Pages", "Java Expression Language", "Java WebSocket"};
+		bm.updateTags(user, bookmark, tagNames4);
+		
+		n = bookmark.getTags().size();
+		assertTrue(n == 4);
+		
+		String[] tagNames2 = {"Java Servlet","JavaServer Pages"};
+		bm.updateTags(user, bookmark, tagNames2);
+		
+		n = bookmark.getTags().size();
+		assertTrue(n == 2);
+	
+		String[] tagNames2a = {"Apache","JavaServer Pages"};
+		bm.updateTags(user, bookmark, tagNames2a);
+		
+		n = bookmark.getTags().size();
+		assertTrue(n == 2);
+	
+		List<String> tagNamesList = new ArrayList<String>(n);
+		
+		for (Tag tag : bookmark.getTags())
+		{
+			tagNamesList.add(tag.getTag());
+		}
+		
+		assertTrue(tagNamesList.contains("Apache"));
+		assertTrue(tagNamesList.contains("JavaServer Pages"));
+		
+		String[] tagNames0 = {};
+		bm.updateTags(user, bookmark, tagNames0);
+		
+		n = bookmark.getTags().size();
+		assertTrue(n == 0);
+		
+	}
+
 	
 }

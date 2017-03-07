@@ -1,12 +1,16 @@
 package de.jwi.jbm;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
 import de.jwi.jbm.entities.Bookmark;
+import de.jwi.jbm.entities.Tag;
 import de.jwi.jbm.entities.User;
 import de.jwi.jbm.model.BookmarkManager;
 
@@ -93,11 +97,9 @@ public class BookmarkAction implements Action
 
 		if (tags != null)
 		{
-			String[] t = tags.split("\\s*,\\s*");
-			for (String s : t)
-			{
-				bm.addTag(user, bookmark, s);
-			}
+			String[] tagNames = tags.split("\\s*,\\s*");
+			
+			bm.updateTags(user, bookmark, tagNames);
 		}
 	}
 
@@ -107,8 +109,10 @@ public class BookmarkAction implements Action
 		String submit = request.getParameter("addBookmark");
 
 		Matcher matcher = Pattern.compile("edit/(\\d+)").matcher(cmd);
+		
+		StringBuffer keywords = new StringBuffer();
 
-		int id = 0;
+		int id = -1;
 
 		if (matcher.find())
 		{
@@ -128,13 +132,7 @@ public class BookmarkAction implements Action
 			if ("get it".equals(submit))
 			{
 				String address = request.getParameter("address");
-
-				StringBuffer keywords = new StringBuffer();
-
 				bm.fetchBookmarkFromURL(bookmark, keywords, address);
-
-				request.setAttribute("bm", bookmark);
-				request.setAttribute("keywords", keywords.toString());
 			} else
 			{
 				fillBookmark(request, user, bm, bookmark);
@@ -143,8 +141,22 @@ public class BookmarkAction implements Action
 				return "rd:/bookmarks/list";
 			}
 		}
+		else
+		{
+			Iterator<Tag> it = bookmark.getTags().iterator();
+			while (it.hasNext())
+			{
+				Tag tag = it.next();
+				keywords.append(tag.getTag());
+				if ((it.hasNext()))
+				{
+					keywords.append(',');
+				}
+			}
+		}
 
 		request.setAttribute("bm", bookmark);
+		request.setAttribute("keywords", keywords.toString());
 
 		request.setAttribute("bmop", "edit");
 

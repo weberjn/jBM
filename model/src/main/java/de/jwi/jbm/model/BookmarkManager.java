@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +58,19 @@ public class BookmarkManager {
 		return tag;
 	}
 
+	public void updateTags(User user, Bookmark bookmark, String[] tagNames)
+	{
+		List<Tag> previousTags = new ArrayList<Tag>(bookmark.getTags());
+		
+		for (String s : tagNames)
+		{
+			Tag newTag = addTag(user, bookmark, s);
+			previousTags.remove(newTag);
+		}
+		
+		bookmark.getTags().removeAll(previousTags);
+	}
+	
 	public Tag findTag(User user, String tagName)
 	{
 		Tag tag = null;
