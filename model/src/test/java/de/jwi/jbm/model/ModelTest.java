@@ -46,7 +46,7 @@ public class ModelTest
 	static BookmarkManager bm = new BookmarkManager(em);
 	private static Integer bookmarkId;
 
-	@Rule
+//	@Rule
     public SQLBrowserOnFailed rule = new SQLBrowserOnFailed();
 	
 	@BeforeClass
@@ -142,6 +142,14 @@ public class ModelTest
 		count = bm.getBookmarksCount(user);
 		assertEquals(count, 1);
 
+		Bookmark bookmark2 = new Bookmark();
+		bookmark2.setAddress("http://www.h2database.com");
+		bookmark2.setTitle("H2 Database Engine");
+		bm.addBookmark(user, bookmark2);
+		
+		count = bm.getBookmarksCount(user);
+		assertEquals(count, 1);
+		
 		User user2 = um.createIfNotExists("h2");
 		count = bm.getBookmarksCount(user2);
 		assertEquals(count, 0);
@@ -163,6 +171,11 @@ public class ModelTest
 		bm.addTag(user, bookmark, "database");
 		
 		List<Tag> tags = bookmark.getTags();
+		assertTrue(2 == tags.size());
+		
+		bm.addTag(user, bookmark, "SQL");
+		
+		tags = bookmark.getTags();
 		assertTrue(2 == tags.size());
 	}
 
@@ -213,7 +226,6 @@ public class ModelTest
 		b = bm.findBookmark(user, bookmarkId);
 		
 		assertTrue(b == null);
-//		throw new RuntimeException();		
 	}
 	
 }

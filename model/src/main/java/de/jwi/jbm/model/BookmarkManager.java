@@ -49,7 +49,10 @@ public class BookmarkManager {
 			tag.setUser(user);
 			em.persist(tag);
 		}
-		bookmark.getTags().add(tag);
+		if (!bookmark.getTags().contains(tag))
+		{
+			bookmark.getTags().add(tag);
+		}
 		
 		return tag;
 	}

@@ -1,3 +1,7 @@
+2017-03-07
+
+Refactored to Actions
+
 2017-03-02
 
 https://coderanch.com/t/218462/databases/Query-ManyToMany-tables

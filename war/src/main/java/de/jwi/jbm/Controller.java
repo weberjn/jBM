@@ -2,13 +2,9 @@ package de.jwi.jbm;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,11 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.jwi.jbm.entities.Bookmark;
-import de.jwi.jbm.entities.Tag;
 import de.jwi.jbm.entities.User;
 import de.jwi.jbm.model.BookmarkManager;
-import de.jwi.jbm.model.PagePosition;
 import de.jwi.jbm.model.UserManager;
 
 public class Controller extends HttpServlet
@@ -147,39 +140,42 @@ public class Controller extends HttpServlet
 			BookmarkManager bm = new BookmarkManager(entityManager);
 
 			User user = um.createIfNotExists(username);
-
-			if ("profile".equals(servlet))
+			Action action = null;
+			
+			try
 			{
-				forward = editProfile(request, um, user);
-			}
+				if ("profile".equals(servlet))
+				{
+					action = new ProfileAction(um);
+				}
+				if ("about".equals(servlet))
+				{
+					action = new AboutAction();
+				}
+				if ("bookmarks".equals(servlet) && (cmd != null))
+				{
+					if (cmd.startsWith("list"))
+					{
+						action = new ListBookmarksAction(bm, PAGESIZE);
+					}
+					if (cmd.startsWith("search"))
+					{
+						action = new SearchBookmarksAction(bm, PAGESIZE);
+					}
+				}
+				if ("bookmark".equals(servlet) && (cmd != null))
+				{
+					action = new BookmarkAction(bm);
+				}
+				
+				forward = action.run(request, user, cmd);
 
-			if ("about".equals(servlet))
+				
+			} catch (ActionException e)
 			{
-				forward = about(request, user);
-			}
-
-			if ("bookmarks".equals(servlet) && (cmd != null))
-			{
-				if (cmd.startsWith("list"))
-				{
-					forward = listBookmarks(request, user, bm, cmd);
-				}
-
-				if (cmd.startsWith("search"))
-				{
-					forward = searchBookmarks(request, user, bm, cmd);
-				}
-			}
-			if ("bookmark".equals(servlet) && (cmd != null))
-			{
-				if ("add".equals(cmd))
-				{
-					forward = addBookmark(request, user, bm);
-				}
-				if (cmd.startsWith("edit"))
-				{
-					forward = editBookmark(request, user, bm, cmd);
-				}
+				transaction.rollback();
+				entityManager.close();
+				throw new ServletException(e);
 			}
 			transaction.commit();
 			entityManager.close();
@@ -202,275 +198,6 @@ public class Controller extends HttpServlet
 		RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(forward);
 
 		requestDispatcher.forward(request, response);
-	}
-
-	private String addBookmark(HttpServletRequest request, User user, BookmarkManager bm)
-			throws IOException
-	{
-		String submit = request.getParameter("addBookmark");
-
-		if (submit != null && request.getAttribute("bm") == null)
-		{
-			if ("get it".equals(submit))
-			{
-				String address = request.getParameter("address");
-
-				Bookmark bookmark = new Bookmark();
-				bookmark.setAddress(address);
-
-				StringBuffer keywords = new StringBuffer();
-
-				bm.fetchBookmarkFromURL(bookmark, keywords, address);
-
-				request.setAttribute("bm", bookmark);
-				request.setAttribute("keywords", keywords.toString());
-
-				return "/bookmark/add";
-			}
-
-			Bookmark b = new Bookmark();
-			fillBookmark(request, user, bm, b);
-
-			bm.addBookmark(user, b);
-
-			return "rd:/bookmarks/list";
-		}
-
-		request.setAttribute("bmop", "add");
-		request.setAttribute("cmd", "add");
-
-		return "/WEB-INF/addbookmark.jsp";
-	}
-
-	private String editBookmark(HttpServletRequest request, User user, BookmarkManager bm,
-			String cmd) throws IOException
-	{
-
-		String submit = request.getParameter("addBookmark");
-
-		Matcher matcher = Pattern.compile("edit/(\\d+)").matcher(cmd);
-
-		int id = 0;
-
-		if (matcher.find())
-		{
-			String s = matcher.group(1);
-			id = Integer.parseInt(s);
-		}
-
-		Bookmark bookmark = bm.findBookmark(user, id);
-
-		if (bookmark == null)
-		{
-			return "rd:/bookmark/list";
-		}
-
-		if (submit != null)
-		{
-			if ("get it".equals(submit))
-			{
-				String address = request.getParameter("address");
-
-				StringBuffer keywords = new StringBuffer();
-
-				bm.fetchBookmarkFromURL(bookmark, keywords, address);
-
-				request.setAttribute("bm", bookmark);
-				request.setAttribute("keywords", keywords.toString());
-			} else
-			{
-				fillBookmark(request, user, bm, bookmark);
-				bm.touchBookmark(bookmark);
-
-				return "rd:/bookmarks/list";
-			}
-		}
-
-		request.setAttribute("bm", bookmark);
-
-		request.setAttribute("bmop", "edit");
-
-		request.setAttribute("cmd", cmd);
-
-		return "/WEB-INF/addbookmark.jsp";
-	}
-
-	private void fillBookmark(HttpServletRequest request, User user, BookmarkManager bm,
-			Bookmark bookmark)
-	{
-		String address = request.getParameter("address");
-		String title = request.getParameter("title");
-		String description = request.getParameter("description");
-		String tags = request.getParameter("tags");
-
-		bookmark.setAddress(address);
-		bookmark.setTitle(title);
-		bookmark.setDescription(description);
-
-		if (tags != null)
-		{
-			String[] t = tags.split("\\s*,\\s*");
-			for (String s : t)
-			{
-				bm.addTag(user, bookmark, s);
-			}
-		}
-	}
-
-	static final String PAGE_PATTERN = "list(/(\\d+)(/(\\d+))?)?";
-
-	static final int GRP_PAGE = 2;
-	static final int GRP_TAG = 4;
-
-	static final String LINK_FORMAT = "list/%d";
-	static final String LINK_FORMAT_TAG = "list/%d/%d";
-
-	private String listBookmarks(HttpServletRequest request, User user, BookmarkManager bm,
-			String cmd) throws IOException
-	{
-
-		int page = 1;
-		int tagID = -1;
-		Tag tag = null;
-		int bookmarksCount = 0;
-		List<Bookmark> bookmarks = null;
-
-		Matcher matcher = Pattern.compile(PAGE_PATTERN).matcher(cmd);
-		if (matcher.find())
-		{
-			String s = matcher.group(GRP_PAGE);
-			if (s != null)
-			{
-				page = Integer.parseInt(s);
-			}
-			s = matcher.group(GRP_TAG);
-			if (s != null)
-			{
-				tagID = Integer.parseInt(s);
-			}
-		}
-
-		if (tagID != -1)
-		{
-			tag = bm.findTag(tagID);
-			bookmarksCount = bm.getBookmarksCount(user, tag);
-		} else
-		{
-			bookmarksCount = bm.getBookmarksCount(user);
-		}
-
-		PagePosition pagePosition = new PagePosition(bookmarksCount, page, PAGESIZE, tagID,
-				LINK_FORMAT, LINK_FORMAT_TAG);
-
-		if (tagID != -1)
-		{
-			bookmarks = bm.getBookmarks(user, tag, pagePosition);
-		} else
-		{
-			bookmarks = bm.getBookmarks(user, pagePosition);
-		}
-
-		request.setAttribute("pagePosition", pagePosition);
-		request.setAttribute("bookmarksCount", new Integer(bookmarksCount));
-		request.setAttribute("bookmarks", bookmarks);
-		request.setAttribute("tag", tag);
-
-		return "/WEB-INF/listbookmarks.jsp";
-	}
-
-	static final String SEARCH_PAGE_PATTERN = "search(/(\\p{Alnum}+)/(\\d+))?";
-	static final int GRP_SWORD = 2;
-	static final int GRP_SPAGE = 3;
-
-	private String searchBookmarks(HttpServletRequest request, User user, BookmarkManager bm,
-			String cmd) throws IOException
-	{
-		int bookmarksCount = 0;
-		List<Bookmark> bookmarks = null;
-		int page = 1;
-		String text ="";
-
-		Matcher matcher = Pattern.compile(PAGE_PATTERN).matcher(cmd);
-		if (matcher.find())
-		{
-			String s = matcher.group(GRP_SWORD);
-			if (s != null)
-			{
-				text = s;
-			}
-			s = matcher.group(GRP_SPAGE);
-			if (s != null)
-			{
-				page = Integer.parseInt(s);
-			}
-		}
-
-		String submit = request.getParameter("search");
-
-		if (submit != null)
-		{
-			String s = request.getParameter("terms");
-			text = s;
-		}
-		
-		if (!text.matches("\\p{Alnum}+"))
-		{
-			return "rd:/bookmarks/list";
-		}
-		
-		bookmarksCount = bm.getBookmarksCountForSearch(user, text);
-
-		String pagePattern = "search/" + text + "/%s";
-		
-		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, PAGESIZE, -1, pagePattern, null);
-
-		bookmarks = bm.searchBookmarks(user, text, pagePosition);
-
-		request.setAttribute("pagePosition", pagePosition);
-		request.setAttribute("bookmarksCount", new Integer(bookmarksCount));
-		request.setAttribute("bookmarks", bookmarks);
-
-		return "/WEB-INF/listbookmarks.jsp";
-
-	}
-
-	private String editProfile(HttpServletRequest request, UserManager um, User user)
-			throws MalformedURLException
-	{
-
-		Boolean saved = new Boolean(false);
-
-		if (request.getParameter("submitted") != null)
-		{
-			String email = request.getParameter("pMail");
-			String name = request.getParameter("pName");
-			String homepage = request.getParameter("pPage");
-			String content = request.getParameter("pDesc");
-
-			user.setEmail(email);
-			user.setName(name);
-			user.setHomepage(homepage);
-			user.setContent(content);
-
-			um.updateTimeStamp(user);
-
-			saved = new Boolean(true);
-		}
-
-		request.setAttribute("user", user);
-
-		request.setAttribute("saved", saved);
-
-		return "/WEB-INF/profile.jsp";
-	}
-
-	private String about(HttpServletRequest request, User user)
-	{
-		String serverName = request.getServerName();
-		int serverPort = request.getServerPort();
-		request.setAttribute("hostport", String.format("%s:%d", serverName, serverPort));
-
-		return "/WEB-INF/about.jsp";
 	}
 
 }

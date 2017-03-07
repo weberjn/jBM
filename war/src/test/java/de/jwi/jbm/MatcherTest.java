@@ -16,15 +16,15 @@ public class MatcherTest
 		boolean b;
 		String s;
 
-		Pattern pattern = Pattern.compile(Controller.PAGE_PATTERN);
+		Pattern pattern = Pattern.compile(ListBookmarksAction.PAGE_PATTERN);
 
 		cmd = "list";
 		Matcher matcher = pattern.matcher(cmd);
 		b = matcher.find();
 		assertTrue(b);
-		s = matcher.group(Controller.GRP_PAGE);
+		s = matcher.group(ListBookmarksAction.GRP_PAGE);
 		assertEquals(null,s);
-		s = matcher.group(Controller.GRP_TAG);
+		s = matcher.group(ListBookmarksAction.GRP_TAG);
 		assertEquals(null,s);
 
 		
@@ -33,7 +33,7 @@ public class MatcherTest
 		b = matcher.find();
 		assertTrue(b);
 
-		s = matcher.group(Controller.GRP_PAGE);
+		s = matcher.group(ListBookmarksAction.GRP_PAGE);
 		assertEquals("3",s);
 		
 		cmd = "list/3/5";
@@ -41,13 +41,13 @@ public class MatcherTest
 		b = matcher.find();
 		assertTrue(b);
 
-		s = matcher.group(Controller.GRP_PAGE);
+		s = matcher.group(ListBookmarksAction.GRP_PAGE);
 		assertEquals("3",s);
 
-		s = matcher.group(Controller.GRP_TAG);
+		s = matcher.group(ListBookmarksAction.GRP_TAG);
 		assertEquals("5",s);
 
-		pattern = Pattern.compile(Controller.SEARCH_PAGE_PATTERN);
+		pattern = Pattern.compile(SearchBookmarksAction.SEARCH_PAGE_PATTERN);
 		cmd = "search";
 		matcher = pattern.matcher(cmd);
 		b = matcher.find();
@@ -58,10 +58,10 @@ public class MatcherTest
 		b = matcher.find();
 		assertTrue(b);
 		
-		s = matcher.group(Controller.GRP_SPAGE);
+		s = matcher.group(SearchBookmarksAction.GRP_SPAGE);
 		assertEquals("5",s);
 
-		s = matcher.group(Controller.GRP_SWORD);
+		s = matcher.group(SearchBookmarksAction.GRP_SWORD);
 		assertEquals("word",s);
 		
 	}
