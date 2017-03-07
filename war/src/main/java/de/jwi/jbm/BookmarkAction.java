@@ -26,10 +26,17 @@ public class BookmarkAction implements Action
 
 	public String run(HttpServletRequest request, User user, String cmd)  throws ActionException
 	{
-		String forward = null;
+		String forward = "rd:/bookmarks/list";
 	
 		try
 		{
+			String submit = request.getParameter("deleteBookmark");
+			if (submit != null)
+			{
+				forward = deleteBookmark(request, user, cmd);
+				return forward;
+			}
+				
 			if ("add".equals(cmd))
 			{
 				forward = addBookmark(request, user);
@@ -44,6 +51,16 @@ public class BookmarkAction implements Action
 		}
 		
 		return forward;
+	}
+	
+	private String deleteBookmark(HttpServletRequest request, User user, String cmd) throws IOException
+	{
+		String bmID = request.getParameter("bmID");
+		int bookmarkId = Integer.parseInt(bmID);
+		
+		boolean done = bm.removeBookmark(user, bookmarkId);
+		
+		return "rd:/bookmarks/list";
 	}
 	
 	private String addBookmark(HttpServletRequest request, User user) throws IOException
@@ -124,7 +141,7 @@ public class BookmarkAction implements Action
 
 		if (bookmark == null)
 		{
-			return "rd:/bookmark/list";
+			return "rd:/bookmarks/list";
 		}
 
 		if (submit != null)

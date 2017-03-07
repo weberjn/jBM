@@ -33,7 +33,7 @@
 	<c:forEach items="${bookmarks}" var="bookmark">
 
 		<fmt:formatDate value="${bookmark.modified}" var="bmodified"
-			type="date" pattern="yyyy-MM-dd" />
+			type="date" pattern="yyyy-MM-dd HH:mm" />
 
 		<li class="xfolkentry private">
 			<div class="adminBackground">
@@ -50,11 +50,9 @@
 						    <a href="${context}/bookmarks/list/1/${tag.id}">${tag.tag}</a>
 						</c:forEach>
 						
-						by ${bookmark.user.username} - <a
-						href="${context}/bookmark/edit/${bookmark.id}">Edit</a> <a
-						href="#"
-						onclick="deleteBookmark(this, ${bookmark.id}); return false;">Delete</a>
-					<small title="Last update">${bmodified}</small>
+						by ${bookmark.user.username} <small title="Last update">${bmodified}</small>
+						<a href="${context}/bookmark/edit/${bookmark.id}">Edit</a>
+					
 				</div>
 			</div>
 		</li>

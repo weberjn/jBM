@@ -1,6 +1,5 @@
 
     <ul id="navigation">
-    	<li><a href="${context}">Home</a></li>    
         <li><a href="${context}/bookmarks/list">Bookmarks</a></li>
 	    <li><a href="alltags">Tags</a></li>
 	    <li><a href="${context}/profile">Profile</a></li>

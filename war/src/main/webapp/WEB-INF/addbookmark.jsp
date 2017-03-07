@@ -22,11 +22,12 @@
 
 
 <form action="${context}/bookmark/${cmd}" method="post">
+	<input type="hidden" name="bmID" value="${bm.id}">
 	<table>
 		<tr>
 			<th align="left">Address</th>
 			<td><input type="text" id="address" name="address" size="75"
-				maxlength="65535" value="${bm.address}" onblur="useAddress(this)" />
+				maxlength="65535" value="${bm.address}"/>
 				<input type="hidden" name="bmop" value="${bmop}">
 				</td>
 			<td><input type="submit" name="addBookmark" value="get it"/></td>
@@ -34,17 +35,14 @@
 		<tr>
 			<th align="left">Title</th>
 			<td><input type="text" id="titleField" name="title" size="75"
-				maxlength="255" value="${bm.title}"
-				onkeypress="this.style.backgroundImage = 'none';" /></td>
+				maxlength="255" value="${bm.title}" /></td>
 			<td>* Required</td>
 		</tr>
 		<tr>
 			<th align="left">Description</th>
 			<td><textarea name="description" id="description" rows="5"
 					cols="63">${bm.description}</textarea></td>
-			<td>* You can use anchors to delimite attributes. for example:
-				[publisher]blah[/publisher] 
-			</td>
+			<td></td>
 		</tr>
 
 		<tr>
@@ -61,7 +59,7 @@
 			<td><select name="status">
 					<option value="0">Public</option>
 					<option value="1">Shared with Watch List</option>
-					<option value="2">Private</option>
+					<option value="2" selected="selected">Private</option>
 			</select></td>
 			<td></td>
 		</tr>
@@ -73,7 +71,7 @@
 			<td><input type="submit" name="addBookmark" 
 						value="${btSubText}"	/>
  				<c:if test="${bmop=='edit'}"> 				
-					<input	type="submit" name="delete" value="Delete Bookmark" />
+					<input	type="submit" name="deleteBookmark" value="Delete Bookmark" />
 				</c:if> 
 				</td>
 			<td></td>
