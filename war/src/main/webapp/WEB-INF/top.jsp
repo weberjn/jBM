@@ -2,9 +2,9 @@
 <html>
 <head>
 <title>jBM</title>
-
 <link rel="icon" type="image/png" href="${context}/icon.png" />
 <link rel="stylesheet" type="text/css" href="${context}/scuttle.css" />
+<meta charset="utf-8"/>
 </head>
 <body>
 

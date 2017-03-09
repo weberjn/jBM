@@ -8,9 +8,10 @@ public class AboutAction implements Action
 {
 	public String run(HttpServletRequest request, User user, String cmd)
 	{
+		String scheme = request.getScheme();
 		String serverName = request.getServerName();
 		int serverPort = request.getServerPort();
-		request.setAttribute("hostport", String.format("%s:%d", serverName, serverPort));
+		request.setAttribute("baseurl", String.format("%s://%s:%d", scheme, serverName, serverPort));
 
 		return "/WEB-INF/about.jsp";
 	}

@@ -78,7 +78,8 @@ public class BookmarkAction implements Action
 
 				StringBuffer keywords = new StringBuffer();
 
-				bm.fetchBookmarkFromURL(bookmark, keywords, address);
+				String userAgent = request.getHeader("User-Agent");
+				bm.fetchBookmarkFromURL(bookmark, keywords, address, userAgent);
 
 				request.setAttribute("bm", bookmark);
 				request.setAttribute("keywords", keywords.toString());
@@ -149,7 +150,8 @@ public class BookmarkAction implements Action
 			if ("get it".equals(submit))
 			{
 				String address = request.getParameter("address");
-				bm.fetchBookmarkFromURL(bookmark, keywords, address);
+				String userAgent = request.getHeader("User-Agent");
+				bm.fetchBookmarkFromURL(bookmark, keywords, address, userAgent);
 			} else
 			{
 				fillBookmark(request, user, bm, bookmark);

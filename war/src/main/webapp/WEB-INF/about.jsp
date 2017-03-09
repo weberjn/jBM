@@ -18,10 +18,10 @@
 
 <ul>
 <li>
-<a class="bookmarklet" href="javascript:location.href='http://${hostport}${context}/bookmark/add?addBookmark=get it&address='+encodeURIComponent(location.href)">Send to jBM</a>
+<a class="bookmarklet" href="javascript:location.href='${baseurl}${context}/bookmark/add?addBookmark=get it&address='+encodeURIComponent(location.href)">Send to jBM</a>
 </li>
 <li>
-<a class="bookmarklet" href="javascript:(function(){window.open('http://${hostport}${context}/bookmark/add?addBookmark=get it&address='+encodeURIComponent(location.href),'jBM','modal=1,status=0,scrollbars=1,toolbar=0,resizable=1,width='+(screen.width/2)+',height='+(screen.height/2));})();">Send to jBM in Popup</a>
+<a class="bookmarklet" href="javascript:(function(){window.open('${baseurl}${context}/bookmark/add?addBookmark=get it&address='+encodeURIComponent(location.href),'jBM','modal=1,status=0,scrollbars=1,toolbar=0,resizable=1,width='+(screen.width/2)+',height='+(screen.height/2));})();">Send to jBM in Popup</a>
 </li>
 </ul>
 

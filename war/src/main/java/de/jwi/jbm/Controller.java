@@ -113,6 +113,10 @@ public class Controller extends HttpServlet
 		System.out.println(servlet);
 
 		String pathInfo = request.getPathInfo();
+		
+	    response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
 		String cmd = null;
 

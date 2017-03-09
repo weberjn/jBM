@@ -8,11 +8,13 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,7 +25,9 @@ import de.jwi.jbm.entities.Tag;
 import de.jwi.jbm.entities.User;
 
 public class BookmarkManager {
-
+	
+	private static final Logger log = Logger.getLogger(BookmarkManager.class.getName());
+	
 	EntityManager em;
 
 	public BookmarkManager(EntityManager entityManager) {
@@ -248,9 +252,31 @@ public class BookmarkManager {
 		}
 	}
 
-	public void fetchBookmarkFromURL(Bookmark bookmark, StringBuffer keywords, String address) throws IOException
+	public boolean fetchBookmarkFromURL(Bookmark bookmark, StringBuffer keywords, String address, String userAgent)
 	{
-		Document doc = Jsoup.connect(address).get();
+		boolean b = true;
+		
+		try
+		{
+			fetchBookmarkFromURL1(bookmark, keywords, address, userAgent);
+		} catch (Exception e)
+		{
+			b = false;
+		}
+		
+		return b;
+	}
+	
+	private void fetchBookmarkFromURL1(Bookmark bookmark, StringBuffer keywords, String address, String userAgent) throws IOException
+	{
+		Connection connection = Jsoup.connect(address);
+		connection.validateTLSCertificates(false);
+		if (userAgent != null)
+		{
+			connection.userAgent(userAgent);
+		}
+		
+		Document doc = connection.get();
 		String title = doc.title();
 		String description = null;
 
