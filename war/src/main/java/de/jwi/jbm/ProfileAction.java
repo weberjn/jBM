@@ -37,8 +37,6 @@ public class ProfileAction implements Action
 			saved = new Boolean(true);
 		}
 
-		request.setAttribute("user", user);
-
 		request.setAttribute("saved", saved);
 
 		return "/WEB-INF/profile.jsp";

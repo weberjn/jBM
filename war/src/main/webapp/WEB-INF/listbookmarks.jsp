@@ -24,6 +24,7 @@
 
 <p id="sort">${navigator.bookmarksCount} bookmark(s) 
 	<c:if test="${not empty tag}">for tag ${tag.tag}</c:if>
+	<c:if test="${not empty query}">for query ${query}</c:if>
 </p>
 
 

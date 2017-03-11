@@ -171,7 +171,10 @@ public class Controller extends HttpServlet
 				{
 					action = new BookmarkAction(bm);
 				}
-				
+				if ("tags".equals(servlet))
+				{
+					action = new TagsAction(bm);
+				}
 				forward = action.run(request, user, cmd);
 
 				
@@ -185,8 +188,7 @@ public class Controller extends HttpServlet
 			entityManager.close();
 
 			request.setAttribute("context", contextPath);
-
-			request.setAttribute("username", username);
+			request.setAttribute("user", user);
 		}
 
 		request.setAttribute("version", properties.getProperty("version"));

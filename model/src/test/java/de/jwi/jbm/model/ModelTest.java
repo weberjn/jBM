@@ -212,6 +212,21 @@ public class ModelTest
 		assertTrue(1 == bookmarks.size());
 	}
 
+
+	@Test
+	public void e1listAllTags()
+	{
+		int n = 0;
+		
+		User user = um.findUser("weberjn");
+		
+		List<Tag> allTags = bm.getAllTags(user);
+		
+		n = allTags.size();
+		assertTrue(n == 2);
+	}
+	
+	
 	@Test
 	public void h1removeBookmark() throws MalformedURLException
 	{

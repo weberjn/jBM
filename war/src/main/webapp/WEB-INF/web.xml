@@ -6,27 +6,10 @@
 
 	<display-name>jBM - Java Bookmark Manager</display-name>
 
-	<!--  jsp-config>
-		<jsp-property-group>
-			<url-pattern>/*</url-pattern>
-			<page-encoding>UTF-8</page-encoding>
-		</jsp-property-group>
-	</jsp-config-->
-
 	<servlet>
 		<servlet-name>Controller</servlet-name>
 		<servlet-class>de.jwi.jbm.Controller</servlet-class>
 	</servlet>
-
-	<servlet>
-		<servlet-name>dbc</servlet-name>
-		<servlet-class>de.jwi.jbm.DBC</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>dbc</servlet-name>
-		<url-pattern>/dbc</url-pattern>
-	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>Controller</servlet-name>
@@ -44,6 +27,10 @@
 		<url-pattern>/profile/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/tags/*</url-pattern>
+	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>Controller</servlet-name>
@@ -61,6 +48,7 @@
 			<url-pattern>/bookmark/*</url-pattern>
 			<url-pattern>/bookmarks/*</url-pattern>
 			<url-pattern>/profile/*</url-pattern>
+			<url-pattern>/tags/*</url-pattern>
 			<url-pattern>/about/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>

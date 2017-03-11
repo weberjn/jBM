@@ -71,8 +71,8 @@ public class SearchBookmarksAction implements Action
 		
 		bookmarks = bm.searchBookmarks(user, text, navigator.getPagePosition());
 
-		request.setAttribute("pagePosition", navigator.getPagePosition());
-		request.setAttribute("bookmarksCount", new Integer(bookmarksCount));
+		request.setAttribute("query", text);
+		request.setAttribute("navigator", navigator);
 		request.setAttribute("bookmarks", bookmarks);
 
 		return "/WEB-INF/listbookmarks.jsp";

@@ -91,6 +91,14 @@ public class BookmarkManager {
 		return tag;
 	}
 	
+	public List<Tag> getAllTags(User user)
+	{
+		Query query = em.createQuery("SELECT t FROM Tag t WHERE t.user = :user");
+		query.setParameter("user", user);
+		List<Tag> resultList = query.getResultList();
+		
+		return resultList;
+	}
 	
 	public Tag findTag(Integer id)
 	{
