@@ -65,19 +65,18 @@ public class ListBookmarksAction implements Action
 			bookmarksCount = bm.getBookmarksCount(user);
 		}
 
-		PagePosition pagePosition = new PagePosition(bookmarksCount, page, pageSize, tagID,
-				LINK_FORMAT, LINK_FORMAT_TAG);
+		PageNavigator navigator = new PageNavigator(new PagePosition(bookmarksCount, page, pageSize),
+				LINK_FORMAT, LINK_FORMAT_TAG, tagID);
 
 		if (tagID != -1)
 		{
-			bookmarks = bm.getBookmarks(user, tag, pagePosition);
+			bookmarks = bm.getBookmarks(user, tag, navigator.getPagePosition());
 		} else
 		{
-			bookmarks = bm.getBookmarks(user, pagePosition);
+			bookmarks = bm.getBookmarks(user, navigator.getPagePosition());
 		}
 
-		request.setAttribute("pagePosition", pagePosition);
-		request.setAttribute("bookmarksCount", new Integer(bookmarksCount));
+		request.setAttribute("navigator", navigator);
 		request.setAttribute("bookmarks", bookmarks);
 		request.setAttribute("tag", tag);
 

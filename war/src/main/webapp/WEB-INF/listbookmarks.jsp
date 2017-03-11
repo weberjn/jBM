@@ -22,7 +22,7 @@
 </form>
 
 
-<p id="sort">${bookmarksCount} bookmark(s) 
+<p id="sort">${navigator.bookmarksCount} bookmark(s) 
 	<c:if test="${not empty tag}">for tag ${tag.tag}</c:if>
 </p>
 
@@ -68,8 +68,8 @@
 
 
 	<c:choose> 
-		<c:when test="${!empty pagePosition.first}">
-			<a href="${context}/bookmarks/${pagePosition.first}">First</a> 
+		<c:when test="${!empty navigator.first}">
+			<a href="${context}/bookmarks/${navigator.first}">First</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">First</span><span> / </span>
@@ -78,8 +78,8 @@
 
 
 	<c:choose> 
-		<c:when test="${!empty pagePosition.previous}">
-			<a href="${context}/bookmarks/${pagePosition.previous}">Previous</a> 
+		<c:when test="${!empty navigator.previous}">
+			<a href="${context}/bookmarks/${navigator.previous}">Previous</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">Previous</span><span> / </span>
@@ -88,8 +88,8 @@
 
 
 	<c:choose> 
-		<c:when test="${!empty pagePosition.next}">
-			<a href="${context}/bookmarks/${pagePosition.next}">Next</a> 
+		<c:when test="${!empty navigator.next}">
+			<a href="${context}/bookmarks/${navigator.next}">Next</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">Next</span><span> / </span>
@@ -97,14 +97,14 @@
 	</c:choose> 
 
 	<c:choose> 
-		<c:when test="${!empty pagePosition.last}">
-			<a href="${context}/bookmarks/${pagePosition.last}">Last</a> 
+		<c:when test="${!empty navigator.last}">
+			<a href="${context}/bookmarks/${navigator.last}">Last</a> 
 		</c:when> 
 		<c:otherwise> 
 			<span class="disable">Last</span><span> / </span>
 		</c:otherwise> 
 	</c:choose> 
-	Page ${pagePosition.current} of ${pagePosition.pageCount}
+	Page ${navigator.current} of ${navigator.pageCount}
 </p>
 
 

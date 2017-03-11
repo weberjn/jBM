@@ -66,12 +66,12 @@ public class SearchBookmarksAction implements Action
 
 		String pagePattern = "search/" + text + "/%s";
 
-		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, pageSize, -1, pagePattern,
-				null);
+		PageNavigator navigator = new PageNavigator(new PagePosition(bookmarksCount, page, pageSize), 
+				pagePattern, null, -1);
+		
+		bookmarks = bm.searchBookmarks(user, text, navigator.getPagePosition());
 
-		bookmarks = bm.searchBookmarks(user, text, pagePosition);
-
-		request.setAttribute("pagePosition", pagePosition);
+		request.setAttribute("pagePosition", navigator.getPagePosition());
 		request.setAttribute("bookmarksCount", new Integer(bookmarksCount));
 		request.setAttribute("bookmarks", bookmarks);
 

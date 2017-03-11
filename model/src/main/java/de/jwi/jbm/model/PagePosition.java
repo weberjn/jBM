@@ -4,13 +4,10 @@ public class PagePosition {
 
 	private int first, current, last, pagesize;
 	private int bookmarksCount;
-	private int tagID = -1;
-	private String linkFormat;
-	private String linkFormatTag;
 	private int pageCount;
 
 	// all Positions 1..
-	public PagePosition(int bookmarksCount, int newpos, int pagesize, int tagID, String linkFormat, String linkFormatTag)
+	public PagePosition(int bookmarksCount, int newpos, int pagesize)
 	{
 		// 0
 		// 1 1  
@@ -19,9 +16,7 @@ public class PagePosition {
 		// 4 2
 		
 		this.bookmarksCount = bookmarksCount;
-		this.linkFormat = linkFormat;
-		this.linkFormatTag = linkFormatTag;
-		
+	
 		pageCount = (bookmarksCount + pagesize - 1) / pagesize;
 		
 		first = 1;
@@ -39,9 +34,13 @@ public class PagePosition {
 		}
 		
 		this.pagesize = pagesize;
-		this.tagID = tagID;
 	}
 	
+	public int getBookmarksCount()
+	{
+		return bookmarksCount;
+	}
+
 	public int getPageCount()
 	{
 		return pageCount;
@@ -66,70 +65,49 @@ public class PagePosition {
 		return null;
 	}
 	
-	private String makeLink(int page)
-	{
-		String s;
-		
-		if (tagID == -1)
-		{
-			s = String.format(linkFormat, page);
-		}
-		else
-		{
-			s = String.format(linkFormatTag, page, tagID);
-		}
-		return s;
-	}
-	
-	public String getFirst() {
+	public int getFirst() {
 		if (bookmarksCount == 0 || current == first)
 		{
-			return null;
+			return -1;
 		}
-		
-		String s = makeLink(first);
-		return s;
+		return first;
 	}
 
 
 
-	public String getLast() {
+	public int getLast() {
 		if (bookmarksCount == 0 || current == last)
 		{
-			return null;
+			return -1;
 		}
-		
-		String s = makeLink(last);
-		return s;
+		return last;
 	}
 
-	public String getPrevious()
+	public int getPrevious()
 	{
 		if (bookmarksCount == 0)
 		{
-			return null;
+			return -1;
 		}
 		if (current > first)
 		{
-			String s = makeLink(current - 1);
-			return s;
+			return current - 1;
 		}
-		return null;
+		return -1;
 	}
 	
-	public String getNext()
+	public int getNext()
 	{
 		if (bookmarksCount == 0)
 		{
-			return null;
+			return -1;
 		}
 
 		if (current < last)
 		{
-			String s = makeLink(current + 1);
-			return s;
+			return current + 1;
 		}
-		return null;
+		return -1;
 	}
 
 }

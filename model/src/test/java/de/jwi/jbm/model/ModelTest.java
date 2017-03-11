@@ -191,7 +191,7 @@ public class ModelTest
 		
 		assertTrue(1 == bookmarksCount);
 		
-		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, 2, tag.getId(), null, null);
+		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, 2);
 		
 		List<Bookmark> bookmarks = bm.getBookmarks(user,  tag, pagePosition);
 		
@@ -206,7 +206,7 @@ public class ModelTest
 		int bookmarksCount = bm.getBookmarksCountForSearch(user, "Database");
 		assertTrue(1 == bookmarksCount);	
 		
-		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, 2, -1, null, null);
+		PagePosition pagePosition = new PagePosition(bookmarksCount, 1, 2);
 		
 		List<Bookmark> bookmarks = bm.searchBookmarks(user, "Database", pagePosition);
 		assertTrue(1 == bookmarks.size());
