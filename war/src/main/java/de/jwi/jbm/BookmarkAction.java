@@ -162,16 +162,7 @@ public class BookmarkAction implements Action
 		}
 		else
 		{
-			Iterator<Tag> it = bookmark.getTags().iterator();
-			while (it.hasNext())
-			{
-				Tag tag = it.next();
-				keywords.append(tag.getTag());
-				if ((it.hasNext()))
-				{
-					keywords.append(',');
-				}
-			}
+			bm.tagsToCSV(bookmark.getTags(), keywords);
 		}
 
 		request.setAttribute("bm", bookmark);

@@ -36,6 +36,11 @@
 		<fmt:formatDate value="${bookmark.modified}" var="bmodified"
 			type="date" pattern="yyyy-MM-dd HH:mm" />
 
+		<fmt:formatDate value="${bookmark.datetime}" var="bcreated"
+			type="date" pattern="yyyy-MM-dd HH:mm" />
+
+
+
 		<li class="xfolkentry private">
 			<div class="adminBackground">
 				<div class="link">
@@ -51,7 +56,7 @@
 						    <a href="${context}/bookmarks/list/1/${tag.id}">${tag.tag}</a>
 						</c:forEach>
 						
-						by ${bookmark.user.username} <small title="Last update">${bmodified}</small>
+						<small title="Last update">${bmodified} (${bcreated}) by ${bookmark.user.username}</small>
 						<a href="${context}/bookmark/edit/${bookmark.id}">Edit</a>
 					
 				</div>

@@ -1,12 +1,14 @@
 package de.jwi.jbm.model;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -28,7 +30,7 @@ public class BookmarkManager {
 	
 	private static final Logger log = Logger.getLogger(BookmarkManager.class.getName());
 	
-	EntityManager em;
+	private EntityManager em;
 
 	public BookmarkManager(EntityManager entityManager) {
 		super();
@@ -38,7 +40,6 @@ public class BookmarkManager {
 	public Timestamp touchBookmark(Bookmark bookmark)
 	{
 		Timestamp ts = new Timestamp(new Date().getTime());
-		bookmark.setDatetime(ts);
 		bookmark.setModified(ts);
 		return ts;
 	}
@@ -74,6 +75,20 @@ public class BookmarkManager {
 		
 		bookmark.getTags().removeAll(previousTags);
 	}
+
+	public void tagsToCSV(List<Tag> tags, StringBuffer sb)
+	{
+		Iterator<Tag> it = tags.iterator();
+		while (it.hasNext())
+		{
+			Tag tag = it.next();
+			sb.append(tag.getTag());
+			if ((it.hasNext()))
+			{
+				sb.append(',');
+			}
+		}
+	}
 	
 	public Tag findTag(User user, String tagName)
 	{
@@ -82,7 +97,7 @@ public class BookmarkManager {
 		Query query = em.createQuery("SELECT t FROM Tag t WHERE t.user = :user and t.tag = :tag");
 		query.setParameter("user", user);
 		query.setParameter("tag", tagName);
-		List resultList = query.getResultList();
+		List<Tag> resultList = query.getResultList();
 
 		if (!resultList.isEmpty()) {
 			tag = (Tag)resultList.get(0);
@@ -111,8 +126,9 @@ public class BookmarkManager {
 
 	
 	
-	public void addBookmark(User user, Bookmark bookmark) throws MalformedURLException {
+	public boolean addBookmark(User user, Bookmark bookmark) throws MalformedURLException {
 
+		boolean b = false;
 		String address = bookmark.getAddress();
 		
 		URL url = new URL(address);
@@ -122,7 +138,7 @@ public class BookmarkManager {
 		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user and b.hash = :hash");
 		query.setParameter("user", user);
 		query.setParameter("hash", md5);
-		List resultList = query.getResultList();
+		List<Bookmark> resultList = query.getResultList();
 
 		if (resultList.isEmpty()) {
 
@@ -140,7 +156,9 @@ public class BookmarkManager {
 			bookmark.setVoting(0);
 
 			em.persist(bookmark);
+			b = true;
 		}
+		return b;
 	}
 
 	public int getBookmarksCount() {
@@ -172,10 +190,10 @@ public class BookmarkManager {
 		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user and b.id = :id");
 		query.setParameter("user", user);
 		query.setParameter("id", bookmarkId);
-		List resultList = query.getResultList();
+		List<Bookmark> resultList = query.getResultList();
 
 		if (!resultList.isEmpty()) {
-			bookmark = (Bookmark)resultList.get(0);
+			bookmark = resultList.get(0);
 		}
 		
 		return bookmark;
@@ -192,6 +210,19 @@ public class BookmarkManager {
 		return false;
 	}
 	
+
+	public List<Bookmark> getBookmarks(User user) {
+
+		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user order by b.modified desc");
+		query.setParameter("user", user);
+		
+		List<Bookmark> resultList = query.getResultList();
+
+		return resultList;
+	}
+
+	
+	
 	public List<Bookmark> getBookmarks(User user, PagePosition pagePosition) {
 
 		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user order by b.modified desc");
@@ -199,7 +230,7 @@ public class BookmarkManager {
 		query.setFirstResult((pagePosition.getCurrent()-1) * pagePosition.getPagesize()); 
 		query.setMaxResults(pagePosition.getPagesize());
 		
-		List resultList = query.getResultList();
+		List<Bookmark> resultList = query.getResultList();
 
 		return resultList;
 	}
@@ -222,7 +253,7 @@ public class BookmarkManager {
 		query.setFirstResult((pagePosition.getCurrent()-1) * pagePosition.getPagesize()); 
 		query.setMaxResults(pagePosition.getPagesize());
 		
-		List resultList = query.getResultList();
+		List<Bookmark> resultList = query.getResultList();
 
 		return resultList;
 	}
@@ -237,7 +268,7 @@ public class BookmarkManager {
 		query.setFirstResult((pagePosition.getCurrent()-1) * pagePosition.getPagesize()); 
 		query.setMaxResults(pagePosition.getPagesize());
 		
-		List resultList = query.getResultList();
+		List<Bookmark> resultList = query.getResultList();
 
 		return resultList;
 	}

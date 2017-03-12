@@ -3,11 +3,14 @@ package de.jwi.jbm.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
@@ -20,6 +23,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.h2.tools.RunScript;
 import org.junit.After;
@@ -129,13 +135,15 @@ public class ModelTest
 	@Test
 	public void b1BookmarkCreate() throws MalformedURLException
 	{
+		boolean b;
 		User user = um.createIfNotExists("weberjn");
 
 		Bookmark bookmark = new Bookmark();
 		bookmark.setAddress("http://www.h2database.com");
 		bookmark.setTitle("H2 Database Engine");
 
-		bm.addBookmark(user, bookmark);
+		b = bm.addBookmark(user, bookmark);
+		assertTrue(b);
 
 		int count = bm.getBookmarksCount();
 		assertEquals(count, 1);
@@ -146,7 +154,8 @@ public class ModelTest
 		Bookmark bookmark2 = new Bookmark();
 		bookmark2.setAddress("http://www.h2database.com");
 		bookmark2.setTitle("H2 Database Engine");
-		bm.addBookmark(user, bookmark2);
+		b = bm.addBookmark(user, bookmark2);
+		assertFalse(b);
 		
 		count = bm.getBookmarksCount(user);
 		assertEquals(count, 1);
@@ -245,7 +254,7 @@ public class ModelTest
 	}
 
 	@Test
-	public void k1updateTags()
+	public void k1updateTags() throws MalformedURLException
 	{
 		int n = 0;
 		
@@ -254,6 +263,7 @@ public class ModelTest
 		Bookmark bookmark = new Bookmark();
 		bookmark.setAddress("http://tomcat.apache.org/");
 		bookmark.setTitle("Apache Tomcat&reg; - Welcome!");
+		bm.addBookmark(user, bookmark);
 		
 		n = bookmark.getTags().size();
 		assertTrue(n == 0);
@@ -298,8 +308,25 @@ public class ModelTest
 		
 		n = bookmark.getTags().size();
 		assertTrue(n == 0);
-		
 	}
 
+	@Test
+	public void n1ApiAllBookmarks() throws XMLStreamException, IOException
+	{
+		User user = um.findUser("weberjn");
+
+		
+		APIManager api = new APIManager(bm);
+		
+		Writer w = new PrintWriter(System.out, true);
+		
+		api.fetchAllBookmarks(user, w);
+		
+		w.close();
+		
+		System.out.println("done **");
+		
+//		throw new RuntimeException();
+	}
 	
 }

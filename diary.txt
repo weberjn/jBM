@@ -1,4 +1,24 @@
 
+
+
+2017-03-12
+https://fizalihsan.wordpress.com/2013/12/05/how-to-secure-your-rest-service-part-1/
+
+requestURL: http://localhost:8080/jBM/api/posts/add
+contextPath: /jBM
+servlet: api
+pathInfo: /posts/add
+queryString: null
+url: http://www.zeit.de/index
+description: ZEIT ONLINE | Nachrichten, HintergrÃ¼nde und Debatten
+extended:
+tags:
+status: 2
+
+
+GET /jBM/api/posts/all HTTP/1.1
+
+
 2017-03-09
 
 https://wiki.apache.org/tomcat/FAQ/CharacterEncoding#Q8

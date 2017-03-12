@@ -33,7 +33,7 @@ public class Controller extends HttpServlet
 	private static final String VERSIONPROPERTIES = "/version.properties";
 
 	ServletContext servletContext = null;
-	private EntityManagerFactory entityManagerFactory;
+	protected EntityManagerFactory entityManagerFactory;
 
 	private Properties properties;
 
