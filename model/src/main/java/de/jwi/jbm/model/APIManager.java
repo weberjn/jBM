@@ -86,30 +86,36 @@ public class APIManager
 		XMLStreamWriter xmlWriter = outputFactory.createXMLStreamWriter(writer);
 
 		
-		xmlWriter.writeStartDocument("UTF-8", "1.0");
 		xmlWriter.writeStartElement("posts");
-		xmlWriter.writeAttribute("user",user.getUsername());
+		
+		xmlWriter.writeAttribute("tag","");
+		
+		xmlWriter.writeAttribute("user", user.getUsername());
 		
 		for (Bookmark b : bookmarks)
 		{
 			xmlWriter.writeStartElement("post");
 			xmlWriter.writeAttribute("href", b.getAddress());
-			if (b.getDescription() != null)
-			{
-				xmlWriter.writeAttribute("description", b.getDescription());
-			}
+			
+			xmlWriter.writeAttribute("description", b.getTitle());
+			
 			xmlWriter.writeAttribute("hash", b.getHash());
+			
+			String description = b.getDescription() != null ? b.getDescription() : "";
+			
+			xmlWriter.writeAttribute("extended", description);
+
 			
 			StringBuffer sb = new StringBuffer();
 			bm.tagsToCSV(b.getTags(), sb);
-			if (sb.length() > 0)
-			{
-				xmlWriter.writeAttribute("tag", sb.toString());
-			}
+			xmlWriter.writeAttribute("tag", sb.toString());
 			
+			xmlWriter.writeAttribute("status", b.getStatus().toString());				
+				
 			xmlWriter.writeAttribute("time", dateFormat.format(b.getModified()));
 			
 			xmlWriter.writeEndElement();
+			
 		}
 		xmlWriter.writeEndElement();
 	}
