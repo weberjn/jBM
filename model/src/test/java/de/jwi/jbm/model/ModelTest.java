@@ -151,6 +151,10 @@ public class ModelTest
 		count = bm.getBookmarksCount(user);
 		assertEquals(count, 1);
 
+		String hash = bookmark.getHash();
+		Bookmark b1 = bm.findBookmark(user, hash);
+		assertNotNull(b1);
+		
 		Bookmark bookmark2 = new Bookmark();
 		bookmark2.setAddress("http://www.h2database.com");
 		bookmark2.setTitle("H2 Database Engine");
@@ -167,6 +171,27 @@ public class ModelTest
 		bookmarkId = bookmark.getId();
 	}
 
+	
+	@Test
+	public void b2BookmarkUpdate() throws MalformedURLException
+	{
+		boolean b;
+		
+		User user = um.findUser("weberjn");
+		assertNotNull(user);
+		
+		Bookmark bookmark = new Bookmark();
+		bookmark.setAddress("http://gitblit.com/");
+		bookmark.setTitle("Gitblit");
+		b = bm.addBookmark(user, bookmark);
+		assertTrue(b);
+		Bookmark withChanges = new Bookmark();
+		bm.copyTo(bookmark, withChanges);
+		withChanges.setDescription("Github in Java");
+		bm.updateBookmark(user, withChanges);
+		assertEquals("Github in Java", bookmark.getDescription());
+	}
+	
 	@Test
 	public void c1TagsAdd() throws MalformedURLException
 	{

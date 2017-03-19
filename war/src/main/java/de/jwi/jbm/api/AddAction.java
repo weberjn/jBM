@@ -24,21 +24,27 @@ public class AddAction implements APIAction
 	public void run(HttpServletRequest request, HttpServletResponse response, User user,
 			String cmd) throws ActionException
 	{
-		
-//		url: http://www.zeit.de/index
-//			description: ZEIT ONLINE | Nachrichten, HintergrÃ¼nde und Debatten
-//			extended:
-//			tags:
-//			status: 2
-//			
 
 		String url = request.getParameter("url");
 		String description = request.getParameter("description");
+		String extended = request.getParameter("extended");
 		String tags  = request.getParameter("tags");
+		String replace  = request.getParameter("replace");
+		String status  = request.getParameter("status");
+		/*
+		url:          http://www.foxnews.com
+		description:  Fox News - Breaking News Updates | Latest News Headlines | Photos & News Videos
+		extended:     Breaking News, Latest News and Current News from FOXNews.com. Breaking news and video. Latest Current
+		              News: U.S., World, Entertainment, Health, Business, Technology, Politics, Sports.
+		tags:         Breaking News, Latest News and Current News from FOXNews.com. Breaking news and video. Latest Current
+		              News: U.S., World, Entertainment, Health, Business, Technology, Politics, Sports.
+		status:       2
+		replace:      yes
+*/
 		
 		try
 		{
-			am.addBookmark(user, response.getWriter(), url, description, tags);
+			am.addBookmark(user, response.getWriter(), url, description, extended, tags, status, replace);
 		} catch (XMLStreamException | IOException e)
 		{
 			throw new ActionException(e);

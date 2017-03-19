@@ -3,16 +3,16 @@ package de.jwi.jbm.model;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -25,6 +25,9 @@ public class APIManager
 	private BookmarkManager bm;
 	private DateFormat dateFormat;
 	private XMLOutputFactory outputFactory;
+	
+	private static final Logger log = Logger.getLogger(APIManager.class.getName());
+
 
 	public APIManager(BookmarkManager bm) {
 		super();
@@ -37,33 +40,40 @@ public class APIManager
 	}
 	
 
-	public void addBookmark(User user, Writer writer, String url, String description, String tags) throws XMLStreamException, IOException
+	public void addBookmark(User user, Writer writer, String url, String description, String extended,
+			String tags, String status, String replace) throws XMLStreamException, IOException
 	{
+		int iStatus = Integer.parseInt(status);
+		boolean bReplace = "yes".equalsIgnoreCase(replace);
+		
 		Bookmark b = new Bookmark();
 		b.setAddress(url);
 		
-		StringBuffer keywords = new StringBuffer();
+		b.setTitle(description); // sic
+		b.setDescription(extended); // sic
+		
+		b.setStatus(iStatus);
+		
 
-		bm.fetchBookmarkFromURL(b, keywords, url, null);
-		
 		String[] ts = tags.toString().split(",");
-		List<String> tagsFromApi = Arrays.asList(ts);
-		
-		String[] ts1 = keywords.toString().split(",");
-		if (ts1 != null && ts1.length > 0)
-		{
-			Set<String> tagsFromURL = new HashSet<String>(Arrays.asList(ts1));
-			tagsFromURL.addAll(tagsFromApi);
-		}
 		
 		try
 		{
-			bm.addBookmark(user, b);
-			
-			for (String s : tagsFromApi)
+			if (bReplace)
 			{
-				bm.addTag(user, b, s);
+				b = bm.updateBookmark(user, b);
+				if (b == null)
+				{
+					log.log(Level.SEVERE, "Bookmark for update not found in DB: " + url); 
+					writer.write("<result code=\"something went wrong\" />");
+				}
 			}
+			else
+			{
+				bm.addBookmark(user, b);
+			}
+			
+			bm.updateTags(user, b, ts);
 			
 			writer.write("<result code=\"done\" />");
 			
@@ -73,16 +83,25 @@ public class APIManager
 		}
 	}
 	
+	public void deleteBookmark(User user, HttpServletResponse response, String address) throws XMLStreamException, IOException
+	{
+		URL url = new URL(address);
+		
+		Bookmark b = bm.findBookmark(user, url);
+		if (b == null)
+		{
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		}
+		
+		boolean done = bm.removeBookmark(user, b.getId());
+		
+		response.getWriter().write("<result code=\"done\" />");
+	}
 	
 	public void fetchAllBookmarks(User user, Writer writer) throws XMLStreamException
 	{
 		List<Bookmark> bookmarks = bm.getBookmarks(user);
 		
-//		<posts tag="" user="user">
-//		<post href="http://www.weather.com/" description="weather.com"
-//		hash="6cfedbe75f413c56b6ce79e6fa102aba" tag="weather reference"
-//		time="2005-11-29T20:30:47Z" />
-
 		XMLStreamWriter xmlWriter = outputFactory.createXMLStreamWriter(writer);
 
 		

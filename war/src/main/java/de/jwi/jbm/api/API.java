@@ -89,11 +89,15 @@ public class API extends Controller
 				{
 					action = new AddAction(am);
 				}
+				if ("delete".equals(cmd))
+				{
+					action = new DeleteAction(am);
+				}
 				if ("all".equals(cmd))
 				{
 					action = new AllBookmarksAction(am);
 				}
-				
+
 				try
 				{
 					action.run(request, response, user, cmd);

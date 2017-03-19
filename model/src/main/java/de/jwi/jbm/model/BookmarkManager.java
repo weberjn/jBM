@@ -37,7 +37,7 @@ public class BookmarkManager {
 		this.em = entityManager;
 	}
 	
-	public Timestamp touchBookmark(Bookmark bookmark)
+	public Timestamp touch(Bookmark bookmark)
 	{
 		Timestamp ts = new Timestamp(new Date().getTime());
 		bookmark.setModified(ts);
@@ -46,6 +46,8 @@ public class BookmarkManager {
 	
 	public Tag addTag(User user, Bookmark bookmark, String tagName)
 	{
+		tagName = tagName.trim();
+		
 		Tag tag = findTag(user, tagName);
 		
 		if (tag == null)
@@ -69,13 +71,30 @@ public class BookmarkManager {
 		
 		for (String s : tagNames)
 		{
-			Tag newTag = addTag(user, bookmark, s);
-			previousTags.remove(newTag);
+			s = s.trim();
+			if (s.length() > 0)
+			{
+				Tag newTag = addTag(user, bookmark, s);
+				previousTags.remove(newTag);
+			}
 		}
 		
 		bookmark.getTags().removeAll(previousTags);
 	}
 
+	public String[] tagsAsNames(List<Tag> tags)
+	{
+		
+		String[] names = new String[tags.size()];
+		
+		int i = 0;
+		for (Tag t : tags)
+		{
+			names[i++] = t.getTag();
+		}
+		return names;
+	}
+	
 	public void tagsToCSV(List<Tag> tags, StringBuffer sb)
 	{
 		Iterator<Tag> it = tags.iterator();
@@ -123,7 +142,49 @@ public class BookmarkManager {
 		return tag;
 	}
 
+	public void copyTo(Bookmark source, Bookmark target)
+	{
+		target.setAddress(source.getAddress());
+		target.setDatetime(source.getDatetime());
+		target.setDescription(source.getDescription());
+		target.setHash(source.getHash());
+		target.setModified(source.getModified());
+		target.setStatus(source.getStatus());
+		target.setTitle(source.getTitle());
+		target.setUser(source.getUser());
+		
+		target.getTags().addAll(source.getTags());
+		
+	}
+	
+	public Bookmark updateBookmark(User user, Bookmark bookmark) throws MalformedURLException
+	{
+		Bookmark b = null;
+		
+		String address = bookmark.getAddress();
+		
+		URL url = new URL(address);
+		
+		String hash = MD5(url.toString());
 
+		b = findBookmark(user, hash);
+
+		if (b != null) {
+			
+			b.setAddress(bookmark.getAddress());
+			b.setTitle(bookmark.getTitle());
+			b.setDescription(bookmark.getDescription());
+			
+			String[] tagNames = tagsAsNames(bookmark.getTags());
+			
+			updateTags(user, bookmark, tagNames);
+			
+			touch(b);
+			
+			em.merge(b);
+		}
+		return b;
+	}
 	
 	
 	public boolean addBookmark(User user, Bookmark bookmark) throws MalformedURLException {
@@ -182,6 +243,28 @@ public class BookmarkManager {
 		return n.intValue();
 	}
 
+	public Bookmark findBookmark(User user, URL url)
+	{
+		String hash = MD5(url.toString());
+		Bookmark bookmark = findBookmark(user, hash);
+		return bookmark;
+	}
+	
+	public Bookmark findBookmark(User user, String hash)
+	{
+		Bookmark bookmark = null;
+		
+		Query query = em.createQuery("SELECT b FROM Bookmark b WHERE b.user=:user and b.hash = :hash");
+		query.setParameter("user", user);
+		query.setParameter("hash", hash);
+		List<Bookmark> resultList = query.getResultList();
+
+		if (!resultList.isEmpty()) {
+			bookmark = resultList.get(0);
+		}
+		
+		return bookmark;
+	}
 	
 	public Bookmark findBookmark(User user, int bookmarkId)
 	{

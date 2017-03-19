@@ -12,11 +12,13 @@ servlet: api
 pathInfo: /posts/add
 queryString: null
 url: http://www.zeit.de/index
-description: ZEIT ONLINE | Nachrichten, HintergrÃ¼nde und Debatten
+description: ZEIT ONLINE | Nachrichten, Hintergründe und Debatten
 extended:
 tags:
 status: 2
 
+
+https://github.com/domainersuitedev/delicious-api/blob/master/api/posts.md
 
 GET /jBM/api/posts/all HTTP/1.1
 

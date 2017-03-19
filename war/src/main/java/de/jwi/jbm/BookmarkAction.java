@@ -155,7 +155,7 @@ public class BookmarkAction implements Action
 			} else
 			{
 				fillBookmark(request, user, bm, bookmark);
-				bm.touchBookmark(bookmark);
+				bm.touch(bookmark);
 
 				return "rd:/bookmarks/list";
 			}
