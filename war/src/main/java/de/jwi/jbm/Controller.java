@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -28,10 +29,6 @@ public class Controller extends HttpServlet
 
 	int PAGESIZE = 2;
 
-	private static final String PROPERTIES = "/WEB-INF/jBM.properties";
-	private static final String CUSTOMPROPERTIES = "/jBM-custom.properties";
-	private static final String VERSIONPROPERTIES = "/version.properties";
-
 	ServletContext servletContext = null;
 	protected EntityManagerFactory entityManagerFactory;
 
@@ -40,59 +37,21 @@ public class Controller extends HttpServlet
 	@Override
 	public void init() throws ServletException
 	{
-		super.init();
-
-		properties = new Properties();
-
-		try
-		{
-			URL url = getServletContext().getResource(PROPERTIES);
-			InputStream is = url.openStream();
-			properties.load(is);
-			is.close();
-
-			url = Controller.class.getResource(CUSTOMPROPERTIES);
-			if (url != null)
-			{
-				log.info("loading custom Properties from " + url);
-
-				Properties properties2 = new Properties();
-				is = url.openStream();
-				properties2.load(is);
-				is.close();
-				properties.putAll(properties2);
-			}
-
-			url = Controller.class.getResource(VERSIONPROPERTIES);
-			if (url != null)
-			{
-				Properties properties2 = new Properties();
-				is = url.openStream();
-				properties2.load(is);
-				is.close();
-				properties.putAll(properties2);
-			}
-
-		} catch (Exception e)
+		servletContext = getServletContext();
+		
+		Exception e = (Exception)servletContext.getAttribute(AppContextListener.EXCEPTION);
+		if (e!=null)
 		{
 			throw new ServletException(e);
 		}
+		
+		entityManagerFactory = (EntityManagerFactory)servletContext.getAttribute(AppContextListener.EMF);
+		
+		properties = (Properties)servletContext.getAttribute(AppContextListener.PROPS);
 
-		servletContext = getServletContext();
-
-		entityManagerFactory = Persistence.createEntityManagerFactory("jBM", properties);
-
-		log.info(entityManagerFactory.toString());
+		super.init();
 	}
-
-	@Override
-	public void destroy()
-	{
-		super.destroy();
-		entityManagerFactory.close();
-		entityManagerFactory = null;
-	}
-
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
@@ -181,6 +140,8 @@ public class Controller extends HttpServlet
 				
 			} catch (ActionException e)
 			{
+				log.log(Level.SEVERE, e.getMessage(), e);
+				
 				transaction.rollback();
 				entityManager.close();
 				throw new ServletException(e);

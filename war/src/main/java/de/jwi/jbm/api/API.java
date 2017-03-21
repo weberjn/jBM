@@ -9,25 +9,44 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.jwi.jbm.AboutAction;
-import de.jwi.jbm.Action;
 import de.jwi.jbm.ActionException;
-import de.jwi.jbm.Controller;
+import de.jwi.jbm.AppContextListener;
 import de.jwi.jbm.entities.User;
 import de.jwi.jbm.model.APIManager;
 import de.jwi.jbm.model.BookmarkManager;
 import de.jwi.jbm.model.UserManager;
 
-public class API extends Controller
+public class API extends HttpServlet
 {
 
 	private static final Logger log = Logger.getLogger(API.class.getName());
+
+	private EntityManagerFactory entityManagerFactory;
+
+	@Override
+	public void init() throws ServletException
+	{
+		ServletContext servletContext = getServletContext();
+		
+		Exception e = (Exception)servletContext.getAttribute(AppContextListener.EXCEPTION);
+		if (e!=null)
+		{
+			throw new ServletException(e);
+		}
+		
+		entityManagerFactory = (EntityManagerFactory)servletContext.getAttribute(AppContextListener.EMF);
+
+		super.init();
+	}
+	
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)

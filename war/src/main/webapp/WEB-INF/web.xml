@@ -6,6 +6,10 @@
 
 	<display-name>jBM - Java Bookmark Manager</display-name>
 
+	<listener>
+		<listener-class>de.jwi.jbm.AppContextListener</listener-class>
+	</listener>
+
 	<servlet>
 		<servlet-name>Controller</servlet-name>
 		<servlet-class>de.jwi.jbm.Controller</servlet-class>
@@ -90,9 +94,9 @@
 		<role-name>jBMAPI</role-name>
 	</security-role>
 
-	<persistence-context-ref>
+	<!-- persistence-context-ref>
 		<persistence-context-ref-name>persistence/jbm</persistence-context-ref-name>
 		<persistence-unit-name>jbm</persistence-unit-name>
-	</persistence-context-ref>
+	</persistence-context-ref -->
 
 </web-app>
