@@ -1,3 +1,10 @@
+
+
+2017-03-21
+
+http://stackoverflow.com/questions/33790875/how-to-dynamically-modifying-unitname-in-persistencecontext
+http://stackoverflow.com/questions/5356152/two-persistence-unit-in-one-persistence-xml
+
 2017-03-18
 
 http://stackoverflow.com/questions/2187258/i-want-to-port-my-delicious-bookmarks-to-my-website
