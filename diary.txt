@@ -2,6 +2,7 @@
 
 2017-03-21
 
+https://docs.jboss.org/author/display/WFLY10/JPA+Reference+Guide
 http://stackoverflow.com/questions/33790875/how-to-dynamically-modifying-unitname-in-persistencecontext
 http://stackoverflow.com/questions/5356152/two-persistence-unit-in-one-persistence-xml
 

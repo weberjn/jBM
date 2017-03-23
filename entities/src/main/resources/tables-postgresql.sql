@@ -46,8 +46,8 @@ CREATE TABLE sc_users (
   uId integer DEFAULT nextval('uIds'::text) PRIMARY KEY,
   username varchar(25) NOT NULL DEFAULT '',
   password varchar(40) DEFAULT '',
-  uDatetime timestamp with timezone DEFAULT now(),
-  uModified timestamp with timezone DEFAULT now(),
+  uDatetime timestamp with time zone DEFAULT now(),
+  uModified timestamp with time zone DEFAULT now(),
   name varchar(50) DEFAULT NULL,
   email varchar(50) DEFAULT NULL,
   homepage varchar(255) DEFAULT NULL,
@@ -89,8 +89,8 @@ CREATE TABLE sc_bookmarks (
   uId integer REFERENCES sc_users (uId),
   bIp varchar(40) DEFAULT NULL,
   bStatus smallint NOT NULL,
-  bDatetime timestamp with timezone DEFAULT now(),
-  bModified timestamp with timezone DEFAULT now(),
+  bDatetime timestamp with time zone DEFAULT now(),
+  bModified timestamp with time zone DEFAULT now(),
   bTitle varchar(255) DEFAULT '' NOT NULL,
   bAddress varchar(1500) DEFAULT '' NOT NULL,
   bDescription text,
@@ -141,7 +141,7 @@ CREATE TABLE sc_commondescription (
   bHash varchar(32) DEFAULT '' NOT NULL,
   cdTitle varchar(255) DEFAULT '' NOT NULL,
   cdDescription text,
-  cdDatetime timestamp with timezone DEFAULT now() NOT NULL
+  cdDatetime timestamp with time zone DEFAULT now() NOT NULL
 );
 
 CREATE UNIQUE INDEX sc_commondescription_tag_timestamp on sc_commondescription (tag, cdDatetime);
@@ -161,7 +161,7 @@ CREATE TABLE sc_searchhistory (
   shId integer DEFAULT nextval('shIds'::text) PRIMARY KEY,
   shTerms varchar(255) NOT NULL DEFAULT '',
   shRange varchar(32) NOT NULL DEFAULT '',
-  shDatetime timestamp with timezone DEFAULT now() NOT NULL,
+  shDatetime timestamp with time zone DEFAULT now() NOT NULL,
   shNbResults integer NOT NULL,
   uId integer REFERENCES sc_users (uId)
 );

@@ -4,8 +4,6 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertEquals;
-
 public class VariableSubstitutor
 {
 	Pattern re = Pattern.compile("\\$\\{(.+?)\\}");
