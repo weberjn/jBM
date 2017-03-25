@@ -2,6 +2,7 @@
 2017-03-25
 
 http://onpersistence.blogspot.de/2008/04/eclipselink-and-datasources.html
+https://github.com/h2database/h2database/issues/411
 
 2017-03-21
 
