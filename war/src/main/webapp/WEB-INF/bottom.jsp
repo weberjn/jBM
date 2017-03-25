@@ -1,6 +1,6 @@
 <div id="bottom">
 
-	jBM ${version} ${builddate}
+	jBM ${version} ${builddate} ${pageContext.servletContext.serverInfo}
 
 
 </div>

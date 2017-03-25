@@ -84,8 +84,10 @@ public class AppContextListener implements ServletContextListener
 			
 			new VariableSubstitutor().substitute(properties);
 			context.setAttribute(PROPS, properties);
-			
+
+
 			entityManagerFactory = Persistence.createEntityManagerFactory("jBM", properties);
+			
 			context.setAttribute(EMF, entityManagerFactory);
 
 			log.info(entityManagerFactory.toString());

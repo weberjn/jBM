@@ -1,8 +1,6 @@
 package de.jwi.jbm;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,7 +8,6 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -24,16 +21,17 @@ import de.jwi.jbm.model.UserManager;
 
 public class Controller extends HttpServlet
 {
-
+	String PAGESIZE_KEY = "jbm.pagesize";
+	
 	private static final Logger log = Logger.getLogger(Controller.class.getName());
 
-	int PAGESIZE = 2;
+	int pageSize = 20;
 
 	ServletContext servletContext = null;
 	protected EntityManagerFactory entityManagerFactory;
 
 	private Properties properties;
-
+	
 	@Override
 	public void init() throws ServletException
 	{
@@ -49,9 +47,13 @@ public class Controller extends HttpServlet
 		
 		properties = (Properties)servletContext.getAttribute(AppContextListener.PROPS);
 
+		pageSize = Integer.parseInt(properties.getProperty(PAGESIZE_KEY, "" + pageSize));
+		
 		super.init();
 	}
 	
+
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
@@ -97,7 +99,8 @@ public class Controller extends HttpServlet
 		{
 
 			EntityManager entityManager = entityManagerFactory.createEntityManager();
-			EntityTransaction transaction = entityManager.getTransaction();
+			EntityTransaction transaction = null;
+			transaction = entityManager.getTransaction();
 			transaction.begin();
 
 			UserManager um = new UserManager(entityManager);
@@ -120,11 +123,11 @@ public class Controller extends HttpServlet
 				{
 					if (cmd.startsWith("list"))
 					{
-						action = new ListBookmarksAction(bm, PAGESIZE);
+						action = new ListBookmarksAction(bm, pageSize);
 					}
 					if (cmd.startsWith("search"))
 					{
-						action = new SearchBookmarksAction(bm, PAGESIZE);
+						action = new SearchBookmarksAction(bm, pageSize);
 					}
 				}
 				if ("bookmark".equals(servlet) && (cmd != null))
@@ -141,11 +144,14 @@ public class Controller extends HttpServlet
 			} catch (ActionException e)
 			{
 				log.log(Level.SEVERE, e.getMessage(), e);
-				
+
 				transaction.rollback();
+				
 				entityManager.close();
+					
 				throw new ServletException(e);
 			}
+			
 			transaction.commit();
 			entityManager.close();
 

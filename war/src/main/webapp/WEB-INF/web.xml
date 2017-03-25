@@ -2,6 +2,7 @@
 
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	metadata-complete="true"
 	version="3.1">
 
 	<display-name>jBM - Java Bookmark Manager</display-name>
@@ -34,7 +35,6 @@
 		<servlet-name>Controller</servlet-name>
 		<url-pattern>/bookmarks/*</url-pattern>
 	</servlet-mapping>
-
 
 	<servlet-mapping>
 		<servlet-name>Controller</servlet-name>
@@ -93,10 +93,5 @@
 	<security-role>
 		<role-name>jBMAPI</role-name>
 	</security-role>
-
-	<!-- persistence-context-ref>
-		<persistence-context-ref-name>persistence/jbm</persistence-context-ref-name>
-		<persistence-unit-name>jbm</persistence-unit-name>
-	</persistence-context-ref -->
 
 </web-app>

@@ -25,15 +25,4 @@
 </li>
 </ul>
 
-</p>
-
-<h3>Tips</h3>
-
-<ul>
-<li>Add search plugin into your browser: <a href="#" onclick="window.external.AddSearchProvider('//localhost/SemanticScuttle-0.98.5/www/api/opensearch.php');">opensearch</a></li>
-<li>The secret tag "system:unfiled" allows you to find bookmarks without tags.</li>
-<li>The secret tag "system:imported" allows you to find imported bookmarks.</li>
-</ul>
-
-
 <%@include file="bottom.jsp"%>
