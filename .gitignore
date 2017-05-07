@@ -28,6 +28,8 @@ local.properties
 .project
 .classpath
 
+pom.xml.versionsBackup
+
 # External tool builders
 .externalToolBuilders/
 

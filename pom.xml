@@ -6,7 +6,7 @@
 
 	<groupId>de.jwi.jbm</groupId>
 	<artifactId>jBM</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 
 	<name>jBM - Java Bookmark Manager</name>
 	<url>https://github.com/weberjn/jBM</url>
@@ -29,13 +29,13 @@
 			<dependency>
 				<groupId>de.jwi.jbm</groupId>
 				<artifactId>jbm-entities</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>de.jwi.jbm</groupId>
 				<artifactId>jbm-model</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 
 			<dependency>
