@@ -71,8 +71,6 @@ public class Controller extends HttpServlet
 
 		String servlet = request.getServletPath().substring(1);
 
-		System.out.println(servlet);
-
 		String pathInfo = request.getPathInfo();
 
         request.setCharacterEncoding("UTF-8");

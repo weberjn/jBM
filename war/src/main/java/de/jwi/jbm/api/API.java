@@ -2,7 +2,6 @@ package de.jwi.jbm.api;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -47,6 +46,12 @@ public class API extends HttpServlet
 		super.init();
 	}
 	
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException
+	{
+		doPost(request, response);
+	}
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -56,27 +61,7 @@ public class API extends HttpServlet
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/xml; charset=UTF-8");
 		
-		StringBuffer requestURL = request.getRequestURL();
-		System.out.printf("requestURL: %s%n",requestURL);
-		
-		String contextPath = request.getContextPath();
-		System.out.printf("contextPath: %s%n",contextPath);
-		
-		String servlet = request.getServletPath().substring(1);
-		System.out.printf("servlet: %s%n",servlet);
-		
 		String pathInfo = request.getPathInfo();
-		System.out.printf("pathInfo: %s%n",pathInfo);
-		
-		String queryString = request.getQueryString();
-		System.out.printf("queryString: %s%n",queryString);
-		
-
-
-		for (String key : Collections.list(request.getParameterNames()))
-		{
-			System.out.printf("%s: %s%n", key, request.getParameter(key));
-		}
     
 		response.setContentType("text/xml");
 		PrintWriter out = response.getWriter();

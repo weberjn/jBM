@@ -55,7 +55,7 @@
 				<div class="meta">
 					Tags: 
 					    <c:forEach items="${bookmark.tags}" var="tag">
-						    <a href="${context}/bookmarks/list/1/${tag.id}">${tag.description}</a>
+						    <a href="${context}/bookmarks/list/1/${tag.id}">${tag.tag}</a>
 						</c:forEach>
 						
 						<small title="Last update">${bmodified} (${bcreated}) by ${bookmark.user.username}</small>

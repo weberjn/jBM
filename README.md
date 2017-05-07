@@ -47,7 +47,7 @@ For Tomcat these are declared in tomcat-users.xml
 
     <role rolename="jBM"/>
     <role rolename="jBMAPI"/>
-    <user username="weberjn" password="sosecret" roles="jBM,jBMAPI"/>
+    <user username="user" password="sosecret" roles="jBM,jBMAPI"/>
 
 
 # Screenshots
@@ -63,6 +63,10 @@ For Tomcat these are declared in tomcat-users.xml
 # API
 
 jBM supports a subset of the delicious API v1.
+
+To see, if the API works, run curl like
+
+    curl -k -u user:sosecret --data '' http://your.host/jBM/api/posts/all
 
 # Android
 
