@@ -23,3 +23,11 @@ We need just one entry for the data source:
 
     javax.persistence.nonJtaDataSource=java:/datasources/jBM
 
+## Security
+
+Add a Wildfly JEE user having roles jBM (and jBMAPI if you need the API for Android) to
+
+    application-users.properties
+    application-roles.properties
+    
+    

@@ -67,26 +67,6 @@
 		</tr>
 	</table>
 
-
-	<h3>Actions</h3>
-	<table class="profile">
-		<tr>
-			<th align="left">Export bookmarks</th>
-			<td><a href="../api/export_html.php">HTML file (for
-					browsers)</a> / <a href="../api/posts_all.php">XML file (like
-					del.icio.us)</a> / <a href="../api/export_csv.php">CSV file (for
-					spreadsheet tools)</a></td>
-		</tr>
-		<tr>
-			<th></th>
-			<td></td>
-		</tr>
-		<tr>
-			<th></th>
-			<td></td>
-		</tr>
-	</table>
-
 </form>
 
 <%@include file="bottom.jsp"%>

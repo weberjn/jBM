@@ -27,24 +27,10 @@
 	<c:if test="${not empty query}">for query ${query}</c:if>
 </p>
 
-<p class="paging">
+<%@include file="pagination.jsp"%>
 
-<c:forEach items="${navigator.paginationPoints}" var="point">
-	
-	<c:choose> 
-		<c:when test="${point.p == '-1'}">
-			..
-		</c:when>
-		<c:when test="${point.p == '0'}">
-			${point.p}
-		</c:when>
-		<c:otherwise> 
-			<a href="${context}/bookmarks/${point.a}">${point.p}</a> 
-		</c:otherwise> 
-	</c:choose> 
-	
-</c:forEach>
-</p>
+<%@include file="navigator.jsp"%>
+
 <ol id="bookmarks">
 
 	<c:forEach items="${bookmarks}" var="bookmark">
@@ -81,53 +67,10 @@
 	</c:forEach>
 </ol>
 
+<%@include file="navigator.jsp"%>
 
-<p class="backToTop">
-	<a href="#header" title="Come back to the top of this page.">Top of
-		the page</a>
-</p>
-<p class="paging">
+<%@include file="pagination.jsp"%>
 
-
-	<c:choose> 
-		<c:when test="${!empty navigator.first}">
-			<a href="${context}/bookmarks/${navigator.first}">First</a> 
-		</c:when> 
-		<c:otherwise> 
-			<span class="disable">First</span><span> / </span>
-		</c:otherwise> 
-	</c:choose> 
-
-
-	<c:choose> 
-		<c:when test="${!empty navigator.previous}">
-			<a href="${context}/bookmarks/${navigator.previous}">Previous</a> 
-		</c:when> 
-		<c:otherwise> 
-			<span class="disable">Previous</span><span> / </span>
-		</c:otherwise> 
-	</c:choose> 
-
-
-	<c:choose> 
-		<c:when test="${!empty navigator.next}">
-			<a href="${context}/bookmarks/${navigator.next}">Next</a> 
-		</c:when> 
-		<c:otherwise> 
-			<span class="disable">Next</span><span> / </span>
-		</c:otherwise> 
-	</c:choose> 
-
-	<c:choose> 
-		<c:when test="${!empty navigator.last}">
-			<a href="${context}/bookmarks/${navigator.last}">Last</a> 
-		</c:when> 
-		<c:otherwise> 
-			<span class="disable">Last</span><span> / </span>
-		</c:otherwise> 
-	</c:choose> 
-	Page ${navigator.current} of ${navigator.pageCount}
-</p>
 
 
 <%@include file="bottom.jsp"%>

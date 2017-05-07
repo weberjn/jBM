@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.jwi.jbm.model.PagePosition;
+import de.jwi.jbm.model.PaginationPoint;
 
 public class PageNavigator {
 
@@ -36,27 +37,29 @@ public class PageNavigator {
 
 	public List<PaginationPoint> getPaginationPoints()
 	{
-		String s;
+		String href, a;
 		List<Integer> paginationPoints = pagePosition.getPaginationPoints();
 		
 		List<PaginationPoint> links = new ArrayList<>(paginationPoints.size());
 		
 		for (Integer p : paginationPoints)
 		{
+			href = null;
 			if (p == 0)
 			{
-				s = "0";
+				a = "..";
 			}
-			else if (p == -1)
+			else if (p < 0)
 			{
-				s = "-1";
+				a = "" + Math.abs(p);
 			}
 			else
 			{
-				s = makeLink(p);
+				a = "" + p;
+				href = makeLink(p);
 			}
 			
-			PaginationPoint point=new PaginationPoint(s, p.toString());
+			PaginationPoint point=new PaginationPoint(href, a);
 			
 			links.add(point);
 		}

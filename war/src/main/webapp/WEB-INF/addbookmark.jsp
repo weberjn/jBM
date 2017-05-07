@@ -63,7 +63,6 @@
 			</select></td>
 			<td></td>
 		</tr>
-		
 
 		
 		<tr>
@@ -78,13 +77,6 @@
 		</tr>
 	</table>
 </form>
-
-
-<h3>Import</h3>
-<ul>
-	<li><a href="${context}/importNetscape">Import bookmarks from bookmark file	</a> Internet Explorer, Mozilla Firefox and Netscape
-</ul>
-
 
 
 <%@include file="bottom.jsp"%>

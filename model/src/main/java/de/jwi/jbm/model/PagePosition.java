@@ -64,10 +64,12 @@ public class PagePosition {
 	   
 	   if gap > 10 : add position into middle of gap
 	   
-	   gap is -1, current is 0
+	   gap is 0, current is negative
 	 */
 	public List<Integer> getPaginationPoints()
 	{
+		int GAP = 0;
+		
 		List<Integer> points = new ArrayList<Integer>(13);
 		int m;
 		
@@ -85,7 +87,7 @@ public class PagePosition {
 		
 		if (current > 4)
 		{
-			points.add(-1);
+			points.add(GAP);
 		}
 
 		// at least 10 gap to the left, so add middle point
@@ -93,7 +95,7 @@ public class PagePosition {
 		{
 			m = (current - 2) / 2;
 			points.add(m);
-			points.add(-1);
+			points.add(GAP);
 		}
 
 		if (current > 3)
@@ -105,7 +107,7 @@ public class PagePosition {
 			points.add(current -1);
 		}
 		
-		points.add(0);
+		points.add(-current);
 		
 		if (current < last - 1)
 		{
@@ -117,13 +119,13 @@ public class PagePosition {
 		}
 		if (current < last - 3)
 		{
-			points.add(-1);
+			points.add(GAP);
 			
 			if (current < last - 13)
 			{
 				m = last - (last - 2 - current) / 2;
 				points.add(m);
-				points.add(-1);
+				points.add(GAP);
 			}
 		}
 		
