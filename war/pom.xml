@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>de.jwi.jbm</groupId>
 		<artifactId>jBM</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</parent>
 
 	<groupId>de.jwi</groupId>
