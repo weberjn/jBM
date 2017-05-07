@@ -1,7 +1,6 @@
 package de.jwi.jbm.model;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -54,6 +53,7 @@ public class BookmarkManager {
 		{
 			tag = new Tag();
 			tag.setTag(tagName);
+			tag.setDescription(tagName);
 			tag.setUser(user);
 			em.persist(tag);
 		}
@@ -113,9 +113,9 @@ public class BookmarkManager {
 	{
 		Tag tag = null;
 		
-		Query query = em.createQuery("SELECT t FROM Tag t WHERE t.user = :user and t.tag = :tag");
+		Query query = em.createQuery("SELECT t FROM Tag t WHERE t.user = :user and LOWER(t.tag) = :tag");
 		query.setParameter("user", user);
-		query.setParameter("tag", tagName);
+		query.setParameter("tag", tagName.toLowerCase());
 		List<Tag> resultList = query.getResultList();
 
 		if (!resultList.isEmpty()) {
@@ -127,7 +127,7 @@ public class BookmarkManager {
 	
 	public List<Tag> getAllTags(User user)
 	{
-		Query query = em.createQuery("SELECT t FROM Tag t WHERE t.user = :user");
+		Query query = em.createQuery("SELECT t FROM Tag t WHERE t.user = :user order by LOWER(t.tag) asc");
 		query.setParameter("user", user);
 		List<Tag> resultList = query.getResultList();
 		

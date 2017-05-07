@@ -201,6 +201,7 @@ public class ModelTest
 		
 		bm.addTag(user, bookmark, "SQL");
 		bm.addTag(user, bookmark, "database");
+		bm.addTag(user, bookmark, "Database");
 		
 		List<Tag> tags = bookmark.getTags();
 		assertTrue(2 == tags.size());
@@ -324,7 +325,8 @@ public class ModelTest
 		
 		assertTrue(tagNamesList.contains("Apache"));
 		assertTrue(tagNamesList.contains("JavaServer Pages"));
-		
+
+	
 		String[] tagNames0 = {};
 		bm.updateTags(user, bookmark, tagNames0);
 		
