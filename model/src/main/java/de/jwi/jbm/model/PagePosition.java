@@ -1,5 +1,8 @@
 package de.jwi.jbm.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PagePosition {
 
 	private int first, current, last, pagesize;
@@ -54,15 +57,82 @@ public class PagePosition {
 		return current;
 	}
 	
-	// TODO
-	public String[] getPaginationPoints()
+	/*
+	   1 .. 10 .. 20 21 22 23 24 .. 39 .. 50
+	   
+	   if pagecount <= 7 : no gap
+	   
+	   if gap > 10 : add position into middle of gap
+	   
+	   gap is -1, current is 0
+	 */
+	public List<Integer> getPaginationPoints()
 	{
-		int n = 0;
-		if (pageCount < 2)
+		List<Integer> points = new ArrayList<Integer>(13);
+		int m;
+		
+		if (pageCount == 0)
 		{
-			return null;
+			return points;
 		}
-		return null;
+		
+		if (current > first)
+		{
+			points.add(first);
+		}
+		
+		// 1 2 3 c 5 6 ....
+		
+		if (current > 4)
+		{
+			points.add(-1);
+		}
+
+		// at least 10 gap to the left, so add middle point
+		if (current > 14)
+		{
+			m = (current - 2) / 2;
+			points.add(m);
+			points.add(-1);
+		}
+
+		if (current > 3)
+		{
+			points.add(current -2);
+		}
+		if (current > 2)
+		{
+			points.add(current -1);
+		}
+		
+		points.add(0);
+		
+		if (current < last - 1)
+		{
+			points.add(current + 1);
+		}
+		if (current < last - 2)
+		{
+			points.add(current + 2);
+		}
+		if (current < last - 3)
+		{
+			points.add(-1);
+			
+			if (current < last - 13)
+			{
+				m = last - (last - 2 - current) / 2;
+				points.add(m);
+				points.add(-1);
+			}
+		}
+		
+		if (current < last)
+		{
+			points.add(last);
+		}
+
+		return points;
 	}
 	
 	public int getFirst() {

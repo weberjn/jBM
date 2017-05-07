@@ -27,8 +27,24 @@
 	<c:if test="${not empty query}">for query ${query}</c:if>
 </p>
 
+<p class="paging">
 
-
+<c:forEach items="${navigator.paginationPoints}" var="point">
+	
+	<c:choose> 
+		<c:when test="${point.p == '-1'}">
+			..
+		</c:when>
+		<c:when test="${point.p == '0'}">
+			${point.p}
+		</c:when>
+		<c:otherwise> 
+			<a href="${context}/bookmarks/${point.a}">${point.p}</a> 
+		</c:otherwise> 
+	</c:choose> 
+	
+</c:forEach>
+</p>
 <ol id="bookmarks">
 
 	<c:forEach items="${bookmarks}" var="bookmark">

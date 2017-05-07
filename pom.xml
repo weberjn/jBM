@@ -8,7 +8,8 @@
 	<artifactId>jBM</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<name>jBM</name>
+	<name>jBM - Java Bookmark Manager</name>
+	<url>https://github.com/weberjn/jBM</url>
 
 	<packaging>pom</packaging>
 

@@ -1,5 +1,8 @@
 package de.jwi.jbm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.jwi.jbm.model.PagePosition;
 
 public class PageNavigator {
@@ -31,11 +34,34 @@ public class PageNavigator {
 		return pagePosition;
 	}
 
-	
-	// TODO
-	public String[] getPaginationPoints()
+	public List<PaginationPoint> getPaginationPoints()
 	{
-		return null;
+		String s;
+		List<Integer> paginationPoints = pagePosition.getPaginationPoints();
+		
+		List<PaginationPoint> links = new ArrayList<>(paginationPoints.size());
+		
+		for (Integer p : paginationPoints)
+		{
+			if (p == 0)
+			{
+				s = "0";
+			}
+			else if (p == -1)
+			{
+				s = "-1";
+			}
+			else
+			{
+				s = makeLink(p);
+			}
+			
+			PaginationPoint point=new PaginationPoint(s, p.toString());
+			
+			links.add(point);
+		}
+		
+		return links;
 	}
 	
 	private String makeLink(int page)
