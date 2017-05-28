@@ -1,6 +1,6 @@
 # jBM - Online Bookmark Manager
 
-jBM is a Java Web Application to collect your bookmarks online.
+jBM is a Java Web Application to collect your bookmarks online. Data is stored in PostgreSQL.
 
 Add bookmarks with a bookmarklet, the web gui or an Android app.
 
