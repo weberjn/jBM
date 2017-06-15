@@ -16,8 +16,25 @@ jBM is a Java port of [SemanticScuttle](https://sourceforge.net/projects/semanti
 
 create a PostgreSQL database for jBM and execute the [tables-postgresql.sql](entities/src/main/resources/tables-postgresql.sql) script. 
 
-    createdb jbm
-    psql jbm < entities/src/main/resources/tables-postgresql.sql 
+check that local socket access has md5:
+	
+	host    all             all             127.0.0.1/32            md5
+
+create the database and a database user (not a unix user):	
+
+	postgres@host:~$ psql
+	psql (9.4.12)
+	Type "help" for help.
+	postgres=# CREATE USER jbm  WITH PASSWORD 'sosecret';
+	CREATE ROLE
+	postgres=# CREATE DATABASE jbm owner jbm;
+	CREATE DATABASE
+	postgres=# GRANT ALL PRIVILEGES  ON DATABASE jbm TO jbm;
+	GRANT
+
+create the tables with the tables-postgresql.sql script as jbm user and use the -h option:  
+	
+	postgres@host:~$ psql -h host -U jbm -d jbm -a -f tables-postgresql.sql
 
 ## Tomcat 
 
