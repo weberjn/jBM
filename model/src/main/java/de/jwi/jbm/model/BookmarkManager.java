@@ -45,15 +45,15 @@ public class BookmarkManager {
 	
 	public Tag addTag(User user, Bookmark bookmark, String tagName)
 	{
-		tagName = tagName.trim();
+		String name = tagName.trim();
 		
-		Tag tag = findTag(user, tagName);
+		Tag tag = findTag(user, name);
 		
 		if (tag == null)
 		{
 			tag = new Tag();
-			tag.setTag(tagName);
-			tag.setDescription(tagName);
+			tag.setTag(name);
+			tag.setDescription(name);
 			tag.setUser(user);
 			em.persist(tag);
 		}

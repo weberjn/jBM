@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings
+	xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm 
+        http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0">
+
+	<entity class="de.jwi.jbm.entities.Bookmark" />
+	<entity class="de.jwi.jbm.entities.Bookmarks2Tag" />
+	<entity class="de.jwi.jbm.entities.Commondescription" />
+	<entity class="de.jwi.jbm.entities.Searchhistory" />
+	<entity class="de.jwi.jbm.entities.Tag" />
+	<entity class="de.jwi.jbm.entities.Tags2tag" />
+	<entity class="de.jwi.jbm.entities.Tagscache" />
+	<entity class="de.jwi.jbm.entities.Tagsstat" />
+	<entity class="de.jwi.jbm.entities.User" />
+	<entity class="de.jwi.jbm.entities.UsersSslclientcert" />
+	<entity class="de.jwi.jbm.entities.Vote" />
+	<entity class="de.jwi.jbm.entities.Watched" />
+
+</entity-mappings>
