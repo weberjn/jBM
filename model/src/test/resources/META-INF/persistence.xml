@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+
+	<persistence-unit name="jBM-Test"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+		<mapping-file>orm.xml</mapping-file>
+
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<properties>
+			<property name="javax.persistence.validation.mode"
+				value="NONE" />
+			<property name="eclipselink.logging.level" value="FINEST" />
+			<property name="eclipselink.logging.logger"
+				value="DefaultLogger" />
+			<property name="eclipselink.target-server" value="NONE" />
+			<property name="eclipselink.target-database" value="PostgreSQL" />
+			<property name="eclipselink.logging.level.sql" value="OFF" />
+			<property name="eclipselink.logging.parameters" value="true" />
+		</properties>
+
+	</persistence-unit>
+
+</persistence>

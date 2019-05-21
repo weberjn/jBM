@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1"
-	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-	
-	<persistence-unit name="jBM" transaction-type="RESOURCE_LOCAL">
+
+	<!-- persistence-unit name="jBM" transaction-type="RESOURCE_LOCAL"> <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> 
+		<exclude-unlisted-classes>true</exclude-unlisted-classes> </persistence-unit -->
+
+
+	<persistence-unit name="jBM" transaction-type="JTA">
+
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
-		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<jta-data-source>java:/datasources/jBM</jta-data-source>
 
+		<mapping-file>orm.xml</mapping-file>
+
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 	</persistence-unit>
-	
+
+
 </persistence>

@@ -64,7 +64,7 @@ public class ModelTest
 		p.setProperty("eclipselink.target-database",
 				"org.eclipse.persistence.platform.database.H2Platform");
 
-		emf = Persistence.createEntityManagerFactory("jBM", p);
+		emf = Persistence.createEntityManagerFactory("jBM-Test", p);
 		em = emf.createEntityManager();
 
 		em.getTransaction().begin();
