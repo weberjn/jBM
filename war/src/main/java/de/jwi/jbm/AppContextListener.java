@@ -28,6 +28,8 @@ public class AppContextListener implements ServletContextListener
 	private static final String VERSIONPROPERTIES = "/version.properties";
 	private static final String CUSTOMSYSTEMPROPERTY = "jBM.custom.config";
 	
+	private static String persistenceUnitName;
+	
 	private EntityManagerFactory entityManagerFactory;
 
 	
@@ -85,8 +87,9 @@ public class AppContextListener implements ServletContextListener
 			new VariableSubstitutor().substitute(properties);
 			context.setAttribute(PROPS, properties);
 
+			persistenceUnitName = properties.getProperty("", "jBM");
 
-			entityManagerFactory = Persistence.createEntityManagerFactory("jBM", properties);
+			entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
 			
 			context.setAttribute(EMF, entityManagerFactory);
 
