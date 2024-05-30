@@ -3,7 +3,7 @@ package de.jwi.jbm.entities;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 
 /**

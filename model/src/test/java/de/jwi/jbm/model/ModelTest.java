@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 import javax.xml.stream.XMLStreamException;
 
 import org.h2.tools.RunScript;
@@ -59,8 +59,8 @@ public class ModelTest
 		EntityManager em;
 
 		Properties p = new Properties();
-		p.setProperty("javax.persistence.jdbc.url", "jdbc:h2:mem:jBM");
-		p.setProperty("javax.persistence.jdbc.driver", "org.h2.Driver");
+		p.setProperty("jakarta.persistence.jdbc.url", "jdbc:h2:mem:jBM");
+		p.setProperty("jakarta.persistence.jdbc.driver", "org.h2.Driver");
 		p.setProperty("eclipselink.target-database",
 				"org.eclipse.persistence.platform.database.H2Platform");
 

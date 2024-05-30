@@ -11,9 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -392,7 +392,7 @@ public class BookmarkManager {
 	private void fetchBookmarkFromURL1(Bookmark bookmark, StringBuffer keywords, String address, String userAgent) throws IOException
 	{
 		Connection connection = Jsoup.connect(address);
-		connection.validateTLSCertificates(false);
+
 		if (userAgent != null)
 		{
 			connection.userAgent(userAgent);

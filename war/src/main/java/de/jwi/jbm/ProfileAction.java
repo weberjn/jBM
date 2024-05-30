@@ -1,6 +1,6 @@
 package de.jwi.jbm;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import de.jwi.jbm.entities.User;
 import de.jwi.jbm.model.UserManager;

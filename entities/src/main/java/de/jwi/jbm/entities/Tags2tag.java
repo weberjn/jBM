@@ -1,7 +1,7 @@
 package de.jwi.jbm.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 
 /**

@@ -1,6 +1,6 @@
 # jBM - Online Bookmark Manager
 
-jBM is a Java Web Application to collect your bookmarks online. Data is stored in PostgreSQL.
+jBM is a *Jakarta* Web Application to collect your bookmarks online. Data is stored in PostgreSQL.
 
 Add bookmarks with a bookmarklet, the web gui or an Android app.
 
@@ -40,16 +40,16 @@ create the tables with the tables-postgresql.sql script as jbm user and use the 
 
 add these driver jars to tomcat/lib
 
-* postgresql-9.4.1212.jar
-* javax.persistence-2.1.1.jar
-* eclipselink-2.6.4.jar
+* postgresql-42.7.3.jar
+* jakarta.persistence-api-3.1.0.jar
+* eclipselink-4.0.3.jar
 
-add a jBM-custom.properties to tomcat/lib like
+add jBM-custom.properties to tomcat/lib like
 
-    javax.persistence.jdbc.driver=org.postgresql.Driver
-    javax.persistence.jdbc.url=jdbc:postgresql://host/jbm
-    javax.persistence.jdbc.user=jbm
-    javax.persistence.jdbc.password=sosecret
+    jakarta.persistence.jdbc.driver=org.postgresql.Driver
+    jakarta.persistence.jdbc.url=jdbc:postgresql://host/jbm
+    jakarta.persistence.jdbc.user=jbm
+    jakarta.persistence.jdbc.password=sosecret
 
 ### Security
 

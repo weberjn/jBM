@@ -2,10 +2,10 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.Query;
 
 import de.jwi.jbm.entities.Bookmark;
 import de.jwi.jbm.entities.User;
@@ -17,10 +17,10 @@ public class T {
 		Properties properties = new Properties();
 
 		// Configure the internal EclipseLink connection pool
-		properties.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
-		properties.put("javax.persistence.jdbc.url", "jdbc:postgresql://luna:8432/scuttle");
-		properties.put("javax.persistence.jdbc.user", "intuser");
-		properties.put("javax.persistence.jdbc.password", "int2001");
+		properties.put("jakarta.persistence.jdbc.driver", "org.postgresql.Driver");
+		properties.put("jakarta.persistence.jdbc.url", "jdbc:postgresql://luna:8432/scuttle");
+		properties.put("jakarta.persistence.jdbc.user", "intuser");
+		properties.put("jakarta.persistence.jdbc.password", "int2001");
 
 		// Configure logging. FINE ensures all SQL is shown
 		properties.put("eclipselink.logging.level", "FINE");

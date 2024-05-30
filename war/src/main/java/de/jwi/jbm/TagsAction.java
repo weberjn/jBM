@@ -2,7 +2,7 @@ package de.jwi.jbm;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import de.jwi.jbm.entities.Tag;
 import de.jwi.jbm.entities.User;
