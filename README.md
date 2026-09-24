@@ -87,7 +87,9 @@ To see, if the API works, run curl like
     
 to add a bookmark
 
-    curl -k -u user:sosecret --data '' http://your.host/jBM/api/bookmark/all
+    curl -k -u user:sosecret --data '' 'http://your.host/jBM/api/posts/add?status=1&tags=News&url=https://www.foxnews.com&description=Fox+News'
+    
+Note that the parameter for title is called description.
     
 # Android
 
