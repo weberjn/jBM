@@ -38,11 +38,11 @@ create the tables with the tables-postgresql.sql script as jbm user and use the 
 
 ## Tomcat 
 
-add these driver jars to tomcat/lib
+add these driver jars from Maven dependencies to tomcat/lib
 
-* postgresql-42.7.3.jar
-* jakarta.persistence-api-3.1.0.jar
-* eclipselink-4.0.3.jar
+* postgresql-xx.jar
+* jakarta.persistence-api-xx.jar
+* eclipselink-xx.jar
 
 add jBM-custom.properties to tomcat/lib like
 
@@ -84,7 +84,11 @@ jBM supports a subset of the delicious API v1.
 To see, if the API works, run curl like
 
     curl -k -u user:sosecret --data '' http://your.host/jBM/api/posts/all
+    
+to add a bookmark
 
+    curl -k -u user:sosecret --data '' http://your.host/jBM/api/bookmark/all
+    
 # Android
 
 [Scuttloid](https://github.com/ilesinge/scuttloid) can be used as Android Client for jBM.
