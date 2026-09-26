@@ -1,0 +1,18 @@
+{
+	"name": "jBM Share",
+	"short_name": "jBM",
+	"start_url": "./share.html",
+	"scope": ".",
+	"lang": "en-US",
+	"background_color": "#ECEFF1",	
+	"display": "standalone",
+	"share_target": {
+		"action": "/jBM/api/posts/share",
+		"method": "GET",
+  		"params": {
+    		"title": "title",
+    		"text": "text",
+    		"url": "url"
+  		}
+  	}
+}

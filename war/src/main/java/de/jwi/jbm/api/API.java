@@ -101,6 +101,10 @@ public class API extends HttpServlet
 				{
 					action = new AllBookmarksAction(am);
 				}
+				if ("share".equals(cmd))
+				{
+					action = new ShareAction(am);
+				}
 
 				try
 				{

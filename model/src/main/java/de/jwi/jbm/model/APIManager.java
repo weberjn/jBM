@@ -43,7 +43,13 @@ public class APIManager
 	public void addBookmark(User user, Writer writer, String url, String description, String extended,
 			String tags, String status, String replace) throws XMLStreamException, IOException
 	{
-		int iStatus = Integer.parseInt(status);
+		int iStatus = 0; 
+				
+		if (status != null && status.matches("\\d")) 
+		{
+			iStatus = Integer.parseInt(status);
+		}
+		
 		boolean bReplace = "yes".equalsIgnoreCase(replace);
 		
 		Bookmark b = new Bookmark();

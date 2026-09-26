@@ -2,7 +2,7 @@
 
 jBM is a *Jakarta* Web Application to collect your bookmarks online. Data is stored in PostgreSQL.
 
-Add bookmarks with a bookmarklet, the web gui or an Android app.
+Add bookmarks with a bookmarklet, the web gui, Web Share Target API or an Android app.
 
 jBM is a Java port of [SemanticScuttle](https://sourceforge.net/projects/semanticscuttle/) and contains some code of it.
 
@@ -66,6 +66,14 @@ For Tomcat these are declared in tomcat-users.xml
     <role rolename="jBMAPI"/>
     <user username="user" password="sosecret" roles="jBM,jBMAPI"/>
 
+### PWA Install
+
+For the [Web Share Target API](https://w3c.github.io/web-share-target/), 
+install jBM in Chrome under Android: open the /share.html page and install.
+
+![PWA Install](doc/PWAInstall.png?raw=true)
+
+jBM appears in the list of share targets.
 
 # Screenshots
 
@@ -77,6 +85,9 @@ For Tomcat these are declared in tomcat-users.xml
 
 ![add a Bookmark](doc/addbookmark.png?raw=true)
 
+
+
+
 # API
 
 jBM supports a subset of the delicious API v1.
@@ -87,7 +98,7 @@ To see, if the API works, run curl like
     
 to add a bookmark
 
-    curl -k -u user:sosecret --data '' 'http://your.host/jBM/api/posts/add?status=1&tags=News&url=https://www.foxnews.com&description=Fox+News'
+    curl -k -u user:sosecret --data '' 'http://your.host/jBM/api/posts/add?status=0&tags=News&url=https://www.foxnews.com&description=Fox+News'
     
 Note that the parameter for title is called description.
     
