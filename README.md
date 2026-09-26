@@ -71,7 +71,7 @@ For Tomcat these are declared in tomcat-users.xml
 For the [Web Share Target API](https://w3c.github.io/web-share-target/), 
 install jBM in Chrome under Android: open the /share.html page and install.
 
-![PWA Install](doc/PWAInstall.png?raw=true)
+![PWA Install](doc/PWAInstall.png?raw=true | width=200)
 
 jBM appears in the list of share targets.
 
