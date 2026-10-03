@@ -69,7 +69,7 @@ For Tomcat these are declared in tomcat-users.xml
 ### PWA Install
 
 For the [Web Share Target API](https://w3c.github.io/web-share-target/), 
-install jBM in Chrome under Android: open the /share.html page and install.
+install jBM in Android: open the /share.html page in Chrome and install.
 
 ![PWA Install](doc/PWAInstall.png?raw=true)
 

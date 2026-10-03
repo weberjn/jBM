@@ -13,6 +13,10 @@
 <li><strong>Store</strong> all your favourite links in one place, accessible from anywhere.</li>
 </ul>
 
+<h3>Web Share Target</h3>
+<p id="bookmarklet">
+<a href="${context}/share.html">Install from /share.html</a> 
+</p>
 <h3>Bookmarklet</h3>
 <p id="bookmarklet">
 
